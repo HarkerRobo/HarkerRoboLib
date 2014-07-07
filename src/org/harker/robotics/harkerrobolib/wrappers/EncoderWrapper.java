@@ -37,7 +37,6 @@ public class EncoderWrapper extends Encoder {
 	this.rateScale = rateScale;
     }
 
-    @Override
     public double getRate() {
 	return rate * rateScale;
     }

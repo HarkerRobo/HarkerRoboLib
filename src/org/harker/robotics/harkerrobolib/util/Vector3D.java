@@ -214,7 +214,6 @@ public class Vector3D
      * Returns a string representation of the Vector3D
      * @return A formatted string version of the vector
      */
-    @Override
     public String toString() 
     {
         return "<" + 

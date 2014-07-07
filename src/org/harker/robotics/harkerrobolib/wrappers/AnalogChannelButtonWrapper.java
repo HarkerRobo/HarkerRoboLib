@@ -23,7 +23,6 @@ public class AnalogChannelButtonWrapper extends ButtonWrapper {
         channel = new AnalogChannel(port);
     }
 
-    @Override
     public boolean get() {
         channel.updateTable();
         return channel.getValue() > threshold;

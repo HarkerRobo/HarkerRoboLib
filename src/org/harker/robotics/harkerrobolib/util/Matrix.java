@@ -279,7 +279,6 @@ public class Matrix {
      * Returns a printable form of the matrix.
      * @return The formatted string version of the matrix
      */
-    @Override
     public String toString() {
         String s = "";
         for (int i = 0; i < rows; i++) {
