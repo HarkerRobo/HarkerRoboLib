@@ -8,12 +8,38 @@ package org.harker.robotics.harkerrobolib.util;
  */
 public class IOUtil {
     
+    private static boolean DEBUG = true;
+    
+    /**
+     * Prints out a statement only if the robot is in debug mode. That constant
+     * is updated in Constants.General. Using this method over the standard
+     * print should be preferred as it enables easy switching between quiet and 
+     * verbose outputs from the robot. 
+     * @param s The string to output
+     */
+    public static void debug(String s) {
+        if (DEBUG) {
+            System.out.print("[DEBUG] ");
+            System.out.println(s);
+        }
+    }
+    
+    /**
+     * Sets the debug state of the robot for IOUtil's sake. Primarily used by
+     * the Constants Class. This enables the switching from quiet mode to 
+     * verbose output and visa versa.
+     * @param flag The new debug state
+     */
+    public static void setDebug(boolean flag) {
+        DEBUG = flag;
+    }
+    
     /** 
       * Call when something minor goes wrong that shouldn't crash the robot.
       * @param s a descriptive string about the problem
       */
      public static void warn(String s) {
-         System.err.print("Warn: ");
+         System.err.print("[WARN] ");
          System.err.println(s);
      }
  
