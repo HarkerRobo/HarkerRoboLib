@@ -1,6 +1,6 @@
 package org.harker.robotics.harkerrobolib.wrappers;
 
-import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
  * A wrapper for Analog Channel Buttons to provide boolean outputs.
@@ -10,17 +10,17 @@ public class AnalogChannelButtonWrapper extends ButtonWrapper {
 
     private double threshold = 0.5;
     private final int port;
-    private final AnalogChannel channel;
+    private final AnalogInput channel;
 
     public AnalogChannelButtonWrapper(int port) {
         this.port = port;
-        channel = new AnalogChannel(port);
+        channel = new AnalogInput(port);
     }
     
     public AnalogChannelButtonWrapper(int port, double threshold) {
         this.port = port;
         this.threshold = threshold;
-        channel = new AnalogChannel(port);
+        channel = new AnalogInput(port);
     }
 
     public boolean get() {

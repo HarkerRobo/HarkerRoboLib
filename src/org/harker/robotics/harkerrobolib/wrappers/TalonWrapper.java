@@ -29,26 +29,6 @@ public class TalonWrapper extends Talon{
     }
     
     /**
-     * Initializes a TalonWrapper with its channel and slot.
-     * @param channel The PWM channel on the digital module the Talon is attached to.
-     * @param slot The slot on the chassis the digital module is plugged into.
-     */
-    public TalonWrapper (int channel, int slot) {
-        super(slot, channel);
-    }
-    
-    /**
-     * Initializes a TalonWrapper with its channel, slot, and reversed flag
-     * @param channel The PWM channel on the digital module the Talon is attached to.
-     * @param slot The slot on the chassis the digital module is plugged into.
-     * @param isReversed Whether or not the output of this Talon should be flipped.
-     */
-    public TalonWrapper (int channel, int slot, boolean isReversed) {
-        super(slot, channel);
-        this.isReversed = isReversed;
-    }
-    
-    /**
      * Sets the speed of the Talon (handles reversing).
      * @param speed The speed to set the Talon.
      */
