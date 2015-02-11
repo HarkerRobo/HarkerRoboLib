@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 /**
  * A Joystick wrapper for gamepads that include more accurate/useful names for the analogue stick axes
  * @author neymikajain
+ * @author Manan
  * @author atierno
  */
 public class GamepadWrapper extends Joystick {
@@ -40,6 +41,9 @@ public class GamepadWrapper extends Joystick {
     public static final int AXIS_DPAD_H = 6; //This was found in Overkill's code. Should be tested.
     public static final int AXIS_DPAD_V = 7;
     
+    public static final int AXIS_TRIGGER_LEFT = 2;
+    public static final int AXIS_TRIGGER_RIGHT = 3;
+    
     public GamepadWrapper(int port) {
 	super(port);
         buttonA = new JoystickButtonWrapper(this, BUTTON_A_PORT);
@@ -70,6 +74,15 @@ public class GamepadWrapper extends Joystick {
 
     public double getRightY() {
 	return -super.getThrottle(); //by default, forward returns a negative number, which is unintuitive
+    }
+    
+    
+    public double getRightTrigger() {
+    	return super.getRawAxis(AXIS_TRIGGER_RIGHT);
+    }
+    
+    public double getLeftTrigger() {
+    	return super.getRawAxis(AXIS_TRIGGER_LEFT);
     }
     
     /**
