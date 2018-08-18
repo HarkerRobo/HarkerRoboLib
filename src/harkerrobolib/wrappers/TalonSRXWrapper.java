@@ -13,11 +13,13 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  * Updated from old Talon wrapper class
  * @author atierno
  * @author Jatin
+ * @author Finn Frankis
  */
 public class TalonSRXWrapper extends TalonSRX {
     
-//    private boolean isReversed = false;
-    private final int timeout;
+    private boolean isReversed = false;
+    private final int DEFAULT_TIMEOUT = 10;
+    private int timeout;
     
     /**
      * Initializes a TalonSRXWrapper with its CAN device number.
@@ -25,7 +27,7 @@ public class TalonSRXWrapper extends TalonSRX {
      */
     public TalonSRXWrapper (int deviceNumber) {
         super(deviceNumber);
-        timeout = 10;
+        timeout = DEFAULT_TIMEOUT;
     }
     
 //    /**
@@ -67,7 +69,7 @@ public class TalonSRXWrapper extends TalonSRX {
      * based on <a href=https://github.com/CrossTheRoadElec/Phoenix-Documentation>CTRE's Github</a> 
      * and <a href=https://github.com/Team973/2018-inseason/blob/dev/lib/helpers/GreyTalon.h>973's Factory Reset Method</a>
      */
-    public void setToFactoryDefault() {
+    public void reset() {
         configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, timeout);  
 //        configSelectedFeedbackCoefficient(1.0, 0, timeout)
         setSensorPhase(false);
@@ -126,5 +128,9 @@ public class TalonSRXWrapper extends TalonSRX {
 //        configAuxPIDPolarity(false, timeout);
         
         set(ControlMode.Disabled, 0);
+    }
+    
+    public void setResetTimeout (int newTimeout) {
+        this.timeout = newTimeout;   
     }
 }
