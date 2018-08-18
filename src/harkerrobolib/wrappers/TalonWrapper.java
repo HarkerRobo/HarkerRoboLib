@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Talon;
  * A wrapper for Talons to enable quick switching of reversed motors.
  * @author atierno
  */
-public class TalonWrapper extends Talon{
+public class TalonWrapper extends Talon {
     
     private boolean isReversed = false;
     

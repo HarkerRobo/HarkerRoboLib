@@ -18,27 +18,35 @@ public class CancelCommand extends Command {
         this.c = c;
     }
 
-    // Called just before this Command runs the first time
+    /**
+     * {@inheritDoc}
+     */
     protected void initialize() {
       
     }
 
-    // Called repeatedly when this Command is scheduled to run
+    /**
+     * {@inheritDoc}
+     */
     protected void execute() {
         c.cancel();
     }
 
-    // Make this return true when this Command no longer needs to run execute()
+    /**
+     * {@inheritDoc}
+     */
     protected boolean isFinished() {
         return true;
     }
-
-    // Called once after isFinished returns true
-    protected void end() {
+    
+    /**
+     * {@inheritDoc}
+     */    protected void end() {
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
+     /**
+      * {@inheritDoc}
+      */
     protected void interrupted() {
     }
 }
