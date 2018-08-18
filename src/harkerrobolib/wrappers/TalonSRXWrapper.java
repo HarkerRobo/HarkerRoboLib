@@ -22,6 +22,7 @@ public class TalonSRXWrapper extends TalonSRX {
     private final int PID_PRIMARY = 0;
     private final int PID_AUXILIARY = 0;
 
+    
     private int timeout;
 
     /**
