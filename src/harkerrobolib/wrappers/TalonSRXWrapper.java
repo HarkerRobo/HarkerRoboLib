@@ -68,7 +68,7 @@ public class TalonSRXWrapper extends TalonSRX {
     // }
 
     /**
-     * Resets the Talon to its factory defaults, software equivalent of resetting the talon,<br>
+     * Resets the Talon to its factory defaults - the software equivalent of resetting the talon,<br>
      * based on <a href=https://github.com/CrossTheRoadElec/Phoenix-Documentation>CTRE's Github</a> and <a
      * href=https://github.com/Team973/2018-inseason/blob/dev/lib/helpers/GreyTalon.h>973's Factory Reset Method</a>
      */
@@ -157,7 +157,7 @@ public class TalonSRXWrapper extends TalonSRX {
      * @author Finn Frankis
      * @version Aug 18, 2018
      */
-    private static class Default {
+    protected static class Default {
         public static final FeedbackDevice SENSOR = FeedbackDevice.QuadEncoder;
         public static final boolean SENSOR_PHASE = false;
         public static final boolean INVERTED = false;
@@ -180,6 +180,8 @@ public class TalonSRXWrapper extends TalonSRX {
 
         public static final int FIRST_PID_SLOT = 0;
         public static final int LAST_PID_SLOT = 3;
+        public static final int FIRST_PID_LOOP = 0;
+        public static final int LAST_PID_LOOP = 1;
         public static final double FPID_VALUE = 0;
         public static final int IZONE_VALUE = 0;
         public static final int I_ACCUMULATOR = 0;
