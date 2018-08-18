@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="HarkerRoboLib/src"/>
 	<classpathentry kind="lib" path="HarkerRoboLib/gradle/wrapper/gradle-wrapper.jar"/>
 	<classpathentry kind="output" path="HarkerRoboLib/bin/main"/>
+=======
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="/Users/atierno/wpilib/java/current/lib/WPILib.jar"/>
+	<classpathentry kind="lib" path="/Users/atierno/wpilib/java/current/lib/NetworkTables.jar"/>
+	<classpathentry kind="output" path="bin"/>
+>>>>>>> remotes/origin/master
 </classpath>

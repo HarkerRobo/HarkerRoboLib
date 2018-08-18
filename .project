@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
 	<name>HarkerRoboLib2</name>
+=======
+	<name>HarkerRoboLib</name>
+>>>>>>> remotes/origin/master
 	<comment></comment>
 	<projects>
 	</projects>
