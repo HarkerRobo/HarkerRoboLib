@@ -37,6 +37,7 @@ dependencies {
     compile files('lib/wpiutil.jar')
     compile files('lib/CTRE_Phoenix.jar')
     compile files('lib/cscore.jar')
+    compile files('lib/Pathfinder-Java-1.8.jar')
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
