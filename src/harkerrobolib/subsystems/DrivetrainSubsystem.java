@@ -21,7 +21,7 @@ public abstract class DrivetrainSubsystem extends Subsystem {
     private IMotorController rightFollower;
     private boolean hasFollowers;
 
-    private DrivetrainSubsystem (TalonSRXWrapper leftMaster, TalonSRXWrapper rightMaster, IMotorController leftFollower,
+    public DrivetrainSubsystem (TalonSRXWrapper leftMaster, TalonSRXWrapper rightMaster, IMotorController leftFollower,
             IMotorController rightFollower) {
         this.leftMaster = leftMaster;
         this.rightMaster = rightMaster;
@@ -30,7 +30,7 @@ public abstract class DrivetrainSubsystem extends Subsystem {
         hasFollowers = true;
     }
 
-    private DrivetrainSubsystem (TalonSRXWrapper leftMaster, TalonSRXWrapper rightMaster) {
+    public DrivetrainSubsystem (TalonSRXWrapper leftMaster, TalonSRXWrapper rightMaster) {
         this(leftMaster, rightMaster, null, null);
         hasFollowers = false;
     }
@@ -52,6 +52,7 @@ public abstract class DrivetrainSubsystem extends Subsystem {
     public void initializeSubsystem() {
         followMasters();
     }
+    
     public void followMasters () {
         if (hasFollowers) {
             leftFollower.follow(leftMaster);
@@ -79,6 +80,19 @@ public abstract class DrivetrainSubsystem extends Subsystem {
         setCurrentLimit(peakLimit, peakTime, continuousLimit, -1);
     }
     
-    public abstract DrivetrainSubsystem getInstance();
-
+    public TalonSRXWrapper getLeftTalon() {
+    	return leftMaster;
+    }
+    
+    public TalonSRXWrapper getRightMaster() {
+    	return rightMaster;
+    }
+    
+    public IMotorController getLeftFollower() {
+    	return leftFollower;
+    }
+    
+    public IMotorController getRightFollower() {
+    	return rightFollower;
+    }
 }
