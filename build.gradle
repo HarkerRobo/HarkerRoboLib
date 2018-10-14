@@ -32,6 +32,11 @@ dependencies {
     compile wpilib()
     compile ctre()
     compile navx()
+    compile files('lib/WPILib.jar')
+    compile files('lib/WPILib-sources.jar')
+    compile files('lib/wpiutil.jar')
+    compile files('lib/CTRE_Phoenix.jar')
+    compile files('lib/cscore.jar')
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')

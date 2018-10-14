@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.usfirst.frc.team1072.util;
+package harkerrobolib.util;
 
 /**
  * Wrapper class for a series of methods allowing for easy unit conversions.
