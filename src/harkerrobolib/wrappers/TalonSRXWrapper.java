@@ -381,8 +381,7 @@ public class TalonSRXWrapper extends TalonSRX {
 	}
 
 	
-	public ErrorCode configRemoteFeedbackFilter(int deviceID, RemoteSensorSource remoteSensorSource, int remoteOrdinal,
-			int timeout) {
+	public ErrorCode configRemoteFeedbackFilter(int deviceID, RemoteSensorSource remoteSensorSource, int remoteOrdinal) {
 		// TODO Auto-generated method stub
 		return super.configRemoteFeedbackFilter(deviceID, remoteSensorSource, remoteOrdinal, timeout);
 	}
@@ -674,7 +673,7 @@ public class TalonSRXWrapper extends TalonSRX {
 	}
 
 	
-	public ErrorCode clearMotionProfileHasUnderrun(int timeout) {
+	public ErrorCode clearMotionProfileHasUnderrun() {
 		// TODO Auto-generated method stub
 		return super.clearMotionProfileHasUnderrun(timeout);
 	}
