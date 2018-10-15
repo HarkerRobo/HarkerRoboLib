@@ -80,7 +80,7 @@ public abstract class DrivetrainSubsystem extends Subsystem {
         setCurrentLimit(peakLimit, peakTime, continuousLimit, -1);
     }
     
-    public TalonSRXWrapper getLeftTalon() {
+    public TalonSRXWrapper getLeftMaster() {
     	return leftMaster;
     }
     
