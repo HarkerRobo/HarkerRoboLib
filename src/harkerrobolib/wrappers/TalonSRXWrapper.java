@@ -1,11 +1,27 @@
 package harkerrobolib.wrappers;
 
+import com.ctre.phoenix.ErrorCode;
+import com.ctre.phoenix.ParamEnum;
+import com.ctre.phoenix.motion.MotionProfileStatus;
+import com.ctre.phoenix.motion.TrajectoryPoint;
+import com.ctre.phoenix.motorcontrol.ControlFrame;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.RemoteLimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+import com.ctre.phoenix.motorcontrol.SensorCollection;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -20,7 +36,7 @@ public class TalonSRXWrapper extends TalonSRX {
     // private boolean isReversed = false;
     private final int DEFAULT_TIMEOUT = 10;
     private final int PID_PRIMARY = 0;
-    private final int PID_AUXILIARY = 0;
+    private final int PID_AUXILIARY = 1;
 
     
     private int timeout;
@@ -32,6 +48,11 @@ public class TalonSRXWrapper extends TalonSRX {
     public TalonSRXWrapper (int deviceNumber) {
         super(deviceNumber);
         timeout = DEFAULT_TIMEOUT;
+    }
+    
+    public TalonSRXWrapper (int deviceNumber, int defaultTimeout) {
+    	this(deviceNumber);
+    	timeout = defaultTimeout;
     }
 
     // /**
@@ -153,7 +174,667 @@ public class TalonSRXWrapper extends TalonSRX {
     }
 
     
-    /**
+	public ErrorCode setStatusFramePeriod(StatusFrameEnhanced frame, int periodMs) {
+		// TODO Auto-generated method stub
+		return super.setStatusFramePeriod(frame, periodMs, timeout);
+	}
+
+	public int getStatusFramePeriod(StatusFrameEnhanced frame) {
+		// TODO Auto-generated method stub
+		return super.getStatusFramePeriod(frame, timeout);
+	}
+
+	
+	public ErrorCode configVelocityMeasurementPeriod(VelocityMeasPeriod period) {
+		// TODO Auto-generated method stub
+		return super.configVelocityMeasurementPeriod(period, timeout);
+	}
+
+	
+	public ErrorCode configVelocityMeasurementWindow(int windowSize) {
+		// TODO Auto-generated method stub
+		return super.configVelocityMeasurementWindow(windowSize, timeout);
+	}
+
+	
+	public ErrorCode configForwardLimitSwitchSource(LimitSwitchSource type, LimitSwitchNormal normalOpenOrClose,
+			int timeout) {
+		// TODO Auto-generated method stub
+		return super.configForwardLimitSwitchSource(type, normalOpenOrClose, timeout);
+	}
+
+	
+	public ErrorCode configReverseLimitSwitchSource(LimitSwitchSource type, LimitSwitchNormal normalOpenOrClose,
+			int timeout) {
+		// TODO Auto-generated method stub
+		return super.configReverseLimitSwitchSource(type, normalOpenOrClose, timeout);
+	}
+
+	
+	public ErrorCode configPeakCurrentLimit(int amps) {
+		// TODO Auto-generated method stub
+		return super.configPeakCurrentLimit(amps, timeout);
+	}
+
+	
+	public ErrorCode configPeakCurrentDuration(int milliseconds) {
+		// TODO Auto-generated method stub
+		return super.configPeakCurrentDuration(milliseconds, timeout);
+	}
+
+	
+	public ErrorCode configContinuousCurrentLimit(int amps) {
+		// TODO Auto-generated method stub
+		return super.configContinuousCurrentLimit(amps, timeout);
+	}
+
+	
+	public void enableCurrentLimit(boolean enable) {
+		// TODO Auto-generated method stub
+		super.enableCurrentLimit(enable);
+	}
+
+	
+	public long getHandle() {
+		// TODO Auto-generated method stub
+		return super.getHandle();
+	}
+
+	
+	public int getDeviceID() {
+		// TODO Auto-generated method stub
+		return super.getDeviceID();
+	}
+
+	
+	public void set(ControlMode mode, double outputValue) {
+		// TODO Auto-generated method stub
+		super.set(mode, outputValue);
+	}
+
+	
+	public void set(ControlMode mode, double demand0, double demand1) {
+		// TODO Auto-generated method stub
+		super.set(mode, demand0, demand1);
+	}
+
+	
+	public void set(ControlMode mode, double demand0, DemandType demand1Type, double demand1) {
+		// TODO Auto-generated method stub
+		super.set(mode, demand0, demand1Type, demand1);
+	}
+
+	
+	public void neutralOutput() {
+		// TODO Auto-generated method stub
+		super.neutralOutput();
+	}
+
+	
+	public void setNeutralMode(NeutralMode neutralMode) {
+		// TODO Auto-generated method stub
+		super.setNeutralMode(neutralMode);
+	}
+
+	
+	public void enableHeadingHold(boolean enable) {
+		// TODO Auto-generated method stub
+		super.enableHeadingHold(enable);
+	}
+
+	
+	public void selectDemandType(boolean value) {
+		// TODO Auto-generated method stub
+		super.selectDemandType(value);
+	}
+
+	
+	public void setSensorPhase(boolean PhaseSensor) {
+		// TODO Auto-generated method stub
+		super.setSensorPhase(PhaseSensor);
+	}
+
+	
+	public void setInverted(boolean invert) {
+		// TODO Auto-generated method stub
+		super.setInverted(invert);
+	}
+
+	
+	public boolean getInverted() {
+		// TODO Auto-generated method stub
+		return super.getInverted();
+	}
+
+	
+	public ErrorCode configOpenloopRamp(double secondsFromNeutralToFull) {
+		// TODO Auto-generated method stub
+		return super.configOpenloopRamp(secondsFromNeutralToFull, timeout);
+	}
+
+	
+	public ErrorCode configClosedloopRamp(double secondsFromNeutralToFull) {
+		// TODO Auto-generated method stub
+		return super.configClosedloopRamp(secondsFromNeutralToFull, timeout);
+	}
+
+	
+	public ErrorCode configPeakOutputForward(double percentOut) {
+		// TODO Auto-generated method stub
+		return super.configPeakOutputForward(percentOut, timeout);
+	}
+
+	
+	public ErrorCode configPeakOutputReverse(double percentOut) {
+		// TODO Auto-generated method stub
+		return super.configPeakOutputReverse(percentOut, timeout);
+	}
+
+	
+	public ErrorCode configNominalOutputForward(double percentOut) {
+		// TODO Auto-generated method stub
+		return super.configNominalOutputForward(percentOut, timeout);
+	}
+
+	
+	public ErrorCode configNominalOutputReverse(double percentOut) {
+		// TODO Auto-generated method stub
+		return super.configNominalOutputReverse(percentOut, timeout);
+	}
+
+	
+	public ErrorCode configNeutralDeadband(double percentDeadband) {
+		// TODO Auto-generated method stub
+		return super.configNeutralDeadband(percentDeadband, timeout);
+	}
+
+	
+	public ErrorCode configVoltageCompSaturation(double voltage) {
+		// TODO Auto-generated method stub
+		return super.configVoltageCompSaturation(voltage, timeout);
+	}
+
+	
+	public ErrorCode configVoltageMeasurementFilter(int filterWindowSamples) {
+		// TODO Auto-generated method stub
+		return super.configVoltageMeasurementFilter(filterWindowSamples, timeout);
+	}
+
+	
+	public void enableVoltageCompensation(boolean enable) {
+		// TODO Auto-generated method stub
+		super.enableVoltageCompensation(enable);
+	}
+
+	
+	public double getBusVoltage() {
+		// TODO Auto-generated method stub
+		return super.getBusVoltage();
+	}
+
+	
+	public double getMotorOutputPercent() {
+		// TODO Auto-generated method stub
+		return super.getMotorOutputPercent();
+	}
+
+	
+	public double getMotorOutputVoltage() {
+		// TODO Auto-generated method stub
+		return super.getMotorOutputVoltage();
+	}
+
+	
+	public double getOutputCurrent() {
+		// TODO Auto-generated method stub
+		return super.getOutputCurrent();
+	}
+
+	
+	public double getTemperature() {
+		// TODO Auto-generated method stub
+		return super.getTemperature();
+	}
+
+	
+	public ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice, int pidIdx) {
+		// TODO Auto-generated method stub
+		return super.configSelectedFeedbackSensor(feedbackDevice, pidIdx, timeout);
+	}
+
+	
+	public ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx) {
+		// TODO Auto-generated method stub
+		return super.configSelectedFeedbackSensor(feedbackDevice, pidIdx, timeout);
+	}
+
+	
+	public ErrorCode configSelectedFeedbackCoefficient(double coefficient, int pidIdx) {
+		// TODO Auto-generated method stub
+		return super.configSelectedFeedbackCoefficient(coefficient, pidIdx, timeout);
+	}
+
+	
+	public ErrorCode configRemoteFeedbackFilter(int deviceID, RemoteSensorSource remoteSensorSource, int remoteOrdinal,
+			int timeout) {
+		// TODO Auto-generated method stub
+		return super.configRemoteFeedbackFilter(deviceID, remoteSensorSource, remoteOrdinal, timeout);
+	}
+
+	
+	public ErrorCode configSensorTerm(SensorTerm sensorTerm, FeedbackDevice feedbackDevice) {
+		// TODO Auto-generated method stub
+		return super.configSensorTerm(sensorTerm, feedbackDevice, timeout);
+	}
+
+	
+	public int getSelectedSensorPosition(int pidIdx) {
+		// TODO Auto-generated method stub
+		return super.getSelectedSensorPosition(pidIdx);
+	}
+
+	
+	public int getSelectedSensorVelocity(int pidIdx) {
+		// TODO Auto-generated method stub
+		return super.getSelectedSensorVelocity(pidIdx);
+	}
+
+	
+	public ErrorCode setSelectedSensorPosition(int sensorPos, int pidIdx) {
+		// TODO Auto-generated method stub
+		return super.setSelectedSensorPosition(sensorPos, pidIdx, timeout);
+	}
+
+	
+	public ErrorCode setControlFramePeriod(ControlFrame frame, int periodMs) {
+		// TODO Auto-generated method stub
+		return super.setControlFramePeriod(frame, periodMs);
+	}
+
+	
+	public ErrorCode setControlFramePeriod(int frame, int periodMs) {
+		// TODO Auto-generated method stub
+		return super.setControlFramePeriod(frame, periodMs);
+	}
+
+	
+	public ErrorCode setStatusFramePeriod(int frameValue, int periodMs) {
+		// TODO Auto-generated method stub
+		return super.setStatusFramePeriod(frameValue, periodMs, timeout);
+	}
+
+	
+	public ErrorCode setStatusFramePeriod(StatusFrame frame, int periodMs) {
+		// TODO Auto-generated method stub
+		return super.setStatusFramePeriod(frame, periodMs, timeout);
+	}
+
+	
+	public int getStatusFramePeriod(int frame) {
+		// TODO Auto-generated method stub
+		return super.getStatusFramePeriod(frame, timeout);
+	}
+
+	
+	public int getStatusFramePeriod(StatusFrame frame) {
+		// TODO Auto-generated method stub
+		return super.getStatusFramePeriod(frame, timeout);
+	}
+
+	
+	public ErrorCode configForwardLimitSwitchSource(RemoteLimitSwitchSource type, LimitSwitchNormal normalOpenOrClose,
+			int deviceID) {
+		// TODO Auto-generated method stub
+		return super.configForwardLimitSwitchSource(type, normalOpenOrClose, deviceID, timeout);
+	}
+
+	
+	public ErrorCode configReverseLimitSwitchSource(RemoteLimitSwitchSource type, LimitSwitchNormal normalOpenOrClose,
+			int deviceID) {
+		// TODO Auto-generated method stub
+		return super.configReverseLimitSwitchSource(type, normalOpenOrClose, deviceID, timeout);
+	}
+
+	
+	protected ErrorCode configForwardLimitSwitchSource(int typeValue, int normalOpenOrCloseValue, int deviceID,
+			int timeout) {
+		// TODO Auto-generated method stub
+		return super.configForwardLimitSwitchSource(typeValue, normalOpenOrCloseValue, deviceID, timeout);
+	}
+
+	
+	protected ErrorCode configReverseLimitSwitchSource(int typeValue, int normalOpenOrCloseValue, int deviceID,
+			int timeout) {
+		// TODO Auto-generated method stub
+		return super.configReverseLimitSwitchSource(typeValue, normalOpenOrCloseValue, deviceID, timeout);
+	}
+
+	
+	public void overrideLimitSwitchesEnable(boolean enable) {
+		// TODO Auto-generated method stub
+		super.overrideLimitSwitchesEnable(enable);
+	}
+
+	
+	public ErrorCode configForwardSoftLimitThreshold(int forwardSensorLimit) {
+		// TODO Auto-generated method stub
+		return super.configForwardSoftLimitThreshold(forwardSensorLimit, timeout);
+	}
+
+	
+	public ErrorCode configReverseSoftLimitThreshold(int reverseSensorLimit) {
+		// TODO Auto-generated method stub
+		return super.configReverseSoftLimitThreshold(reverseSensorLimit, timeout);
+	}
+
+	
+	public ErrorCode configForwardSoftLimitEnable(boolean enable) {
+		// TODO Auto-generated method stub
+		return super.configForwardSoftLimitEnable(enable, timeout);
+	}
+
+	
+	public ErrorCode configReverseSoftLimitEnable(boolean enable) {
+		// TODO Auto-generated method stub
+		return super.configReverseSoftLimitEnable(enable, timeout);
+	}
+
+	
+	public void overrideSoftLimitsEnable(boolean enable) {
+		// TODO Auto-generated method stub
+		super.overrideSoftLimitsEnable(enable);
+	}
+
+	
+	public ErrorCode config_kP(int slotIdx, double value) {
+		// TODO Auto-generated method stub
+		return super.config_kP(slotIdx, value, timeout);
+	}
+
+	
+	public ErrorCode config_kI(int slotIdx, double value) {
+		// TODO Auto-generated method stub
+		return super.config_kI(slotIdx, value, timeout);
+	}
+
+	
+	public ErrorCode config_kD(int slotIdx, double value) {
+		// TODO Auto-generated method stub
+		return super.config_kD(slotIdx, value, timeout);
+	}
+
+	
+	public ErrorCode config_kF(int slotIdx, double value) {
+		// TODO Auto-generated method stub
+		return super.config_kF(slotIdx, value, timeout);
+	}
+
+	
+	public ErrorCode config_IntegralZone(int slotIdx, int izone) {
+		// TODO Auto-generated method stub
+		return super.config_IntegralZone(slotIdx, izone, timeout);
+	}
+
+	
+	public ErrorCode configAllowableClosedloopError(int slotIdx, int allowableClosedLoopError) {
+		// TODO Auto-generated method stub
+		return super.configAllowableClosedloopError(slotIdx, allowableClosedLoopError, timeout);
+	}
+
+	
+	public ErrorCode configMaxIntegralAccumulator(int slotIdx, double iaccum) {
+		// TODO Auto-generated method stub
+		return super.configMaxIntegralAccumulator(slotIdx, iaccum, timeout);
+	}
+
+	
+	public ErrorCode configClosedLoopPeakOutput(int slotIdx, double percentOut) {
+		// TODO Auto-generated method stub
+		return super.configClosedLoopPeakOutput(slotIdx, percentOut, timeout);
+	}
+
+	
+	public ErrorCode configClosedLoopPeriod(int slotIdx, int loopTimeMs) {
+		// TODO Auto-generated method stub
+		return super.configClosedLoopPeriod(slotIdx, loopTimeMs, timeout);
+	}
+
+	
+	public ErrorCode configAuxPIDPolarity(boolean invert) {
+		// TODO Auto-generated method stub
+		return super.configAuxPIDPolarity(invert, timeout);
+	}
+
+	
+	public ErrorCode setIntegralAccumulator(double iaccum, int pidIdx) {
+		// TODO Auto-generated method stub
+		return super.setIntegralAccumulator(iaccum, pidIdx, timeout);
+	}
+
+	
+	public int getClosedLoopError(int pidIdx) {
+		// TODO Auto-generated method stub
+		return super.getClosedLoopError(pidIdx);
+	}
+
+	
+	public double getIntegralAccumulator(int pidIdx) {
+		// TODO Auto-generated method stub
+		return super.getIntegralAccumulator(pidIdx);
+	}
+
+	
+	public double getErrorDerivative(int pidIdx) {
+		// TODO Auto-generated method stub
+		return super.getErrorDerivative(pidIdx);
+	}
+
+	
+	public void selectProfileSlot(int slotIdx, int pidIdx) {
+		// TODO Auto-generated method stub
+		super.selectProfileSlot(slotIdx, pidIdx);
+	}
+
+	
+	public int getClosedLoopTarget(int pidIdx) {
+		// TODO Auto-generated method stub
+		return super.getClosedLoopTarget(pidIdx);
+	}
+
+	
+	public int getActiveTrajectoryPosition() {
+		// TODO Auto-generated method stub
+		return super.getActiveTrajectoryPosition();
+	}
+
+	
+	public int getActiveTrajectoryVelocity() {
+		// TODO Auto-generated method stub
+		return super.getActiveTrajectoryVelocity();
+	}
+
+	
+	public double getActiveTrajectoryHeading() {
+		// TODO Auto-generated method stub
+		return super.getActiveTrajectoryHeading();
+	}
+
+	
+	public ErrorCode configMotionCruiseVelocity(int sensorUnitsPer100ms) {
+		// TODO Auto-generated method stub
+		return super.configMotionCruiseVelocity(sensorUnitsPer100ms, timeout);
+	}
+
+	
+	public ErrorCode configMotionAcceleration(int sensorUnitsPer100msPerSec) {
+		// TODO Auto-generated method stub
+		return super.configMotionAcceleration(sensorUnitsPer100msPerSec, timeout);
+	}
+
+	
+	public ErrorCode clearMotionProfileTrajectories() {
+		// TODO Auto-generated method stub
+		return super.clearMotionProfileTrajectories();
+	}
+
+	
+	public int getMotionProfileTopLevelBufferCount() {
+		// TODO Auto-generated method stub
+		return super.getMotionProfileTopLevelBufferCount();
+	}
+
+	
+	public ErrorCode pushMotionProfileTrajectory(TrajectoryPoint trajPt) {
+		// TODO Auto-generated method stub
+		return super.pushMotionProfileTrajectory(trajPt);
+	}
+
+	
+	public boolean isMotionProfileTopLevelBufferFull() {
+		// TODO Auto-generated method stub
+		return super.isMotionProfileTopLevelBufferFull();
+	}
+
+	
+	public void processMotionProfileBuffer() {
+		// TODO Auto-generated method stub
+		super.processMotionProfileBuffer();
+	}
+
+	
+	public ErrorCode getMotionProfileStatus(MotionProfileStatus statusToFill) {
+		// TODO Auto-generated method stub
+		return super.getMotionProfileStatus(statusToFill);
+	}
+
+	
+	public ErrorCode clearMotionProfileHasUnderrun(int timeout) {
+		// TODO Auto-generated method stub
+		return super.clearMotionProfileHasUnderrun(timeout);
+	}
+
+	
+	public ErrorCode changeMotionControlFramePeriod(int periodMs) {
+		// TODO Auto-generated method stub
+		return super.changeMotionControlFramePeriod(periodMs);
+	}
+
+	
+	public ErrorCode configMotionProfileTrajectoryPeriod(int baseTrajDurationMs) {
+		// TODO Auto-generated method stub
+		return super.configMotionProfileTrajectoryPeriod(baseTrajDurationMs, timeout);
+	}
+
+	
+	public ErrorCode getLastError() {
+		// TODO Auto-generated method stub
+		return super.getLastError();
+	}
+
+	
+	public ErrorCode getFaults(Faults toFill) {
+		// TODO Auto-generated method stub
+		return super.getFaults(toFill);
+	}
+
+	
+	public ErrorCode getStickyFaults(StickyFaults toFill) {
+		// TODO Auto-generated method stub
+		return super.getStickyFaults(toFill);
+	}
+
+	
+	public ErrorCode clearStickyFaults(int timeout) {
+		// TODO Auto-generated method stub
+		return super.clearStickyFaults(timeout);
+	}
+
+	
+	public int getFirmwareVersion() {
+		// TODO Auto-generated method stub
+		return super.getFirmwareVersion();
+	}
+
+	
+	public boolean hasResetOccurred() {
+		// TODO Auto-generated method stub
+		return super.hasResetOccurred();
+	}
+
+	
+	public ErrorCode configSetCustomParam(int newValue, int paramIndex) {
+		// TODO Auto-generated method stub
+		return super.configSetCustomParam(newValue, paramIndex, timeout);
+	}
+
+	
+	public int configGetCustomParam(int paramIndex, int timoutMs) {
+		// TODO Auto-generated method stub
+		return super.configGetCustomParam(paramIndex, timoutMs);
+	}
+
+	
+	public ErrorCode configSetParameter(ParamEnum param, double value, int subValue, int ordinal) {
+		// TODO Auto-generated method stub
+		return super.configSetParameter(param, value, subValue, ordinal, timeout);
+	}
+
+	
+	public ErrorCode configSetParameter(int param, double value, int subValue, int ordinal) {
+		// TODO Auto-generated method stub
+		return super.configSetParameter(param, value, subValue, ordinal, timeout);
+	}
+
+	
+	public double configGetParameter(ParamEnum param, int ordinal) {
+		// TODO Auto-generated method stub
+		return super.configGetParameter(param, ordinal, timeout);
+	}
+
+	
+	public double configGetParameter(int param, int ordinal) {
+		// TODO Auto-generated method stub
+		return super.configGetParameter(param, ordinal, timeout);
+	}
+
+	
+	public int getBaseID() {
+		// TODO Auto-generated method stub
+		return super.getBaseID();
+	}
+
+	
+	public ControlMode getControlMode() {
+		// TODO Auto-generated method stub
+		return super.getControlMode();
+	}
+
+	
+	public void follow(IMotorController masterToFollow, FollowerType followerType) {
+		// TODO Auto-generated method stub
+		super.follow(masterToFollow, followerType);
+	}
+
+	
+	public void follow(IMotorController masterToFollow) {
+		// TODO Auto-generated method stub
+		super.follow(masterToFollow);
+	}
+
+	
+	public void valueUpdated() {
+		// TODO Auto-generated method stub
+		super.valueUpdated();
+	}
+
+	
+	public SensorCollection getSensorCollection() {
+		// TODO Auto-generated method stub
+		return super.getSensorCollection();
+	}
+
+
+	/**
      * Contains all the default states for a TalonSRX. 
      * @author Finn Frankis
      * @version Aug 18, 2018
