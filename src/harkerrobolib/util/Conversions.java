@@ -100,6 +100,15 @@ public final class Conversions
         NANOSECONDS;
     }
     
+    /**
+     * Converts a value of one unit to a value of another unit.
+     * @param startUnit the unit of the passed-in value (either AngleUnit, SpeedUnit, PositionUnit, TimeUnit).
+     * @param startValue the value to convert.
+     * @param desiredUnit the desired unit of the passed-in value.
+     * 
+     * @precondition startUnit and desiredUnit both measure the same quantity.
+     * @return the converted value.
+     */
     public static double convert (Unit startUnit, double startValue, Unit desiredUnit) {
     	if (startUnit instanceof AngleUnit && desiredUnit instanceof AngleUnit) {
     		return convertAngle ((AngleUnit)startUnit, startValue, (AngleUnit)desiredUnit);
