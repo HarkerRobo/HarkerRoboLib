@@ -46,6 +46,7 @@ public class GamepadWrapper extends Joystick {
     public static final int XBOX_AXIS_RIGHT_Y = 5;
     public static final int XBOX_AXIS_TRIGGER_LEFT = 2;
     public static final int XBOX_AXIS_TRIGGER_RIGHT = 3;
+    public static final double XBOX_TRIGGER_DEADBAND = 0.1;
     
     /************************************************
 	 * LOGITECH SETTINGS                            *
@@ -220,7 +221,7 @@ public class GamepadWrapper extends Joystick {
     	if (setting == GamepadSetting.LOGITECH) {
     		return getRawButton(LOGITECH_TRIGGER_RIGHT);
     	}
-    	return getRawAxis(XBOX_AXIS_TRIGGER_RIGHT) > .5;
+    	return getRawAxis(XBOX_AXIS_TRIGGER_RIGHT) > XBOX_TRIGGER_DEADBAND;
     }
     
     /**
@@ -244,7 +245,7 @@ public class GamepadWrapper extends Joystick {
     	if (setting == GamepadSetting.LOGITECH) {
     		return getRawButton(LOGITECH_TRIGGER_LEFT);
     	}
-    	return getRawAxis(XBOX_AXIS_TRIGGER_LEFT) > .5;
+    	return getRawAxis(XBOX_AXIS_TRIGGER_LEFT) > XBOX_TRIGGER_DEADBAND;
     }
     
     /**
