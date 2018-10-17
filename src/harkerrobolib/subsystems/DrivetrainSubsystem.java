@@ -27,6 +27,8 @@ public abstract class DrivetrainSubsystem extends Subsystem {
         this.rightMaster = rightMaster;
         this.leftFollower = leftFollower;
         this.rightFollower = rightFollower;
+        
+        followMasters();
         hasFollowers = true;
     }
 
@@ -49,10 +51,6 @@ public abstract class DrivetrainSubsystem extends Subsystem {
         consumer.accept(rightFollower);
     }
 
-    public void initializeSubsystem() {
-        followMasters();
-    }
-    
     public void followMasters () {
         if (hasFollowers) {
             leftFollower.follow(leftMaster);
