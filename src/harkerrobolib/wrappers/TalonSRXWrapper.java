@@ -447,9 +447,9 @@ public class TalonSRXWrapper extends TalonSRX {
 	}
 
 	
-	public int configGetCustomParam(int paramIndex, int timoutMs) {
+	public int configGetCustomParam(int paramIndex) {
 		// TODO Auto-generated method stub
-		return super.configGetCustomParam(paramIndex, timoutMs);
+		return super.configGetCustomParam(paramIndex, timeout);
 	}
 
 	
