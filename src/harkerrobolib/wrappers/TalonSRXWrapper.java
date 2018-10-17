@@ -192,85 +192,6 @@ public class TalonSRXWrapper extends TalonSRX {
 		return super.configContinuousCurrentLimit(amps, timeout);
 	}
 
-	
-	public void enableCurrentLimit(boolean enable) {
-		// TODO Auto-generated method stub
-		super.enableCurrentLimit(enable);
-	}
-
-	
-	public long getHandle() {
-		// TODO Auto-generated method stub
-		return super.getHandle();
-	}
-
-	
-	public int getDeviceID() {
-		// TODO Auto-generated method stub
-		return super.getDeviceID();
-	}
-
-	
-	public void set(ControlMode mode, double outputValue) {
-		// TODO Auto-generated method stub
-		super.set(mode, outputValue);
-	}
-
-	
-	public void set(ControlMode mode, double demand0, double demand1) {
-		// TODO Auto-generated method stub
-		super.set(mode, demand0, demand1);
-	}
-
-	
-	public void set(ControlMode mode, double demand0, DemandType demand1Type, double demand1) {
-		// TODO Auto-generated method stub
-		super.set(mode, demand0, demand1Type, demand1);
-	}
-
-	
-	public void neutralOutput() {
-		// TODO Auto-generated method stub
-		super.neutralOutput();
-	}
-
-	
-	public void setNeutralMode(NeutralMode neutralMode) {
-		// TODO Auto-generated method stub
-		super.setNeutralMode(neutralMode);
-	}
-
-	
-	public void enableHeadingHold(boolean enable) {
-		// TODO Auto-generated method stub
-		super.enableHeadingHold(enable);
-	}
-
-	
-	public void selectDemandType(boolean value) {
-		// TODO Auto-generated method stub
-		super.selectDemandType(value);
-	}
-
-	
-	public void setSensorPhase(boolean PhaseSensor) {
-		// TODO Auto-generated method stub
-		super.setSensorPhase(PhaseSensor);
-	}
-
-	
-	public void setInverted(boolean invert) {
-		// TODO Auto-generated method stub
-		super.setInverted(invert);
-	}
-
-	
-	public boolean getInverted() {
-		// TODO Auto-generated method stub
-		return super.getInverted();
-	}
-
-	
 	public ErrorCode configOpenloopRamp(double secondsFromNeutralToFull) {
 		// TODO Auto-generated method stub
 		return super.configOpenloopRamp(secondsFromNeutralToFull, timeout);
@@ -323,44 +244,6 @@ public class TalonSRXWrapper extends TalonSRX {
 		// TODO Auto-generated method stub
 		return super.configVoltageMeasurementFilter(filterWindowSamples, timeout);
 	}
-
-	
-	public void enableVoltageCompensation(boolean enable) {
-		// TODO Auto-generated method stub
-		super.enableVoltageCompensation(enable);
-	}
-
-	
-	public double getBusVoltage() {
-		// TODO Auto-generated method stub
-		return super.getBusVoltage();
-	}
-
-	
-	public double getMotorOutputPercent() {
-		// TODO Auto-generated method stub
-		return super.getMotorOutputPercent();
-	}
-
-	
-	public double getMotorOutputVoltage() {
-		// TODO Auto-generated method stub
-		return super.getMotorOutputVoltage();
-	}
-
-	
-	public double getOutputCurrent() {
-		// TODO Auto-generated method stub
-		return super.getOutputCurrent();
-	}
-
-	
-	public double getTemperature() {
-		// TODO Auto-generated method stub
-		return super.getTemperature();
-	}
-
-	
 	public ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice, int pidIdx) {
 		// TODO Auto-generated method stub
 		return super.configSelectedFeedbackSensor(feedbackDevice, pidIdx, timeout);
@@ -389,38 +272,12 @@ public class TalonSRXWrapper extends TalonSRX {
 		// TODO Auto-generated method stub
 		return super.configSensorTerm(sensorTerm, feedbackDevice, timeout);
 	}
-
-	
-	public int getSelectedSensorPosition(int pidIdx) {
-		// TODO Auto-generated method stub
-		return super.getSelectedSensorPosition(pidIdx);
-	}
-
-	
-	public int getSelectedSensorVelocity(int pidIdx) {
-		// TODO Auto-generated method stub
-		return super.getSelectedSensorVelocity(pidIdx);
-	}
-
 	
 	public ErrorCode setSelectedSensorPosition(int sensorPos, int pidIdx) {
 		// TODO Auto-generated method stub
 		return super.setSelectedSensorPosition(sensorPos, pidIdx, timeout);
 	}
 
-	
-	public ErrorCode setControlFramePeriod(ControlFrame frame, int periodMs) {
-		// TODO Auto-generated method stub
-		return super.setControlFramePeriod(frame, periodMs);
-	}
-
-	
-	public ErrorCode setControlFramePeriod(int frame, int periodMs) {
-		// TODO Auto-generated method stub
-		return super.setControlFramePeriod(frame, periodMs);
-	}
-
-	
 	public ErrorCode setStatusFramePeriod(int frameValue, int periodMs) {
 		// TODO Auto-generated method stub
 		return super.setStatusFramePeriod(frameValue, periodMs, timeout);
@@ -469,13 +326,6 @@ public class TalonSRXWrapper extends TalonSRX {
 		// TODO Auto-generated method stub
 		return super.configReverseLimitSwitchSource(typeValue, normalOpenOrCloseValue, deviceID, timeout);
 	}
-
-	
-	public void overrideLimitSwitchesEnable(boolean enable) {
-		// TODO Auto-generated method stub
-		super.overrideLimitSwitchesEnable(enable);
-	}
-
 	
 	public ErrorCode configForwardSoftLimitThreshold(int forwardSensorLimit) {
 		// TODO Auto-generated method stub
@@ -499,13 +349,6 @@ public class TalonSRXWrapper extends TalonSRX {
 		// TODO Auto-generated method stub
 		return super.configReverseSoftLimitEnable(enable, timeout);
 	}
-
-	
-	public void overrideSoftLimitsEnable(boolean enable) {
-		// TODO Auto-generated method stub
-		super.overrideSoftLimitsEnable(enable);
-	}
-
 	
 	public ErrorCode config_kP(int slotIdx, double value) {
 		// TODO Auto-generated method stub
@@ -572,55 +415,6 @@ public class TalonSRXWrapper extends TalonSRX {
 		return super.setIntegralAccumulator(iaccum, pidIdx, timeout);
 	}
 
-	
-	public int getClosedLoopError(int pidIdx) {
-		// TODO Auto-generated method stub
-		return super.getClosedLoopError(pidIdx);
-	}
-
-	
-	public double getIntegralAccumulator(int pidIdx) {
-		// TODO Auto-generated method stub
-		return super.getIntegralAccumulator(pidIdx);
-	}
-
-	
-	public double getErrorDerivative(int pidIdx) {
-		// TODO Auto-generated method stub
-		return super.getErrorDerivative(pidIdx);
-	}
-
-	
-	public void selectProfileSlot(int slotIdx, int pidIdx) {
-		// TODO Auto-generated method stub
-		super.selectProfileSlot(slotIdx, pidIdx);
-	}
-
-	
-	public int getClosedLoopTarget(int pidIdx) {
-		// TODO Auto-generated method stub
-		return super.getClosedLoopTarget(pidIdx);
-	}
-
-	
-	public int getActiveTrajectoryPosition() {
-		// TODO Auto-generated method stub
-		return super.getActiveTrajectoryPosition();
-	}
-
-	
-	public int getActiveTrajectoryVelocity() {
-		// TODO Auto-generated method stub
-		return super.getActiveTrajectoryVelocity();
-	}
-
-	
-	public double getActiveTrajectoryHeading() {
-		// TODO Auto-generated method stub
-		return super.getActiveTrajectoryHeading();
-	}
-
-	
 	public ErrorCode configMotionCruiseVelocity(int sensorUnitsPer100ms) {
 		// TODO Auto-generated method stub
 		return super.configMotionCruiseVelocity(sensorUnitsPer100ms, timeout);
@@ -632,97 +426,21 @@ public class TalonSRXWrapper extends TalonSRX {
 		return super.configMotionAcceleration(sensorUnitsPer100msPerSec, timeout);
 	}
 
-	
-	public ErrorCode clearMotionProfileTrajectories() {
-		// TODO Auto-generated method stub
-		return super.clearMotionProfileTrajectories();
-	}
-
-	
-	public int getMotionProfileTopLevelBufferCount() {
-		// TODO Auto-generated method stub
-		return super.getMotionProfileTopLevelBufferCount();
-	}
-
-	
-	public ErrorCode pushMotionProfileTrajectory(TrajectoryPoint trajPt) {
-		// TODO Auto-generated method stub
-		return super.pushMotionProfileTrajectory(trajPt);
-	}
-
-	
-	public boolean isMotionProfileTopLevelBufferFull() {
-		// TODO Auto-generated method stub
-		return super.isMotionProfileTopLevelBufferFull();
-	}
-
-	
-	public void processMotionProfileBuffer() {
-		// TODO Auto-generated method stub
-		super.processMotionProfileBuffer();
-	}
-
-	
-	public ErrorCode getMotionProfileStatus(MotionProfileStatus statusToFill) {
-		// TODO Auto-generated method stub
-		return super.getMotionProfileStatus(statusToFill);
-	}
-
-	
 	public ErrorCode clearMotionProfileHasUnderrun() {
 		// TODO Auto-generated method stub
 		return super.clearMotionProfileHasUnderrun(timeout);
 	}
 
-	
-	public ErrorCode changeMotionControlFramePeriod(int periodMs) {
-		// TODO Auto-generated method stub
-		return super.changeMotionControlFramePeriod(periodMs);
-	}
-
-	
 	public ErrorCode configMotionProfileTrajectoryPeriod(int baseTrajDurationMs) {
 		// TODO Auto-generated method stub
 		return super.configMotionProfileTrajectoryPeriod(baseTrajDurationMs, timeout);
 	}
-
-	
-	public ErrorCode getLastError() {
-		// TODO Auto-generated method stub
-		return super.getLastError();
-	}
-
-	
-	public ErrorCode getFaults(Faults toFill) {
-		// TODO Auto-generated method stub
-		return super.getFaults(toFill);
-	}
-
-	
-	public ErrorCode getStickyFaults(StickyFaults toFill) {
-		// TODO Auto-generated method stub
-		return super.getStickyFaults(toFill);
-	}
-
 	
 	public ErrorCode clearStickyFaults() {
 		// TODO Auto-generated method stub
 		return super.clearStickyFaults(timeout);
 	}
 
-	
-	public int getFirmwareVersion() {
-		// TODO Auto-generated method stub
-		return super.getFirmwareVersion();
-	}
-
-	
-	public boolean hasResetOccurred() {
-		// TODO Auto-generated method stub
-		return super.hasResetOccurred();
-	}
-
-	
 	public ErrorCode configSetCustomParam(int newValue, int paramIndex) {
 		// TODO Auto-generated method stub
 		return super.configSetCustomParam(newValue, paramIndex, timeout);
@@ -757,44 +475,7 @@ public class TalonSRXWrapper extends TalonSRX {
 		// TODO Auto-generated method stub
 		return super.configGetParameter(param, ordinal, timeout);
 	}
-
 	
-	public int getBaseID() {
-		// TODO Auto-generated method stub
-		return super.getBaseID();
-	}
-
-	
-	public ControlMode getControlMode() {
-		// TODO Auto-generated method stub
-		return super.getControlMode();
-	}
-
-	
-	public void follow(IMotorController masterToFollow, FollowerType followerType) {
-		// TODO Auto-generated method stub
-		super.follow(masterToFollow, followerType);
-	}
-
-	
-	public void follow(IMotorController masterToFollow) {
-		// TODO Auto-generated method stub
-		super.follow(masterToFollow);
-	}
-
-	
-	public void valueUpdated() {
-		// TODO Auto-generated method stub
-		super.valueUpdated();
-	}
-
-	
-	public SensorCollection getSensorCollection() {
-		// TODO Auto-generated method stub
-		return super.getSensorCollection();
-	}
-
-
 	/**
      * Contains all the default states for a TalonSRX. 
      * @author Finn Frankis
