@@ -77,7 +77,7 @@ public abstract class DrivetrainSubsystem extends Subsystem {
     }
     
     public void setCurrentLimit (int peakLimit, int peakTime, int continuousLimit) {
-        setCurrentLimit(peakLimit, peakTime, continuousLimit, -1);
+        setCurrentLimit(peakLimit, peakTime, continuousLimit, leftMaster.getDefaultTimeout());
     }
     
     public TalonSRXWrapper getLeftMaster() {
