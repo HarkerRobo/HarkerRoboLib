@@ -2,6 +2,7 @@ package harkerrobolib.subsystems;
 
 import java.util.function.Consumer;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -76,6 +77,14 @@ public abstract class DrivetrainSubsystem extends Subsystem {
     
     public void setCurrentLimit (int peakLimit, int peakTime, int continuousLimit) {
         setCurrentLimit(peakLimit, peakTime, continuousLimit, -1);
+    }
+    
+    public void setBoth (ControlMode mode, double outputValue) {
+    	applyToMasters((talon) -> {talon.set(mode, outputValue);});
+    }
+    
+    public void resetMasters() {
+    	applyToMasters ((talon) -> {talon.reset();});
     }
     
     public TalonSRXWrapper getLeftMaster() {
