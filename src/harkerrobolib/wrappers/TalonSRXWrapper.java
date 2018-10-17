@@ -26,8 +26,8 @@ import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 /**
- * TalonSRX wrapper class to reset to factory defaults and more Updated from old Talon wrapper class
- * @author atierno
+ * Wraps a standard TalonSRX with functionality for resetting and a default timeout for relevant methods.
+ * 
  * @author Jatin
  * @author Finn Frankis
  */
