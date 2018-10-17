@@ -3,6 +3,8 @@
  */
 package harkerrobolib.util;
 
+import java.security.InvalidParameterException;
+
 /**
  * Wrapper class for a series of methods allowing for easy unit conversions.
  * @author Finn Frankis
@@ -10,12 +12,13 @@ package harkerrobolib.util;
  */
 public final class Conversions
 {
+	public interface Unit {}
     /**
      * Represents the various possible units for an angle.
      * @author Finn Frankis
      * @version 7/5/18
      */
-    public enum AngleUnit
+    public enum AngleUnit implements Unit
     {
         /**
          * The angle unit of radians.
@@ -38,7 +41,7 @@ public final class Conversions
      * @author Finn Frankis
      * @version 7/5/18
      */
-    public enum PositionUnit
+    public enum PositionUnit implements Unit
     {
         /**
          * The position unit of feet.
@@ -56,7 +59,7 @@ public final class Conversions
      * @author Finn Frankis
      * @version 7/5/18
      */
-    public enum SpeedUnit
+    public enum SpeedUnit implements Unit
     {
         /**
          * The speed unit of feet per second.
@@ -74,7 +77,7 @@ public final class Conversions
      * @author Finn Frankis
      * @version 7/5/18
      */
-    public enum TimeUnit
+    public enum TimeUnit implements Unit
     {
         /**
          * The time unit of seconds.
@@ -97,7 +100,22 @@ public final class Conversions
         NANOSECONDS;
     }
     
-    
+    public static double convert (Unit startUnit, double startValue, Unit desiredUnit) {
+    	if (startUnit instanceof AngleUnit && desiredUnit instanceof AngleUnit) {
+    		return convertAngle ((AngleUnit)startUnit, startValue, (AngleUnit)desiredUnit);
+    	}
+    	else if (startUnit instanceof SpeedUnit && desiredUnit instanceof SpeedUnit) {
+    		return convertSpeed ((SpeedUnit) startUnit, startValue, (SpeedUnit) desiredUnit);
+    	}
+    	else if (startUnit instanceof PositionUnit && desiredUnit instanceof PositionUnit) {
+    		return convertPosition ((PositionUnit) startUnit, startValue, (PositionUnit) desiredUnit);
+    	}
+    	else if (startUnit instanceof TimeUnit && desiredUnit instanceof TimeUnit) {
+    		return convertTime ((TimeUnit) startUnit, startValue, (TimeUnit) desiredUnit);
+    	}
+
+		throw new InvalidParameterException ("Unit classes are non-equivalent");
+    }
     /**
      * Converts an angle in one unit to another.
      * @param startUnit the unit of the given value
