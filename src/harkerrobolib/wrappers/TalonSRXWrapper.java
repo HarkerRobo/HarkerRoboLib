@@ -163,15 +163,13 @@ public class TalonSRXWrapper extends TalonSRX {
 	}
 
 	
-	public ErrorCode configForwardLimitSwitchSource(LimitSwitchSource type, LimitSwitchNormal normalOpenOrClose,
-			int timeout) {
+	public ErrorCode configForwardLimitSwitchSource(LimitSwitchSource type, LimitSwitchNormal normalOpenOrClose) {
 		// TODO Auto-generated method stub
 		return super.configForwardLimitSwitchSource(type, normalOpenOrClose, timeout);
 	}
 
 	
-	public ErrorCode configReverseLimitSwitchSource(LimitSwitchSource type, LimitSwitchNormal normalOpenOrClose,
-			int timeout) {
+	public ErrorCode configReverseLimitSwitchSource(LimitSwitchSource type, LimitSwitchNormal normalOpenOrClose) {
 		// TODO Auto-generated method stub
 		return super.configReverseLimitSwitchSource(type, normalOpenOrClose, timeout);
 	}
@@ -461,15 +459,13 @@ public class TalonSRXWrapper extends TalonSRX {
 	}
 
 	
-	protected ErrorCode configForwardLimitSwitchSource(int typeValue, int normalOpenOrCloseValue, int deviceID,
-			int timeout) {
+	protected ErrorCode configForwardLimitSwitchSource(int typeValue, int normalOpenOrCloseValue, int deviceID) {
 		// TODO Auto-generated method stub
 		return super.configForwardLimitSwitchSource(typeValue, normalOpenOrCloseValue, deviceID, timeout);
 	}
 
 	
-	protected ErrorCode configReverseLimitSwitchSource(int typeValue, int normalOpenOrCloseValue, int deviceID,
-			int timeout) {
+	protected ErrorCode configReverseLimitSwitchSource(int typeValue, int normalOpenOrCloseValue, int deviceID) {
 		// TODO Auto-generated method stub
 		return super.configReverseLimitSwitchSource(typeValue, normalOpenOrCloseValue, deviceID, timeout);
 	}
@@ -709,7 +705,7 @@ public class TalonSRXWrapper extends TalonSRX {
 	}
 
 	
-	public ErrorCode clearStickyFaults(int timeout) {
+	public ErrorCode clearStickyFaults() {
 		// TODO Auto-generated method stub
 		return super.clearStickyFaults(timeout);
 	}
