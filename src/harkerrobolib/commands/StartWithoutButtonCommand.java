@@ -19,6 +19,11 @@ public class StartWithoutButtonCommand extends Command {
     private final Command command;
     private final Button button;
     
+    /**
+     * Constructs a new StartWithButtonCommand.
+     * @param button the button which, when not pressed, will begin the command.
+     * @param command the command which will begin when the given button is not pressed.
+     */
     public StartWithoutButtonCommand(Button button, Command command) {
         this.button = button;
         this.command = command;

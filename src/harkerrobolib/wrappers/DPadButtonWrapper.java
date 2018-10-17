@@ -4,8 +4,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 
 
 /**
- *
+ * Wraps a D-Pad button for convenient angle access.
  * @author Manan
+ * @author Finn Frankis
  */
 public class DPadButtonWrapper extends ButtonWrapper{
     private final GenericHID m_joystick;
@@ -13,8 +14,8 @@ public class DPadButtonWrapper extends ButtonWrapper{
 
     /**
      * Create a joystick button for triggering commands
-     * @param joystick The GenericHID object that has the button (e.g. Joystick, KinectStick, etc)
-     * @param buttonNumber The button number (see {@link GenericHID#getRawButton(int) }
+     * @param joystick The joystick to which this D-Pad corresponds.
+     * @param degrees the angle on the D-Pad to which this button corresponds.
      */
     public DPadButtonWrapper(GenericHID joystick, int degrees) {
         m_joystick = joystick;

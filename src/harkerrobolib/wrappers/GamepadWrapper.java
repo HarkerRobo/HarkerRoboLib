@@ -78,6 +78,10 @@ public class GamepadWrapper extends Joystick {
     private boolean aPressed, bPressed, xPressed, yPressed, sUpPressed, sDownPressed;
     private boolean sLeftPressed, sRightPressed, bLeftPressed, bRightPressed, sRRightPressed, sRLeftPressed;
     
+    /**
+     * Constructs a new GamepadWrapper.
+     * @param port the port of the gamepad.
+     */
     public GamepadWrapper(int port) {
     	super(port);
         buttonA = new JoystickButtonWrapper(this, XBOX_A_PORT);
@@ -97,6 +101,11 @@ public class GamepadWrapper extends Joystick {
         sLeftPressed = sRightPressed = bLeftPressed = bRightPressed = sRRightPressed = sRLeftPressed = false;
     }
     
+    /**
+     * Construts a new GamepadWrapper with the specific type of gamepad specified.
+     * @param port the port of the gamepad.
+     * @param setting the setting of the gamepad.
+     */
     public GamepadWrapper(int port, int setting) {
     	super(port);
     	if (setting == SETTING_XBOX) {
@@ -129,6 +138,10 @@ public class GamepadWrapper extends Joystick {
     	this.setting = setting;
     }
 
+    /**
+     * Gets the X value being input to the left joystick.
+     * @return the left X value
+     */
     public double getLeftX() {
     	if (sLeftPressed)
     		return -1;
@@ -139,6 +152,10 @@ public class GamepadWrapper extends Joystick {
     	return getRawAxis(XBOX_AXIS_LEFT_X);
     }
 
+    /**
+     * Gets the Y value being input to the left joystick.
+     * @return the left Y value
+     */
     public double getLeftY() {
     	if (sUpPressed)
     		return 1;
@@ -149,6 +166,10 @@ public class GamepadWrapper extends Joystick {
     	return -getRawAxis(XBOX_AXIS_LEFT_Y); //by default, forward returns a negative number, which is unintuitive
     }
 
+    /**
+     * Gets the Y value being input to the right joystick.
+     * @return the left Y value
+     */
     public double getRightX() {
     	if (sRLeftPressed)
     		return -1;
@@ -159,6 +180,10 @@ public class GamepadWrapper extends Joystick {
     	return getRawAxis(XBOX_AXIS_RIGHT_X);
     }
 
+    /**
+     * Gets the Y value being input to the right joystick.
+     * @return the right Y value
+     */
     public double getRightY() {
     	if (setting == SETTING_LOGITECH) {
     		return -getRawAxis(LOGITECH_AXIS_RIGHT_Y);
@@ -166,6 +191,10 @@ public class GamepadWrapper extends Joystick {
     	return -getRawAxis(XBOX_AXIS_RIGHT_Y); //by default, forward returns a negative number, which is unintuitive
     }
     
+    /**
+     * Gets the amount the right trigger is currently being pressed.
+     * @return the amount by which the right trigger is pressed
+     */
     public double getRightTrigger() {
     	if (bRightPressed)
     		return 1;
@@ -175,6 +204,10 @@ public class GamepadWrapper extends Joystick {
     	return getRawAxis(XBOX_AXIS_TRIGGER_RIGHT);
     }
     
+    /**
+     * Gets whether or not the right trigger is pressed.
+     * @return true if the right trigger is pressed; false otherwise
+     */
     public boolean getRightTriggerPressed() {
     	if (setting == SETTING_LOGITECH) {
     		return getRawButton(LOGITECH_TRIGGER_RIGHT);
@@ -182,6 +215,10 @@ public class GamepadWrapper extends Joystick {
     	return getRawAxis(XBOX_AXIS_TRIGGER_RIGHT) > .5;
     }
     
+    /**
+     * Gets the amount the left trigger is currently being pressed.
+     * @return the amount by which the left trigger is pressed
+     */
     public double getLeftTrigger() {
     	if (bLeftPressed)
     		return 1;
@@ -191,6 +228,10 @@ public class GamepadWrapper extends Joystick {
     	return getRawAxis(XBOX_AXIS_TRIGGER_LEFT);
     }
     
+    /**
+     * Gets whether or not the left trigger is pressed.
+     * @return true if the left trigger is pressed; false otherwise
+     */
     public boolean getLeftTriggerPressed() {
     	if (setting == SETTING_LOGITECH) {
     		return getRawButton(LOGITECH_TRIGGER_LEFT);
