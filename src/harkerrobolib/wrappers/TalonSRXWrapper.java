@@ -144,341 +144,340 @@ public class TalonSRXWrapper extends TalonSRX {
         this.timeout = newTimeout;
     }
 
-    
 	public ErrorCode setStatusFramePeriod(StatusFrameEnhanced frame, int periodMs) {
 		// TODO Auto-generated method stub
-		return super.setStatusFramePeriod(frame, periodMs, timeout);
+		return this.setStatusFramePeriod(frame, periodMs, timeout);
 	}
 
 	public int getStatusFramePeriod(StatusFrameEnhanced frame) {
 		// TODO Auto-generated method stub
-		return super.getStatusFramePeriod(frame, timeout);
+		return this.getStatusFramePeriod(frame, timeout);
 	}
 
 	
 	public ErrorCode configVelocityMeasurementPeriod(VelocityMeasPeriod period) {
 		// TODO Auto-generated method stub
-		return super.configVelocityMeasurementPeriod(period, timeout);
+		return this.configVelocityMeasurementPeriod(period, timeout);
 	}
 
 	
 	public ErrorCode configVelocityMeasurementWindow(int windowSize) {
 		// TODO Auto-generated method stub
-		return super.configVelocityMeasurementWindow(windowSize, timeout);
+		return this.configVelocityMeasurementWindow(windowSize, timeout);
 	}
 
 	
 	public ErrorCode configForwardLimitSwitchSource(LimitSwitchSource type, LimitSwitchNormal normalOpenOrClose) {
 		// TODO Auto-generated method stub
-		return super.configForwardLimitSwitchSource(type, normalOpenOrClose, timeout);
+		return this.configForwardLimitSwitchSource(type, normalOpenOrClose, timeout);
 	}
 
 	
 	public ErrorCode configReverseLimitSwitchSource(LimitSwitchSource type, LimitSwitchNormal normalOpenOrClose) {
 		// TODO Auto-generated method stub
-		return super.configReverseLimitSwitchSource(type, normalOpenOrClose, timeout);
+		return this.configReverseLimitSwitchSource(type, normalOpenOrClose, timeout);
 	}
 
 	
 	public ErrorCode configPeakCurrentLimit(int amps) {
 		// TODO Auto-generated method stub
-		return super.configPeakCurrentLimit(amps, timeout);
+		return this.configPeakCurrentLimit(amps, timeout);
 	}
 
 	
 	public ErrorCode configPeakCurrentDuration(int milliseconds) {
 		// TODO Auto-generated method stub
-		return super.configPeakCurrentDuration(milliseconds, timeout);
+		return this.configPeakCurrentDuration(milliseconds, timeout);
 	}
 
 	
 	public ErrorCode configContinuousCurrentLimit(int amps) {
 		// TODO Auto-generated method stub
-		return super.configContinuousCurrentLimit(amps, timeout);
+		return this.configContinuousCurrentLimit(amps, timeout);
 	}
 
 	public ErrorCode configOpenloopRamp(double secondsFromNeutralToFull) {
 		// TODO Auto-generated method stub
-		return super.configOpenloopRamp(secondsFromNeutralToFull, timeout);
+		return this.configOpenloopRamp(secondsFromNeutralToFull, timeout);
 	}
 
 	
 	public ErrorCode configClosedloopRamp(double secondsFromNeutralToFull) {
 		// TODO Auto-generated method stub
-		return super.configClosedloopRamp(secondsFromNeutralToFull, timeout);
+		return this.configClosedloopRamp(secondsFromNeutralToFull, timeout);
 	}
 
 	
 	public ErrorCode configPeakOutputForward(double percentOut) {
 		// TODO Auto-generated method stub
-		return super.configPeakOutputForward(percentOut, timeout);
+		return this.configPeakOutputForward(percentOut, timeout);
 	}
 
 	
 	public ErrorCode configPeakOutputReverse(double percentOut) {
 		// TODO Auto-generated method stub
-		return super.configPeakOutputReverse(percentOut, timeout);
+		return this.configPeakOutputReverse(percentOut, timeout);
 	}
 
 	
 	public ErrorCode configNominalOutputForward(double percentOut) {
 		// TODO Auto-generated method stub
-		return super.configNominalOutputForward(percentOut, timeout);
+		return this.configNominalOutputForward(percentOut, timeout);
 	}
 
 	
 	public ErrorCode configNominalOutputReverse(double percentOut) {
 		// TODO Auto-generated method stub
-		return super.configNominalOutputReverse(percentOut, timeout);
+		return this.configNominalOutputReverse(percentOut, timeout);
 	}
 
 	
 	public ErrorCode configNeutralDeadband(double percentDeadband) {
 		// TODO Auto-generated method stub
-		return super.configNeutralDeadband(percentDeadband, timeout);
+		return this.configNeutralDeadband(percentDeadband, timeout);
 	}
 
 	
 	public ErrorCode configVoltageCompSaturation(double voltage) {
 		// TODO Auto-generated method stub
-		return super.configVoltageCompSaturation(voltage, timeout);
+		return this.configVoltageCompSaturation(voltage, timeout);
 	}
 
 	
 	public ErrorCode configVoltageMeasurementFilter(int filterWindowSamples) {
 		// TODO Auto-generated method stub
-		return super.configVoltageMeasurementFilter(filterWindowSamples, timeout);
+		return this.configVoltageMeasurementFilter(filterWindowSamples, timeout);
 	}
 	public ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice, int pidIdx) {
 		// TODO Auto-generated method stub
-		return super.configSelectedFeedbackSensor(feedbackDevice, pidIdx, timeout);
+		return this.configSelectedFeedbackSensor(feedbackDevice, pidIdx, timeout);
 	}
 
 	
 	public ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx) {
 		// TODO Auto-generated method stub
-		return super.configSelectedFeedbackSensor(feedbackDevice, pidIdx, timeout);
+		return this.configSelectedFeedbackSensor(feedbackDevice, pidIdx, timeout);
 	}
 
 	
 	public ErrorCode configSelectedFeedbackCoefficient(double coefficient, int pidIdx) {
 		// TODO Auto-generated method stub
-		return super.configSelectedFeedbackCoefficient(coefficient, pidIdx, timeout);
+		return this.configSelectedFeedbackCoefficient(coefficient, pidIdx, timeout);
 	}
 
 	
 	public ErrorCode configRemoteFeedbackFilter(int deviceID, RemoteSensorSource remoteSensorSource, int remoteOrdinal) {
 		// TODO Auto-generated method stub
-		return super.configRemoteFeedbackFilter(deviceID, remoteSensorSource, remoteOrdinal, timeout);
+		return this.configRemoteFeedbackFilter(deviceID, remoteSensorSource, remoteOrdinal, timeout);
 	}
 
 	
 	public ErrorCode configSensorTerm(SensorTerm sensorTerm, FeedbackDevice feedbackDevice) {
 		// TODO Auto-generated method stub
-		return super.configSensorTerm(sensorTerm, feedbackDevice, timeout);
+		return this.configSensorTerm(sensorTerm, feedbackDevice, timeout);
 	}
 	
 	public ErrorCode setSelectedSensorPosition(int sensorPos, int pidIdx) {
 		// TODO Auto-generated method stub
-		return super.setSelectedSensorPosition(sensorPos, pidIdx, timeout);
+		return this.setSelectedSensorPosition(sensorPos, pidIdx, timeout);
 	}
 
 	public ErrorCode setStatusFramePeriod(int frameValue, int periodMs) {
 		// TODO Auto-generated method stub
-		return super.setStatusFramePeriod(frameValue, periodMs, timeout);
+		return this.setStatusFramePeriod(frameValue, periodMs, timeout);
 	}
 
 	
 	public ErrorCode setStatusFramePeriod(StatusFrame frame, int periodMs) {
 		// TODO Auto-generated method stub
-		return super.setStatusFramePeriod(frame, periodMs, timeout);
+		return this.setStatusFramePeriod(frame, periodMs, timeout);
 	}
 
 	
 	public int getStatusFramePeriod(int frame) {
 		// TODO Auto-generated method stub
-		return super.getStatusFramePeriod(frame, timeout);
+		return this.getStatusFramePeriod(frame, timeout);
 	}
 
 	
 	public int getStatusFramePeriod(StatusFrame frame) {
 		// TODO Auto-generated method stub
-		return super.getStatusFramePeriod(frame, timeout);
+		return this.getStatusFramePeriod(frame, timeout);
 	}
 
 	
 	public ErrorCode configForwardLimitSwitchSource(RemoteLimitSwitchSource type, LimitSwitchNormal normalOpenOrClose,
 			int deviceID) {
 		// TODO Auto-generated method stub
-		return super.configForwardLimitSwitchSource(type, normalOpenOrClose, deviceID, timeout);
+		return this.configForwardLimitSwitchSource(type, normalOpenOrClose, deviceID, timeout);
 	}
 
 	
 	public ErrorCode configReverseLimitSwitchSource(RemoteLimitSwitchSource type, LimitSwitchNormal normalOpenOrClose,
 			int deviceID) {
 		// TODO Auto-generated method stub
-		return super.configReverseLimitSwitchSource(type, normalOpenOrClose, deviceID, timeout);
+		return this.configReverseLimitSwitchSource(type, normalOpenOrClose, deviceID, timeout);
 	}
 
 	
 	protected ErrorCode configForwardLimitSwitchSource(int typeValue, int normalOpenOrCloseValue, int deviceID) {
 		// TODO Auto-generated method stub
-		return super.configForwardLimitSwitchSource(typeValue, normalOpenOrCloseValue, deviceID, timeout);
+		return this.configForwardLimitSwitchSource(typeValue, normalOpenOrCloseValue, deviceID, timeout);
 	}
 
 	
 	protected ErrorCode configReverseLimitSwitchSource(int typeValue, int normalOpenOrCloseValue, int deviceID) {
 		// TODO Auto-generated method stub
-		return super.configReverseLimitSwitchSource(typeValue, normalOpenOrCloseValue, deviceID, timeout);
+		return this.configReverseLimitSwitchSource(typeValue, normalOpenOrCloseValue, deviceID, timeout);
 	}
 	
 	public ErrorCode configForwardSoftLimitThreshold(int forwardSensorLimit) {
 		// TODO Auto-generated method stub
-		return super.configForwardSoftLimitThreshold(forwardSensorLimit, timeout);
+		return this.configForwardSoftLimitThreshold(forwardSensorLimit, timeout);
 	}
 
 	
 	public ErrorCode configReverseSoftLimitThreshold(int reverseSensorLimit) {
 		// TODO Auto-generated method stub
-		return super.configReverseSoftLimitThreshold(reverseSensorLimit, timeout);
+		return this.configReverseSoftLimitThreshold(reverseSensorLimit, timeout);
 	}
 
 	
 	public ErrorCode configForwardSoftLimitEnable(boolean enable) {
 		// TODO Auto-generated method stub
-		return super.configForwardSoftLimitEnable(enable, timeout);
+		return this.configForwardSoftLimitEnable(enable, timeout);
 	}
 
 	
 	public ErrorCode configReverseSoftLimitEnable(boolean enable) {
 		// TODO Auto-generated method stub
-		return super.configReverseSoftLimitEnable(enable, timeout);
+		return this.configReverseSoftLimitEnable(enable, timeout);
 	}
 	
 	public ErrorCode config_kP(int slotIdx, double value) {
 		// TODO Auto-generated method stub
-		return super.config_kP(slotIdx, value, timeout);
+		return this.config_kP(slotIdx, value, timeout);
 	}
 
 	
 	public ErrorCode config_kI(int slotIdx, double value) {
 		// TODO Auto-generated method stub
-		return super.config_kI(slotIdx, value, timeout);
+		return this.config_kI(slotIdx, value, timeout);
 	}
 
 	
 	public ErrorCode config_kD(int slotIdx, double value) {
 		// TODO Auto-generated method stub
-		return super.config_kD(slotIdx, value, timeout);
+		return this.config_kD(slotIdx, value, timeout);
 	}
 
 	
 	public ErrorCode config_kF(int slotIdx, double value) {
 		// TODO Auto-generated method stub
-		return super.config_kF(slotIdx, value, timeout);
+		return this.config_kF(slotIdx, value, timeout);
 	}
 
 	
 	public ErrorCode config_IntegralZone(int slotIdx, int izone) {
 		// TODO Auto-generated method stub
-		return super.config_IntegralZone(slotIdx, izone, timeout);
+		return this.config_IntegralZone(slotIdx, izone, timeout);
 	}
 
 	
 	public ErrorCode configAllowableClosedloopError(int slotIdx, int allowableClosedLoopError) {
 		// TODO Auto-generated method stub
-		return super.configAllowableClosedloopError(slotIdx, allowableClosedLoopError, timeout);
+		return this.configAllowableClosedloopError(slotIdx, allowableClosedLoopError, timeout);
 	}
 
 	
 	public ErrorCode configMaxIntegralAccumulator(int slotIdx, double iaccum) {
 		// TODO Auto-generated method stub
-		return super.configMaxIntegralAccumulator(slotIdx, iaccum, timeout);
+		return this.configMaxIntegralAccumulator(slotIdx, iaccum, timeout);
 	}
 
 	
 	public ErrorCode configClosedLoopPeakOutput(int slotIdx, double percentOut) {
 		// TODO Auto-generated method stub
-		return super.configClosedLoopPeakOutput(slotIdx, percentOut, timeout);
+		return this.configClosedLoopPeakOutput(slotIdx, percentOut, timeout);
 	}
 
 	
 	public ErrorCode configClosedLoopPeriod(int slotIdx, int loopTimeMs) {
 		// TODO Auto-generated method stub
-		return super.configClosedLoopPeriod(slotIdx, loopTimeMs, timeout);
+		return this.configClosedLoopPeriod(slotIdx, loopTimeMs, timeout);
 	}
 
 	
 	public ErrorCode configAuxPIDPolarity(boolean invert) {
 		// TODO Auto-generated method stub
-		return super.configAuxPIDPolarity(invert, timeout);
+		return this.configAuxPIDPolarity(invert, timeout);
 	}
 
 	
 	public ErrorCode setIntegralAccumulator(double iaccum, int pidIdx) {
 		// TODO Auto-generated method stub
-		return super.setIntegralAccumulator(iaccum, pidIdx, timeout);
+		return this.setIntegralAccumulator(iaccum, pidIdx, timeout);
 	}
 
 	public ErrorCode configMotionCruiseVelocity(int sensorUnitsPer100ms) {
 		// TODO Auto-generated method stub
-		return super.configMotionCruiseVelocity(sensorUnitsPer100ms, timeout);
+		return this.configMotionCruiseVelocity(sensorUnitsPer100ms, timeout);
 	}
 
 	
 	public ErrorCode configMotionAcceleration(int sensorUnitsPer100msPerSec) {
 		// TODO Auto-generated method stub
-		return super.configMotionAcceleration(sensorUnitsPer100msPerSec, timeout);
+		return this.configMotionAcceleration(sensorUnitsPer100msPerSec, timeout);
 	}
 
 	public ErrorCode clearMotionProfileHasUnderrun() {
 		// TODO Auto-generated method stub
-		return super.clearMotionProfileHasUnderrun(timeout);
+		return this.clearMotionProfileHasUnderrun(timeout);
 	}
 
 	public ErrorCode configMotionProfileTrajectoryPeriod(int baseTrajDurationMs) {
 		// TODO Auto-generated method stub
-		return super.configMotionProfileTrajectoryPeriod(baseTrajDurationMs, timeout);
+		return this.configMotionProfileTrajectoryPeriod(baseTrajDurationMs, timeout);
 	}
 	
 	public ErrorCode clearStickyFaults() {
 		// TODO Auto-generated method stub
-		return super.clearStickyFaults(timeout);
+		return this.clearStickyFaults(timeout);
 	}
 
 	public ErrorCode configSetCustomParam(int newValue, int paramIndex) {
 		// TODO Auto-generated method stub
-		return super.configSetCustomParam(newValue, paramIndex, timeout);
+		return this.configSetCustomParam(newValue, paramIndex, timeout);
 	}
 
 	
 	public int configGetCustomParam(int paramIndex) {
 		// TODO Auto-generated method stub
-		return super.configGetCustomParam(paramIndex, timeout);
+		return this.configGetCustomParam(paramIndex, timeout);
 	}
 
 	
 	public ErrorCode configSetParameter(ParamEnum param, double value, int subValue, int ordinal) {
 		// TODO Auto-generated method stub
-		return super.configSetParameter(param, value, subValue, ordinal, timeout);
+		return this.configSetParameter(param, value, subValue, ordinal, timeout);
 	}
 
 	
 	public ErrorCode configSetParameter(int param, double value, int subValue, int ordinal) {
 		// TODO Auto-generated method stub
-		return super.configSetParameter(param, value, subValue, ordinal, timeout);
+		return this.configSetParameter(param, value, subValue, ordinal, timeout);
 	}
 
 	
 	public double configGetParameter(ParamEnum param, int ordinal) {
 		// TODO Auto-generated method stub
-		return super.configGetParameter(param, ordinal, timeout);
+		return this.configGetParameter(param, ordinal, timeout);
 	}
 
 	
 	public double configGetParameter(int param, int ordinal) {
 		// TODO Auto-generated method stub
-		return super.configGetParameter(param, ordinal, timeout);
+		return this.configGetParameter(param, ordinal, timeout);
 	}
 	
 	/**
