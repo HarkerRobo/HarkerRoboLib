@@ -3,6 +3,7 @@ package harkerrobolib.wrappers;
 import java.security.InvalidParameterException;
 
 import com.ctre.phoenix.ErrorCode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 /**
  * A Talon class which better handles resetting and warning about incorrect parameters.
@@ -60,7 +61,24 @@ public class SafeTalon extends TalonSRXWrapper {
         isSlotIndex(slotIndex);
         return super.configAllowableClosedloopError(slotIndex, value, timeout);
     }
-
+    
+    @Override
+    public int getSelectedSensorPosition (int loopIndex) {
+    	isLoopIndex(loopIndex);
+    	return super.getSelectedSensorPosition(loopIndex);
+    }
+    
+    @Override
+    public ErrorCode setSelectedSensorPosition (int sensorPos, int loopIndex, int timeout) {
+    	isLoopIndex(loopIndex);
+    	return super.setSelectedSensorPosition(sensorPos, loopIndex, timeout);
+    }
+    
+    @Override
+    public ErrorCode configSelectedFeedbackSensor (FeedbackDevice device, int loopIndex, int timeout) {
+    	isLoopIndex(loopIndex);
+    	return super.configSelectedFeedbackSensor(device, loopIndex, timeout);
+    }
     @Override
     public void selectProfileSlot (int slotIndex, int loopIndex) {
         isSlotIndex(slotIndex);
