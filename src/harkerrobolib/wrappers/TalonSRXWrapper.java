@@ -42,14 +42,19 @@ public class TalonSRXWrapper extends TalonSRX {
     private int timeout;
 
     /**
-     * Initializes a TalonSRXWrapper with its CAN device number.
-     * @param deviceNumber The CAN device number of the Talon.
+     * Constructs a TalonSRXWrapper with the default timeout {{@link #DEFAULT_TIMEOUT}.
+     * @param deviceNumber The CAN device ID of the Talon.
      */
     public TalonSRXWrapper (int deviceNumber) {
         super(deviceNumber);
         timeout = DEFAULT_TIMEOUT;
     }
     
+    /**
+     * Constructs a TalonSRXWrapper.
+     * @param deviceNumber the CAN device ID of the Talon.
+     * @param defaultTimeout the timeout to be used if one is not specified in the method.
+     */
     public TalonSRXWrapper (int deviceNumber, int defaultTimeout) {
     	this(deviceNumber);
     	timeout = defaultTimeout;
