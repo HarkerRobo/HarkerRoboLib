@@ -12,67 +12,9 @@ import edu.wpi.first.wpilibj.Joystick;
  * @author neymikajain
  * @author atierno
  */
-public class GamepadWrapper extends Joystick {
-	/**
-	 * Represents the various types of gamepads.
-	 * @author Finn Frankis
-	 * @version 10/16/18
-	 */
-	public enum GamepadSetting {
-		XBOX, LOGITECH;
-	}
-	public static final int SETTING_XBOX = 0;
-	public static final int SETTING_LOGITECH = 1;
-	
-	/************************************************
-	 * XBOX SETTINGS                                *
-	 ************************************************/
-    public static final int XBOX_A_PORT = 1;
-    public static final int XBOX_B_PORT = 2;
-    public static final int XBOX_X_PORT = 3;
-    public static final int XBOX_Y_PORT = 4;
-    public static final int XBOX_SELECT_PORT = 7;
-    public static final int XBOX_START_PORT = 8;
-
-    public static final int XBOX_STICK_LEFT_PORT = 9;
-    public static final int XBOX_STICK_RIGHT_PORT = 10;
-
-    public static final int XBOX_BUMPER_LEFT_PORT = 5;
-    public static final int XBOX_BUMPER_RIGHT_PORT = 6;
-    
-    public static final int XBOX_AXIS_LEFT_X = 0;
-    public static final int XBOX_AXIS_LEFT_Y = 1;
-    public static final int XBOX_AXIS_RIGHT_X = 4;
-    public static final int XBOX_AXIS_RIGHT_Y = 5;
-    public static final int XBOX_AXIS_TRIGGER_LEFT = 2;
-    public static final int XBOX_AXIS_TRIGGER_RIGHT = 3;
-    public static final double XBOX_TRIGGER_DEADBAND = 0.1;
-    
-    /************************************************
-	 * LOGITECH SETTINGS                            *
-	 ************************************************/
-    public static final int LOGITECH_A_PORT = 2;
-    public static final int LOGITECH_B_PORT = 3;
-    public static final int LOGITECH_X_PORT = 1;
-    public static final int LOGITECH_Y_PORT = 4;
-    public static final int LOGITECH_SELECT_PORT = 9;
-    public static final int LOGITECH_START_PORT = 10;
-
-    public static final int LOGITECH_STICK_LEFT_PORT = 11;
-    public static final int LOGITECH_STICK_RIGHT_PORT = 12;
-
-    public static final int LOGITECH_BUMPER_LEFT_PORT = 5;
-    public static final int LOGITECH_BUMPER_RIGHT_PORT = 6;
-    
-    public static final int LOGITECH_AXIS_LEFT_X = 0;
-    public static final int LOGITECH_AXIS_LEFT_Y = 1;
-    public static final int LOGITECH_AXIS_RIGHT_X = 2;
-    public static final int LOGITECH_AXIS_RIGHT_Y = 3;
-    public static final int LOGITECH_TRIGGER_LEFT = 7;
-    public static final int LOGITECH_TRIGGER_RIGHT = 8;
-    
+public abstract class GamepadWrapper extends Joystick {
     private final JoystickButtonWrapper buttonA;
-    private final JoystickButtonWrapper buttonB;
+	private final JoystickButtonWrapper buttonB;
     private final JoystickButtonWrapper buttonX;
     private final JoystickButtonWrapper buttonY;
     private final JoystickButtonWrapper buttonStart;
@@ -82,83 +24,41 @@ public class GamepadWrapper extends Joystick {
     private final JoystickButtonWrapper buttonBumperLeft;
     private final JoystickButtonWrapper buttonBumperRight;
     
-    private GamepadSetting setting;
-    
-    private boolean aPressed, bPressed, xPressed, yPressed, sUpPressed, sDownPressed;
-    private boolean sLeftPressed, sRightPressed, bLeftPressed, bRightPressed, sRRightPressed, sRLeftPressed;
-    
-    /**
-     * Constructs a new GamepadWrapper.
-     * @param port the port of the gamepad.
-     */
-    public GamepadWrapper(int port) {
+    private final int axisLeftX;
+    private final int axisLeftY;
+    private final int axisRightX;
+    private final int axisRightY;
+
+    public GamepadWrapper(int port, 
+    		int buttonAPort, int buttonBPort, int buttonXPort, int buttonYPort, 
+    		int buttonStartPort, int buttonSelectPort, 
+			int buttonStickLeftPort, int buttonStickRightPort, 
+			int buttonBumperLeftPort, int buttonBumperRightPort,
+			int axisLeftX, int axisLeftY, int axisRightX, int axisRightY) {
     	super(port);
-        buttonA = new JoystickButtonWrapper(this, XBOX_A_PORT);
-        buttonB = new JoystickButtonWrapper(this, XBOX_B_PORT);
-        buttonX = new JoystickButtonWrapper(this, XBOX_X_PORT);
-        buttonY = new JoystickButtonWrapper(this, XBOX_Y_PORT);
-        buttonStart = new JoystickButtonWrapper(this, XBOX_START_PORT);
-        buttonSelect = new JoystickButtonWrapper(this, XBOX_SELECT_PORT);
-        buttonStickLeft = new JoystickButtonWrapper(this, XBOX_STICK_LEFT_PORT);
-        buttonStickRight = new JoystickButtonWrapper(this, XBOX_STICK_RIGHT_PORT);
-        buttonBumperLeft = new JoystickButtonWrapper(this, XBOX_BUMPER_LEFT_PORT);
-        buttonBumperRight = new JoystickButtonWrapper(this, XBOX_BUMPER_RIGHT_PORT);
+        buttonA = new JoystickButtonWrapper(this, buttonAPort);
+        buttonB = new JoystickButtonWrapper(this, buttonBPort);
+        buttonX = new JoystickButtonWrapper(this, buttonXPort);
+        buttonY = new JoystickButtonWrapper(this, buttonYPort);
+        buttonStart = new JoystickButtonWrapper(this, buttonStartPort);
+        buttonSelect = new JoystickButtonWrapper(this, buttonSelectPort);
+        buttonStickLeft = new JoystickButtonWrapper(this, buttonStickLeftPort);
+        buttonStickRight = new JoystickButtonWrapper(this, buttonStickRightPort);
+        buttonBumperLeft = new JoystickButtonWrapper(this, buttonBumperLeftPort);
+        buttonBumperRight = new JoystickButtonWrapper(this, buttonBumperRightPort);
         
-        this.setting = GamepadSetting.XBOX;
-        
-        aPressed = bPressed = xPressed = yPressed = sUpPressed = sDownPressed = false;
-        sLeftPressed = sRightPressed = bLeftPressed = bRightPressed = sRRightPressed = sRLeftPressed = false;
-    }
-    
-    /**
-     * Construts a new GamepadWrapper with the specific type of gamepad specified.
-     * @param port the port of the gamepad.
-     * @param setting the setting of the gamepad.
-     */
-    public GamepadWrapper(int port, GamepadSetting setting) {
-    	super(port);
-    	if (setting == GamepadSetting.XBOX) {
-    		buttonA = new JoystickButtonWrapper(this, XBOX_A_PORT);
-            buttonB = new JoystickButtonWrapper(this, XBOX_B_PORT);
-            buttonX = new JoystickButtonWrapper(this, XBOX_X_PORT);
-            buttonY = new JoystickButtonWrapper(this, XBOX_Y_PORT);
-            buttonStart = new JoystickButtonWrapper(this, XBOX_START_PORT);
-            buttonSelect = new JoystickButtonWrapper(this, XBOX_SELECT_PORT);
-            buttonStickLeft = new JoystickButtonWrapper(this, XBOX_STICK_LEFT_PORT);
-            buttonStickRight = new JoystickButtonWrapper(this, XBOX_STICK_RIGHT_PORT);
-            buttonBumperLeft = new JoystickButtonWrapper(this, XBOX_BUMPER_LEFT_PORT);
-            buttonBumperRight = new JoystickButtonWrapper(this, XBOX_BUMPER_RIGHT_PORT);
-    	}
-    	else if (setting == GamepadSetting.LOGITECH) {
-    		buttonA = new JoystickButtonWrapper(this, LOGITECH_A_PORT);
-            buttonB = new JoystickButtonWrapper(this, LOGITECH_B_PORT);
-            buttonX = new JoystickButtonWrapper(this, LOGITECH_X_PORT);
-            buttonY = new JoystickButtonWrapper(this, LOGITECH_Y_PORT);
-            buttonStart = new JoystickButtonWrapper(this, LOGITECH_START_PORT);
-            buttonSelect = new JoystickButtonWrapper(this, LOGITECH_SELECT_PORT);
-            buttonStickLeft = new JoystickButtonWrapper(this, LOGITECH_STICK_LEFT_PORT);
-            buttonStickRight = new JoystickButtonWrapper(this, LOGITECH_STICK_RIGHT_PORT);
-            buttonBumperLeft = new JoystickButtonWrapper(this, LOGITECH_BUMPER_LEFT_PORT);
-            buttonBumperRight = new JoystickButtonWrapper(this, LOGITECH_BUMPER_RIGHT_PORT);
-    	}
-    	else {
-    		throw new RuntimeException("Error, invalid setting given");
-    	}
-    	this.setting = setting;
-    }
+        this.axisLeftX = axisLeftX;
+        this.axisLeftY = axisLeftY;
+        this.axisRightX = axisRightX;
+        this.axisRightY = axisRightY;
+	}
 
     /**
      * Gets the X value being input to the left joystick.
      * @return the left X value
      */
     public double getLeftX() {
-    	if (sLeftPressed)
-    		return -1;
-    	else if (sRightPressed)
-    		return 1;
-    	if (setting == GamepadSetting.LOGITECH)
-    		return getRawAxis(LOGITECH_AXIS_LEFT_X);
-    	return getRawAxis(XBOX_AXIS_LEFT_X);
+    	return getRawAxis(axisLeftX);
     }
 
     /**
@@ -166,13 +66,7 @@ public class GamepadWrapper extends Joystick {
      * @return the left Y value
      */
     public double getLeftY() {
-    	if (sUpPressed)
-    		return 1;
-    	else if (sDownPressed)
-    		return -1;
-    	if (setting == GamepadSetting.LOGITECH)
-    		return -getRawAxis(LOGITECH_AXIS_LEFT_Y);
-    	return -getRawAxis(XBOX_AXIS_LEFT_Y); //by default, forward returns a negative number, which is unintuitive
+    	return -getRawAxis(axisLeftY); //by default, forward returns a negative number, which is unintuitive
     }
 
     /**
@@ -180,13 +74,7 @@ public class GamepadWrapper extends Joystick {
      * @return the left Y value
      */
     public double getRightX() {
-    	if (sRLeftPressed)
-    		return -1;
-    	if (sRRightPressed)
-    		return 1;
-    	if (setting == GamepadSetting.LOGITECH)
-    		return getRawAxis(LOGITECH_AXIS_RIGHT_X);
-    	return getRawAxis(XBOX_AXIS_RIGHT_X);
+    	return getRawAxis(axisRightX);
     }
 
     /**
@@ -194,67 +82,26 @@ public class GamepadWrapper extends Joystick {
      * @return the right Y value
      */
     public double getRightY() {
-    	if (setting == GamepadSetting.LOGITECH) {
-    		return -getRawAxis(LOGITECH_AXIS_RIGHT_Y);
-    	}
-    	return -getRawAxis(XBOX_AXIS_RIGHT_Y); //by default, forward returns a negative number, which is unintuitive
+    	return -getRawAxis(axisRightY); //by default, forward returns a negative number, which is unintuitive
     }
     
     /**
      * Gets the amount the right trigger is currently being pressed.
      * @return the amount by which the right trigger is pressed
      */
-    public double getRightTrigger() {
-    	if (bRightPressed)
-    		return 1;
-    	if (setting == GamepadSetting.LOGITECH) {
-    		return (getRawButton(LOGITECH_TRIGGER_RIGHT) == true) ? 1 : 0;
-    	}
-    	return getRawAxis(XBOX_AXIS_TRIGGER_RIGHT);
-    }
-    
-    /**
-     * Gets whether or not the right trigger is pressed.
-     * @return true if the right trigger is pressed; false otherwise
-     */
-    public boolean getRightTriggerPressed() {
-    	if (setting == GamepadSetting.LOGITECH) {
-    		return getRawButton(LOGITECH_TRIGGER_RIGHT);
-    	}
-    	return getRawAxis(XBOX_AXIS_TRIGGER_RIGHT) > XBOX_TRIGGER_DEADBAND;
-    }
+    public abstract double getRightTrigger();
     
     /**
      * Gets the amount the left trigger is currently being pressed.
      * @return the amount by which the left trigger is pressed
      */
-    public double getLeftTrigger() {
-    	if (bLeftPressed)
-    		return 1;
-    	if (setting == GamepadSetting.LOGITECH) {
-    		return (getRawButton(LOGITECH_TRIGGER_LEFT) == true) ? 1 : 0;
-    	}
-    	return getRawAxis(XBOX_AXIS_TRIGGER_LEFT);
-    }
-    
-    /**
-     * Gets whether or not the left trigger is pressed.
-     * @return true if the left trigger is pressed; false otherwise
-     */
-    public boolean getLeftTriggerPressed() {
-    	if (setting == GamepadSetting.LOGITECH) {
-    		return getRawButton(LOGITECH_TRIGGER_LEFT);
-    	}
-    	return getRawAxis(XBOX_AXIS_TRIGGER_LEFT) > XBOX_TRIGGER_DEADBAND;
-    }
+    public abstract double getLeftTrigger();
     
     /**
      * Gets whether or not Button A is pressed
      * @return The state of the button
      */
     public boolean getButtonAState() {
-    	if (aPressed)
-    		return true;
         return buttonA.get();
     }
     
@@ -263,8 +110,6 @@ public class GamepadWrapper extends Joystick {
      * @return The state of the button
      */
     public boolean getButtonBState() {
-    	if (bPressed)
-    		return true;
         return buttonB.get();
     }
     
@@ -273,8 +118,6 @@ public class GamepadWrapper extends Joystick {
      * @return The state of the button
      */
     public boolean getButtonXState() {
-    	if (xPressed)
-    		return true;
         return buttonX.get();
     }
     
@@ -283,8 +126,6 @@ public class GamepadWrapper extends Joystick {
      * @return The state of the button
      */
     public boolean getButtonYState() {
-    	if (yPressed)
-    		return true;
         return buttonY.get();
     }
     
