@@ -5,7 +5,7 @@ Harker Robotics (1072) presents HarkerRoboLib, a useful library to complement an
 ### Gradle
 For a Gradle project, download the most recent .jar file from the "Releases" tab and place it somewhere in your project folder (ideally not in `src`; a folder called `lib`, for example, would work well). 
 
-Then in your `build.gradle` file, find the `dependencies` section and add the following line to it:
+Then in your `build.gradle` file, find the `dependencies` section and add the following line to it, with the .jar file name varying with the version you select:
 ```
 compile files('lib/HarkerRoboLib-v2.0.jar') 
 ```
