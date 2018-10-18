@@ -1,5 +1,6 @@
 package harkerrobolib.auto;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public abstract class AutoMode extends CommandGroup {
@@ -13,7 +14,7 @@ public abstract class AutoMode extends CommandGroup {
 		else if (loc == StartLocation.RIGHT) {addSequential(getRightCommands());} 
 	}
 	
-	public abstract CommandGroup getLeftCommands();
-	public abstract CommandGroup getCenterCommands();
-	public abstract CommandGroup getRightCommands();
+	public abstract Command getLeftCommands();
+	public abstract Command getCenterCommands();
+	public abstract Command getRightCommands();
 }
