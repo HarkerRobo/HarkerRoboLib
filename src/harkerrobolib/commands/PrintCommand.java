@@ -1,5 +1,7 @@
 package harkerrobolib.commands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj.command.InstantCommand;
 
 /**
@@ -7,18 +9,12 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  * @author Finn Frankis
  * @version 10/17/18
  */
-public class PrintCommand extends InstantCommand {
-	private String value;
-	
+public class PrintCommand extends CallMethodCommand { 
 	/**
 	 * Constructs a new PrintCommand.
 	 * @param value the value to be printed
 	 */
 	public PrintCommand(String value) {
-		this.value = value;
-	}
-	
-	public void initialize () {
-		System.out.println(value);
+		super(() -> {System.out.println(value);});
 	}
 }
