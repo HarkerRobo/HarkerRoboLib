@@ -25,6 +25,8 @@ import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import harkerrobolib.util.Constants;
+
 /**
  * Wraps a standard TalonSRX with functionality for resetting and a default timeout for relevant methods.
  * 
@@ -33,20 +35,14 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  */
 public class TalonSRXWrapper extends TalonSRX {
 
-    // private boolean isReversed = false;
-    private static final int DEFAULT_TIMEOUT = 10;
-    private static final int PID_PRIMARY = 0;
-    private static final int PID_AUXILIARY = 1;
-
-    
     private int timeout;
 
     /**
-     * Constructs a TalonSRXWrapper with the default timeout {{@link #DEFAULT_TIMEOUT}.
+     * Constructs a TalonSRXWrapper with the default timeout {{@link Constants#DEFAULT_TIMEOUT}.
      * @param deviceNumber The CAN device ID of the Talon.
      */
     public TalonSRXWrapper (int deviceNumber) {
-    	this (deviceNumber, DEFAULT_TIMEOUT);
+    	this (deviceNumber, Constants.DEFAULT_TIMEOUT);
     }
     
     /**
@@ -65,8 +61,8 @@ public class TalonSRXWrapper extends TalonSRX {
      * href=https://github.com/Team973/2018-inseason/blob/dev/lib/helpers/GreyTalon.h>973's Factory Reset Method</a>
      */
     public void reset () {
-        configSelectedFeedbackSensor(Default.SENSOR, PID_PRIMARY, timeout);
-        configSelectedFeedbackCoefficient(Default.FEEDBACK_COEFFICIENT, PID_PRIMARY, timeout);
+        configSelectedFeedbackSensor(Default.SENSOR, Constants.PID_PRIMARY, timeout);
+        configSelectedFeedbackCoefficient(Default.FEEDBACK_COEFFICIENT, Constants.PID_PRIMARY, timeout);
         setSensorPhase(Default.SENSOR_PHASE);
         setInverted(Default.INVERTED);
         setNeutralMode(Default.NEUTRAL_MODE);
@@ -91,7 +87,7 @@ public class TalonSRXWrapper extends TalonSRX {
             config_IntegralZone(slot, Default.IZONE_VALUE, timeout);
             configMaxIntegralAccumulator(slot, Default.I_ACCUMULATOR, timeout);
             configAllowableClosedloopError(slot, Default.CLOSED_LOOP_ERROR, timeout);
-            selectProfileSlot(slot, PID_PRIMARY);
+            selectProfileSlot(slot, Constants.PID_PRIMARY);
             configClosedLoopPeakOutput(slot, Default.CLOSED_LOOP_PEAK_OUTPUT, timeout);
             configClosedLoopPeriod(slot, Default.CLOSED_LOOP_PERIOD, timeout);
         }
