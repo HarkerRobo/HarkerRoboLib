@@ -34,9 +34,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 public class TalonSRXWrapper extends TalonSRX {
 
     // private boolean isReversed = false;
-    private final int DEFAULT_TIMEOUT = 10;
-    private final int PID_PRIMARY = 0;
-    private final int PID_AUXILIARY = 1;
+    private static final int DEFAULT_TIMEOUT = 10;
+    private static final int PID_PRIMARY = 0;
+    private static final int PID_AUXILIARY = 1;
 
     
     private int timeout;
@@ -46,8 +46,7 @@ public class TalonSRXWrapper extends TalonSRX {
      * @param deviceNumber The CAN device ID of the Talon.
      */
     public TalonSRXWrapper (int deviceNumber) {
-        super(deviceNumber);
-        timeout = DEFAULT_TIMEOUT;
+    	this (deviceNumber, DEFAULT_TIMEOUT);
     }
     
     /**
@@ -56,7 +55,7 @@ public class TalonSRXWrapper extends TalonSRX {
      * @param defaultTimeout the timeout to be used if one is not specified in the method.
      */
     public TalonSRXWrapper (int deviceNumber, int defaultTimeout) {
-    	this(deviceNumber);
+    	super(deviceNumber);
     	timeout = defaultTimeout;
     }
 
