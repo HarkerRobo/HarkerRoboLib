@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import harkerrobolib.util.Gains;
 import harkerrobolib.wrappers.TalonSRXWrapper;
 
 /**
@@ -225,5 +226,26 @@ public abstract class DrivetrainSubsystem extends Subsystem {
     {
         return Math.abs(getLeftMaster().getClosedLoopError(loopIndex)) < allowableError
                 && Math.abs(getRightMaster().getClosedLoopError(loopIndex)) < allowableError;
+    }
+    
+    /**
+     * Configures closed loop constants for the two master Talons. 
+     * @param slotIndex the PID slot index [0,3] where the constants will be stored
+     * @param leftConstants the set of constants for the left Talon
+     * @param rightConstants the set of constants for the right Talon
+     */
+    public void configClosedLoopConstants(int slotIndex, Gains leftConstants, Gains rightConstants) {
+    	//TODO simplify using reflections
+    	getLeftMaster().config_kF(slotIndex, leftConstants.getkF());
+    	getLeftMaster().config_kP(slotIndex, leftConstants.getkP());
+    	getLeftMaster().config_kI(slotIndex, leftConstants.getkI());
+    	getLeftMaster().config_kD(slotIndex, leftConstants.getkD());
+    	getLeftMaster().config_kD(slotIndex, leftConstants.getIZone());
+    	
+    	getRightMaster().config_kF(slotIndex, rightConstants.getkF());
+    	getRightMaster().config_kP(slotIndex, rightConstants.getkP());
+    	getRightMaster().config_kI(slotIndex, rightConstants.getkI());
+    	getRightMaster().config_kD(slotIndex, rightConstants.getkD());
+    	getLeftMaster().config_kD(slotIndex, leftConstants.getIZone());
     }
 }
