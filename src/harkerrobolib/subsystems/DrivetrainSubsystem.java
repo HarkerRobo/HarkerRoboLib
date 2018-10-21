@@ -8,11 +8,13 @@ import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import harkerrobolib.util.Gains;
+import harkerrobolib.wrappers.PigeonWrapper;
 import harkerrobolib.wrappers.TalonSRXWrapper;
 
 /**
@@ -25,8 +27,34 @@ public abstract class DrivetrainSubsystem extends Subsystem {
     private TalonSRXWrapper rightMaster;
     private IMotorController leftFollower;
     private IMotorController rightFollower;
+    
+    private PigeonWrapper pigeon;
+    
     private boolean hasFollowers;
+    private boolean hasPigeon;
 
+    /**
+     * Constructs a new Drivetrain subsystem with two master controllers, two follower controllers, and a Pigeon.
+     * 
+     * @param leftMaster the left master Talon.
+     * @param rightMaster the right master Talon.
+     * @param leftFollower the left follower motor controller (Talon or Victor).
+     * @param rightFollower the right folllower motor controller (Talon or Victor).
+     * @param pigeon the Pigeon gyroscope.
+     */
+    public DrivetrainSubsystem(TalonSRXWrapper leftMaster, TalonSRXWrapper rightMaster, IMotorController leftFollower,
+            IMotorController rightFollower, PigeonWrapper pigeon) {
+        this.leftMaster = leftMaster;
+        this.rightMaster = rightMaster;
+        this.leftFollower = leftFollower;
+        this.rightFollower = rightFollower;
+        this.pigeon = pigeon;
+        
+        followMasters();
+        hasFollowers = true;
+        hasPigeon = true;
+    }
+    
     /**
      * Constructs a new Drivetrain subsystem with two master controllers and two follower controllers.
      * 
@@ -37,13 +65,8 @@ public abstract class DrivetrainSubsystem extends Subsystem {
      */
     public DrivetrainSubsystem (TalonSRXWrapper leftMaster, TalonSRXWrapper rightMaster, IMotorController leftFollower,
             IMotorController rightFollower) {
-        this.leftMaster = leftMaster;
-        this.rightMaster = rightMaster;
-        this.leftFollower = leftFollower;
-        this.rightFollower = rightFollower;
-        
-        followMasters();
-        hasFollowers = true;
+    	this(leftMaster, rightMaster, leftFollower, rightFollower, null);
+    	hasPigeon = false;
     }
 
     /**
@@ -55,6 +78,17 @@ public abstract class DrivetrainSubsystem extends Subsystem {
     public DrivetrainSubsystem (TalonSRXWrapper leftMaster, TalonSRXWrapper rightMaster) {
         this(leftMaster, rightMaster, null, null);
         hasFollowers = false;
+    }
+    
+    /**
+     * Constructs a new Drivetrain subsystem without follower controllers but with a Pigeon.
+     * @param leftMaster the left master Talon.
+     * @param rightMaster the right master Talon.
+     * @param pigeon the Pigeon gyroscope.
+     */
+    public DrivetrainSubsystem (TalonSRXWrapper leftMaster, TalonSRXWrapper rightMaster, PigeonWrapper pigeon) {
+    	this(leftMaster, rightMaster, null, null, pigeon);
+    	hasFollowers = false;
     }
 
     /**
@@ -173,6 +207,15 @@ public abstract class DrivetrainSubsystem extends Subsystem {
     public IMotorController getRightFollower() {
     	return rightFollower;
     }
+    
+    /**
+     * Gets the pigeon.
+     * @return the Pigen gyroscope.
+     */
+    public PigeonWrapper getPigeon() {
+    	return pigeon;
+    }
+    
     
     /**
      * Configures both Talons to point to a given sensor.
