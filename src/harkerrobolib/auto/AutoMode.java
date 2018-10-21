@@ -25,8 +25,7 @@ public abstract class AutoMode extends CommandGroup {
 	/**
 	 * Returns the command to be run if the robot begins on the left. 
 	 * 
-	 * @throws RuntimeException If not overriden and attempted to use,
-	 * will throw an exception.
+	 * @throws RuntimeException if not overriden and attempted to use
 	 * @return the left set of commands
 	 */
 	public Command getLeftCommands() {
@@ -36,8 +35,7 @@ public abstract class AutoMode extends CommandGroup {
 	/**
 	 * Returns the command to be run if the robot begins on the center.
 	 * 
-	 * @throws RuntimeException If not overriden and attempted to use,
-	 * will throw an exception.
+	 * @throws RuntimeException if not overriden and attempted to use
 	 * @return the center set of commands
 	 */
 	public Command getCenterCommands() {
@@ -47,8 +45,7 @@ public abstract class AutoMode extends CommandGroup {
 	/**
 	 * Returns the command to be run if the robot begins on the right.
 	 * 
-	 * @throws RuntimeException If not overriden and attempted to use,
-	 * will throw an exception.
+	 * @throws RuntimeException if not overriden and attempted to use
 	 * @return the right set of commands
 	 */
 	public Command getRightCommands() {
