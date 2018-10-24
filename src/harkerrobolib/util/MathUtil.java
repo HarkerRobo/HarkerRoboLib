@@ -5,7 +5,7 @@ package harkerrobolib.util;
  * @author Finn Frankis
  * @version 10/16/18
  */
-public class MathUtil {
+public final class MathUtil {
 	
 	/**
 	 * Constrains one value into a given range.
@@ -16,7 +16,7 @@ public class MathUtil {
 	 * @precondition minValue < maxValue
 	 * @return the constrained value.
 	 */
-	public double constrain (double value, double minValue, double maxValue) {
+	public static double constrain (double value, double minValue, double maxValue) {
 		return Math.max(Math.min(value, maxValue), minValue);
 	}
 	
@@ -29,7 +29,7 @@ public class MathUtil {
 	 * @param desiredMax the desired maximum possible value that value can take on.
 	 * @return
 	 */
-	public double map (double value, double currentMin, double currentMax, double desiredMin, double desiredMax) {
+	public static double map (double value, double currentMin, double currentMax, double desiredMin, double desiredMax) {
 		return (value - currentMin) * (desiredMax - desiredMin) / (currentMax - currentMin) + desiredMin;
 	}
 	
@@ -40,7 +40,7 @@ public class MathUtil {
 	 * @param deadband the joystick's deadband.
 	 * @return the mapped joystick input.
 	 */
-	public double mapJoystickOutput (double inputValue, double deadband) {
+	public static double mapJoystickOutput (double inputValue, double deadband) {
 		if (Math.abs(inputValue) <= deadband) {return 0;}
 		return inputValue > 0 ? map (inputValue, deadband, 1, 0, 1) : map(inputValue, -1, -deadband, -1, 0);
 	}
