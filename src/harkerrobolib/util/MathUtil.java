@@ -1,4 +1,4 @@
-package harkerrobolib.wrappers;
+package harkerrobolib.util;
 
 /**
  * Contains a series of useful mathematical functions.
