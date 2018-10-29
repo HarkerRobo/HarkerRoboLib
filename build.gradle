@@ -8,6 +8,8 @@ def ROBOT_CLASS = "frc.robot.Robot"
 
 apply plugin: 'idea'
 
+version = '3.0.0'
+
 sourceSets {
     main.java.srcDirs = ['src']
 }
@@ -49,14 +51,6 @@ dependencies {
     compile files('lib/cscore.jar')
     compile files('lib/Pathfinder-Java-1.8.jar')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-}
-
-// Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
-// in order to make them all available at runtime. Also adding the manifest so WPILib
-// knows where to look for our Robot Class.
-jar {
-    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_CLASS)
 }
 
 // Force Java 8 Compatibility mode for deployed code, in case the develoment
