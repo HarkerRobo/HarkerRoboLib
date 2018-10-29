@@ -7,14 +7,19 @@ import jaci.pathfinder.PathfinderJNI
 import jaci.pathfinder.Trajectory
 import jaci.pathfinder.Trajectory.Config
 import jaci.pathfinder.Trajectory.FitMethod
-import jaci.pathfinder.Trajectory.Segment
 import jaci.pathfinder.Waypoint
 
 /**
  *
  * @author Finn Frankis
  */
-abstract class Path (waypoints: Array<Waypoint>, fitMethod: jaci.pathfinder.Trajectory.FitMethod = FITMETHOD_DEFAULT, dt: Double = DT_DEFAULT, velMax: Double = V_DEFAULT, accelMax: Double = ACCEL_DEFAULT, jerkMax: Double = JERK_DEFAULT, wheelBase: Double = WHEELBASE_DEFAULT){
+abstract class Path (val waypoints: Array<Waypoint>,
+                     val fitMethod: jaci.pathfinder.Trajectory.FitMethod = FITMETHOD_DEFAULT,
+                     val dt: Double = DT_DEFAULT,
+                     val velMax: Double = V_DEFAULT,
+                     val accelMax: Double = ACCEL_DEFAULT,
+                     val jerkMax: Double = JERK_DEFAULT,
+                     val wheelBase: Double = WHEELBASE_DEFAULT){
     var leftPath: Trajectory
     var rightPath: Trajectory
 
@@ -30,7 +35,6 @@ abstract class Path (waypoints: Array<Waypoint>, fitMethod: jaci.pathfinder.Traj
     companion object {
 
         var SAMPLE_GENERATION = Config.SAMPLES_HIGH
-
         var FITMETHOD_DEFAULT = FitMethod.HERMITE_QUINTIC
         var DT_DEFAULT = 0.01
         var V_DEFAULT = 7.5
