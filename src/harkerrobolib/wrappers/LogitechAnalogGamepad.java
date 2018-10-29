@@ -7,9 +7,9 @@ package harkerrobolib.wrappers;
  */
 public class LogitechAnalogGamepad extends GamepadWrapper {
 
-    public static final int A = 3;
+    public static final int A = 1;
     public static final int B = 2;
-    public static final int X = 1;
+    public static final int X = 3;
     public static final int Y = 4;
     public static final int SELECT = 9;
     public static final int START = 10;
