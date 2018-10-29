@@ -1,8 +1,8 @@
-package harkerrobolib.wrappers;
+package harkerrobolib.wrappers
 
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.command.Command;
-import harkerrobolib.commands.*;
+import edu.wpi.first.wpilibj.buttons.Button
+import edu.wpi.first.wpilibj.command.Command
+import harkerrobolib.commands.*
 
 
 /**
@@ -10,22 +10,22 @@ import harkerrobolib.commands.*;
  *
  * @author Manan
  */
-abstract class ButtonWrapper extends Button {
+abstract class ButtonWrapper : Button() {
 
     /**
      * Cancels the command when the button is released
      * @param c the command to cancel
      */
-    public void cancelWhenReleased(Command c) {
-	    whenReleased(new CancelCommand(c));
+    fun cancelWhenReleased(c: Command) {
+        whenReleased(CancelCommand(c))
     }
 
     /**
      * Starts command when button is pressed, and cancels it when button is released
      * @param c the command to run while pressed
      */
-    public void whilePressed(Command c) {
-        whenPressed(c);
-        cancelWhenReleased(c);
+    fun whilePressed(c: Command) {
+        whenPressed(c)
+        cancelWhenReleased(c)
     }
 }
