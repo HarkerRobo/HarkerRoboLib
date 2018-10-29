@@ -7,6 +7,6 @@ For a Gradle project, download the most recent .jar file from the "Releases" tab
 
 Then in your `build.gradle` file, find the `dependencies` section and add the following line to it, with the .jar file name varying with the version you select:
 ```
-compile files('lib/HarkerRoboLib-v2.0.jar') 
+compile files('lib/HarkerRoboLib-[version].jar') 
 ```
 Refresh and build your project and the library should be ready to access.
