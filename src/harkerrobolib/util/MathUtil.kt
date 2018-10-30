@@ -1,8 +1,11 @@
 package harkerrobolib.util
 
+import jaci.pathfinder.Waypoint
+
 /**
  * Contains a series of useful mathematical functions.
- * @author Finn Frankis
+ * @author  Finn Frankis
+ * @author  Angela Jia
  * @version 10/16/18
  */
 object MathUtil {
@@ -45,5 +48,21 @@ object MathUtil {
             return 0.0
         }
         return if (inputValue > 0) map(inputValue, deadband, 1.0, 0.0, 1.0) else map(inputValue, -1.0, -deadband, -1.0, 0.0)
+    }
+
+    /**
+     *  Reflects array of waypoints across the horizontal line at the specified y value.
+     *
+     *  @param  waypoints   waypoints used for modification
+     *  @param  yVal        y value at which points will be reflected across
+     *  @return reflected array of waypoints
+     */
+    fun reflectY(waypoints : Array<jaci.pathfinder.Waypoint>, yVal : Double ) : Array<Waypoint> {
+        val resultWaypoints = waypoints.copyOf()
+        for (i in 0..waypoints.size) {
+            val currentWaypt = waypoints.get(i)
+            resultWaypoints.set(i, Waypoint(currentWaypt.x, currentWaypt.y - 2 * yVal, -currentWaypt.angle))
+        }
+        return resultWaypoints
     }
 }
