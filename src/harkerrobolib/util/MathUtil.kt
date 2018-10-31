@@ -58,6 +58,6 @@ object MathUtil {
      *  @return reflected array of waypoints
      */
     fun reflectY(waypoints : List<Waypoint>, yVal : Double ) : List<Waypoint> {
-        return waypoints.map{waypoint -> Waypoint(waypoint.x, waypoint. y - 2 * yVal, - waypoint.angle)}
+        return waypoints.map{waypoint -> Waypoint(waypoint.x, 2 * yVal - waypoint.y, - waypoint.angle)}
     }
 }
