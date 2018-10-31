@@ -182,7 +182,7 @@ abstract class DrivetrainSubsystem
         arrayOf("kF", "kP", "kI", "kD", "iZone").forEach {
             leftMaster.javaClass.getMethod("config_" + it, Int.javaClass, Double.javaClass).invoke(leftMaster, slotIndex,
                     leftConstants.javaClass.getField(it))
-            rightMaster.javaClass.getMethod("config_k" + it, Int.javaClass, Double.javaClass).invoke(rightMaster, slotIndex,
+            rightMaster.javaClass.getMethod("config_" + it, Int.javaClass, Double.javaClass).invoke(rightMaster, slotIndex,
                     leftConstants.javaClass.getField(it))
         }
     }
