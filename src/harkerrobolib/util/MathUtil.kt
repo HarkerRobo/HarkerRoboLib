@@ -54,7 +54,7 @@ object MathUtil {
      *  Reflects array of waypoints across the horizontal line at the specified y value.
      *
      *  @param  waypoints   waypoints used for modification
-     *  @param  yVal        y value at which points will be reflected across
+     *  @param  yVal        y value across which points will be reflected
      *  @return reflected array of waypoints
      */
     fun reflectY(waypoints : List<Waypoint>, yVal : Double ) : List<Waypoint> {
