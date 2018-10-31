@@ -19,87 +19,32 @@ import harkerrobolib.wrappers.TalonSRXWrapper
 
 /**
  * Represents a general Drivetrain subsystem with two master motor controllers and two optional follower controllers.
+ *
  * @author Finn Frankis
- * @version Aug 17, 2018
- */
-abstract class DrivetrainSubsystem
-/**
- * Constructs a new Drivetrain subsystem with two master controllers, two follower controllers, and a Pigeon.
  *
  * @param leftMaster the left master Talon.
  * @param rightMaster the right master Talon.
  * @param leftFollower the left follower motor controller (Talon or Victor).
  * @param rightFollower the right folllower motor controller (Talon or Victor).
  * @param pigeon the Pigeon gyroscope.
+ *
+ * @version Aug 17, 2018
  */
+abstract class DrivetrainSubsystem
 (
-        /**
-         * Gets the left master controller.
-         * @return the left master controller.
-         */
         val leftMaster: TalonSRXWrapper,
-        /**
-         * Gets the right master controller.
-         * @return the right master controller.
-         */
         val rightMaster: TalonSRXWrapper,
-        /**
-         * Gets the left follower controller.
-         * @return the left follower controller.
-         */
-        val leftFollower: IMotorController?,
-        /**
-         * Gets the right follower controller.
-         * @return the right follower controller.
-         */
-        val rightFollower: IMotorController?,
-        /**
-         * Gets the pigeon.
-         * @return the Pigen gyroscope.
-         */
-        val pigeon: PigeonWrapper?) : Subsystem() {
+        val leftFollower: IMotorController? = null,
+        val rightFollower: IMotorController? = null,
+        val pigeon: PigeonWrapper? = null) : Subsystem() {
 
-    private var hasFollowers: Boolean = false
-    private var hasPigeon: Boolean = false
 
     init {
         followMasters()
-        hasFollowers = true
-        hasPigeon = true
     }
 
-    /**
-     * Constructs a new Drivetrain subsystem with two master controllers and two follower controllers.
-     *
-     * @param leftMaster the left master Talon.
-     * @param rightMaster the right master Talon.
-     * @param leftFollower the left follower motor controller (Talon or Victor).
-     * @param rightFollower the right folllower motor controller (Talon or Victor).
-     */
-    constructor(leftMaster: TalonSRXWrapper, rightMaster: TalonSRXWrapper, leftFollower: IMotorController?,
-                rightFollower: IMotorController?) : this(leftMaster, rightMaster, leftFollower, rightFollower, null) {
-        hasPigeon = false
-    }
-
-    /**
-     * Constructs a new Drivetrain subsystem with two master controllers.
-     *
-     * @param leftMaster the left master Talon.
-     * @param rightMaster the right master Talon.
-     */
-    constructor(leftMaster: TalonSRXWrapper, rightMaster: TalonSRXWrapper) : this(leftMaster, rightMaster, null, null) {
-        hasFollowers = false
-    }
-
-    /**
-     * Constructs a new Drivetrain subsystem without follower controllers but with a Pigeon.
-     * @param leftMaster the left master Talon.
-     * @param rightMaster the right master Talon.
-     * @param pigeon the Pigeon gyroscope.
-     */
-    constructor(leftMaster: TalonSRXWrapper, rightMaster: TalonSRXWrapper, pigeon: PigeonWrapper) : this(leftMaster, rightMaster, null, null, pigeon) {
-        hasFollowers = false
-    }
+    private val hasFollowers : Boolean
+        get() = leftFollower!= null && rightFollower != null
 
     /**
      * Applies a given operation to both master Talons (see lambdas in Java for more clarification).
@@ -235,16 +180,16 @@ abstract class DrivetrainSubsystem
      */
     fun configClosedLoopConstants(slotIndex: Int, leftConstants: Gains, rightConstants: Gains) {
         //TODO simplify using reflections
-        leftMaster.config_kF(slotIndex, leftConstants.getkF())
-        leftMaster.config_kP(slotIndex, leftConstants.getkP())
-        leftMaster.config_kI(slotIndex, leftConstants.getkI())
-        leftMaster.config_kD(slotIndex, leftConstants.getkD())
+        leftMaster.config_kF(slotIndex, leftConstants.kF)
+        leftMaster.config_kP(slotIndex, leftConstants.kP)
+        leftMaster.config_kI(slotIndex, leftConstants.kI)
+        leftMaster.config_kD(slotIndex, leftConstants.kD)
         leftMaster.config_kD(slotIndex, leftConstants.iZone)
 
-        rightMaster.config_kF(slotIndex, rightConstants.getkF())
-        rightMaster.config_kP(slotIndex, rightConstants.getkP())
-        rightMaster.config_kI(slotIndex, rightConstants.getkI())
-        rightMaster.config_kD(slotIndex, rightConstants.getkD())
+        rightMaster.config_kF(slotIndex, rightConstants.kF)
+        rightMaster.config_kP(slotIndex, rightConstants.kP)
+        rightMaster.config_kI(slotIndex, rightConstants.kI)
+        rightMaster.config_kD(slotIndex, rightConstants.kD)
         leftMaster.config_kD(slotIndex, leftConstants.iZone)
     }
 }
