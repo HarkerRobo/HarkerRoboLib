@@ -8,14 +8,10 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice
 /**
  * A Talon class which better handles resetting and warning about incorrect parameters.
  * @author Finn Frankis
+ * @param id id the CAN ID to which this Talon corresponds
  * @version Aug 17, 2018
  */
-class SafeTalon
-/**
- * Constructs a new SafeTalon.java.
- * @param id id the CAN ID to which this Talon corresponds
- */
-(id: Int) : TalonSRXWrapper(id) {
+class SafeTalon (id: Int) : TalonSRXWrapper(id) {
 
     override fun config_IntegralZone(slotIndex: Int, iZone: Int, timeout: Int): ErrorCode {
         isSlotIndex(slotIndex.toDouble())
