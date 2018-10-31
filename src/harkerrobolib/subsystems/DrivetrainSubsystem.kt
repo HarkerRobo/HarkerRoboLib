@@ -179,18 +179,12 @@ abstract class DrivetrainSubsystem
      * @param rightConstants the set of constants for the right Talon
      */
     fun configClosedLoopConstants(slotIndex: Int, leftConstants: Gains, rightConstants: Gains) {
-        //TODO simplify using reflections
-        leftMaster.config_kF(slotIndex, leftConstants.kF)
-        leftMaster.config_kP(slotIndex, leftConstants.kP)
-        leftMaster.config_kI(slotIndex, leftConstants.kI)
-        leftMaster.config_kD(slotIndex, leftConstants.kD)
-        leftMaster.config_kD(slotIndex, leftConstants.iZone)
-
-        rightMaster.config_kF(slotIndex, rightConstants.kF)
-        rightMaster.config_kP(slotIndex, rightConstants.kP)
-        rightMaster.config_kI(slotIndex, rightConstants.kI)
-        rightMaster.config_kD(slotIndex, rightConstants.kD)
-        leftMaster.config_kD(slotIndex, leftConstants.iZone)
+        arrayOf("kF", "kP", "kI", "kD", "iZone").forEach {
+            leftMaster.javaClass.getMethod("config_" + it, Int.javaClass, Double.javaClass).invoke(leftMaster, slotIndex,
+                    leftConstants.javaClass.getField(it))
+            rightMaster.javaClass.getMethod("config_k" + it, Int.javaClass, Double.javaClass).invoke(rightMaster, slotIndex,
+                    leftConstants.javaClass.getField(it))
+        }
     }
 }
 /**
