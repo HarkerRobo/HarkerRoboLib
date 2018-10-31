@@ -187,9 +187,3 @@ abstract class DrivetrainSubsystem
         }
     }
 }
-/**
- * Configures both masters for current limiting, where each one's default timeout is used.
- * @param peakLimit the peak limit (temporary, to account for current spikes).
- * @param peakTime the time for which the peak limit is active
- * @param continuousLimit the continuous limit, or the one which is active after the conclusion of the peak limit.
- */
