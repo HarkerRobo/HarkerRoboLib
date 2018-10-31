@@ -57,12 +57,7 @@ object MathUtil {
      *  @param  yVal        y value at which points will be reflected across
      *  @return reflected array of waypoints
      */
-    fun reflectY(waypoints : Array<jaci.pathfinder.Waypoint>, yVal : Double ) : Array<Waypoint> {
-        val resultWaypoints = waypoints.copyOf()
-        for (i in 0..waypoints.size) {
-            val currentWaypt = waypoints.get(i)
-            resultWaypoints.set(i, Waypoint(currentWaypt.x, currentWaypt.y - 2 * yVal, -currentWaypt.angle))
-        }
-        return resultWaypoints
+    fun reflectY(waypoints : List<Waypoint>, yVal : Double ) : List<Waypoint> {
+        return waypoints.map{waypoint -> Waypoint(waypoint.x, waypoint. y - 2 * yVal, - waypoint.angle)}
     }
 }
