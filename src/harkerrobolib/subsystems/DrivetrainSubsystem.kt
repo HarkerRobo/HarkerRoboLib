@@ -181,9 +181,9 @@ abstract class DrivetrainSubsystem
     fun configClosedLoopConstants(slotIndex: Int, leftConstants: Gains, rightConstants: Gains) {
         arrayOf("kF", "kP", "kI", "kD", "iZone").forEach {
             leftMaster.javaClass.getMethod("config_" + it, Int.javaClass, Double.javaClass).invoke(leftMaster, slotIndex,
-                    leftConstants.javaClass.getField(it))
+                    leftConstants.javaClass.getField(it) as Double)
             rightMaster.javaClass.getMethod("config_k" + it, Int.javaClass, Double.javaClass).invoke(rightMaster, slotIndex,
-                    leftConstants.javaClass.getField(it))
+                    rightConstants.javaClass.getField(it) as Double)
         }
     }
 }
