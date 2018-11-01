@@ -12,7 +12,10 @@ abstract class HSGamepad(port: Int,
                          buttonStartPort: Int, buttonSelectPort: Int,
                          buttonStickLeftPort: Int, buttonStickRightPort: Int,
                          buttonBumperLeftPort: Int, buttonBumperRightPort: Int,
-                         private val axisLeftX: Int, private val axisLeftY: Int, private val axisRightX: Int, private val axisRightY: Int) : Joystick(port) {
+                         private val axisLeftX: Int, private val axisLeftY: Int, private val axisRightX: Int, private val axisRightY: Int) :
+        Joystick(port) {
+
+
     /**
      * Gets an instance of Button A
      * @return An instance of the button
@@ -63,6 +66,19 @@ abstract class HSGamepad(port: Int,
      * @return An instance of the button
      */
     val buttonBumperRight: HSJoystickButton
+
+    init {
+        buttonA = HSJoystickButton(this, buttonAPort)
+        buttonB = HSJoystickButton(this, buttonBPort)
+        buttonX = HSJoystickButton(this, buttonXPort)
+        buttonY = HSJoystickButton(this, buttonYPort)
+        buttonStart = HSJoystickButton(this, buttonStartPort)
+        buttonSelect = HSJoystickButton(this, buttonSelectPort)
+        buttonStickLeft = HSJoystickButton(this, buttonStickLeftPort)
+        buttonStickRight = HSJoystickButton(this, buttonStickRightPort)
+        buttonBumperLeft = HSJoystickButton(this, buttonBumperLeftPort)
+        buttonBumperRight = HSJoystickButton(this, buttonBumperRightPort)
+    }
 
     /**
      * Gets the X value being input to the left joystick.
@@ -175,17 +191,4 @@ abstract class HSGamepad(port: Int,
      */
     val buttonBumperRightState: Boolean
         get() = buttonBumperRight.get()
-
-    init {
-        buttonA = HSJoystickButton(this, buttonAPort)
-        buttonB = HSJoystickButton(this, buttonBPort)
-        buttonX = HSJoystickButton(this, buttonXPort)
-        buttonY = HSJoystickButton(this, buttonYPort)
-        buttonStart = HSJoystickButton(this, buttonStartPort)
-        buttonSelect = HSJoystickButton(this, buttonSelectPort)
-        buttonStickLeft = HSJoystickButton(this, buttonStickLeftPort)
-        buttonStickRight = HSJoystickButton(this, buttonStickRightPort)
-        buttonBumperLeft = HSJoystickButton(this, buttonBumperLeftPort)
-        buttonBumperRight = HSJoystickButton(this, buttonBumperRightPort)
-    }
 }
