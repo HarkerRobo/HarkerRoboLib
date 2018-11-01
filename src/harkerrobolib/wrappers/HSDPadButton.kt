@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj.GenericHID
  * @author Manan
  * @author Finn Frankis
  */
-class DPadButtonWrapper
+class HSDPadButton
 /**
  * Create a joystick button for triggering commands
  * @param joystick The joystick to which this D-Pad corresponds.
  * @param degrees the angle on the D-Pad to which this button corresponds.
  */
-(private val m_joystick: GenericHID, private val m_degrees: Int) : ButtonWrapper() {
+(private val m_joystick: GenericHID, private val m_degrees: Int) : HSButton() {
 
     /**
      * Gets the value of the joystick button

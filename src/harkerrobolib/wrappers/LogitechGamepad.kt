@@ -5,7 +5,7 @@ package harkerrobolib.wrappers
  * @author Finn Frankis
  * @version 10/16/18
  */
-class LogitechGamepad(port: Int) : GamepadWrapper(port, A, B, X, Y, START, SELECT, STICK_LEFT, STICK_RIGHT, BUMPER_LEFT, BUMPER_RIGHT, LEFT_X, LEFT_Y, RIGHT_X, RIGHT_Y) {
+class LogitechGamepad(port: Int) : HSGamepad(port, A, B, X, Y, START, SELECT, STICK_LEFT, STICK_RIGHT, BUMPER_LEFT, BUMPER_RIGHT, LEFT_X, LEFT_Y, RIGHT_X, RIGHT_Y) {
 
     override val leftTrigger: Double
         get() = (if (getRawButton(TRIGGER_LEFT) == true) 1 else 0).toDouble()

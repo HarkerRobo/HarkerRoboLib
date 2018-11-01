@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.InstantCommand
  * @author Finn Frankis
  * @version 10/18/18
  */
-open class CallMethodCommand(val method: () -> Unit) : InstantCommand() {
+open class CallMethod(val method: () -> Unit) : InstantCommand() {
 
     public override fun initialize() {
         method.invoke()

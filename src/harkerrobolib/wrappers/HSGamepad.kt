@@ -1,10 +1,5 @@
 package harkerrobolib.wrappers
 
-import java.awt.event.KeyEvent
-import java.awt.event.KeyListener
-
-import javax.swing.JFrame
-
 import edu.wpi.first.wpilibj.Joystick
 
 /**
@@ -12,62 +7,62 @@ import edu.wpi.first.wpilibj.Joystick
  * @author neymikajain
  * @author atierno
  */
-abstract class GamepadWrapper(port: Int,
-                              buttonAPort: Int, buttonBPort: Int, buttonXPort: Int, buttonYPort: Int,
-                              buttonStartPort: Int, buttonSelectPort: Int,
-                              buttonStickLeftPort: Int, buttonStickRightPort: Int,
-                              buttonBumperLeftPort: Int, buttonBumperRightPort: Int,
-                              private val axisLeftX: Int, private val axisLeftY: Int, private val axisRightX: Int, private val axisRightY: Int) : Joystick(port) {
+abstract class HSGamepad(port: Int,
+                         buttonAPort: Int, buttonBPort: Int, buttonXPort: Int, buttonYPort: Int,
+                         buttonStartPort: Int, buttonSelectPort: Int,
+                         buttonStickLeftPort: Int, buttonStickRightPort: Int,
+                         buttonBumperLeftPort: Int, buttonBumperRightPort: Int,
+                         private val axisLeftX: Int, private val axisLeftY: Int, private val axisRightX: Int, private val axisRightY: Int) : Joystick(port) {
     /**
      * Gets an instance of Button A
      * @return An instance of the button
      */
-    val buttonA: JoystickButtonWrapper
+    val buttonA: HSJoystickButton
     /**
      * Gets an instance of Button B
      * @return An instance of the button
      */
-    val buttonB: JoystickButtonWrapper
+    val buttonB: HSJoystickButton
     /**
      * Gets an instance of Button X
      * @return An instance of the button
      */
-    val buttonX: JoystickButtonWrapper
+    val buttonX: HSJoystickButton
     /**
      * Gets an instance of Button Y
      * @return An instance of the button
      */
-    val buttonY: JoystickButtonWrapper
+    val buttonY: HSJoystickButton
     /**
      * Gets an instance of the Start Button
      * @return An instance of the button
      */
-    val buttonStart: JoystickButtonWrapper
+    val buttonStart: HSJoystickButton
     /**
      * Gets an instance of the Select Button
      * @return An instance of the button
      */
-    val buttonSelect: JoystickButtonWrapper
+    val buttonSelect: HSJoystickButton
     /**
      * Gets an instance of the Left Stick Button
      * @return An instance of the button
      */
-    val buttonStickLeft: JoystickButtonWrapper
+    val buttonStickLeft: HSJoystickButton
     /**
      * Gets an instance of the Right Stick Button
      * @return An instance of the button
      */
-    val buttonStickRight: JoystickButtonWrapper
+    val buttonStickRight: HSJoystickButton
     /**
      * Gets an instance of the Left Bumper
      * @return An instance of the button
      */
-    val buttonBumperLeft: JoystickButtonWrapper
+    val buttonBumperLeft: HSJoystickButton
     /**
      * Gets an instance of the Right Bumper
      * @return An instance of the button
      */
-    val buttonBumperRight: JoystickButtonWrapper
+    val buttonBumperRight: HSJoystickButton
 
     /**
      * Gets the X value being input to the left joystick.
@@ -182,15 +177,15 @@ abstract class GamepadWrapper(port: Int,
         get() = buttonBumperRight.get()
 
     init {
-        buttonA = JoystickButtonWrapper(this, buttonAPort)
-        buttonB = JoystickButtonWrapper(this, buttonBPort)
-        buttonX = JoystickButtonWrapper(this, buttonXPort)
-        buttonY = JoystickButtonWrapper(this, buttonYPort)
-        buttonStart = JoystickButtonWrapper(this, buttonStartPort)
-        buttonSelect = JoystickButtonWrapper(this, buttonSelectPort)
-        buttonStickLeft = JoystickButtonWrapper(this, buttonStickLeftPort)
-        buttonStickRight = JoystickButtonWrapper(this, buttonStickRightPort)
-        buttonBumperLeft = JoystickButtonWrapper(this, buttonBumperLeftPort)
-        buttonBumperRight = JoystickButtonWrapper(this, buttonBumperRightPort)
+        buttonA = HSJoystickButton(this, buttonAPort)
+        buttonB = HSJoystickButton(this, buttonBPort)
+        buttonX = HSJoystickButton(this, buttonXPort)
+        buttonY = HSJoystickButton(this, buttonYPort)
+        buttonStart = HSJoystickButton(this, buttonStartPort)
+        buttonSelect = HSJoystickButton(this, buttonSelectPort)
+        buttonStickLeft = HSJoystickButton(this, buttonStickLeftPort)
+        buttonStickRight = HSJoystickButton(this, buttonStickRightPort)
+        buttonBumperLeft = HSJoystickButton(this, buttonBumperLeftPort)
+        buttonBumperRight = HSJoystickButton(this, buttonBumperRightPort)
     }
 }

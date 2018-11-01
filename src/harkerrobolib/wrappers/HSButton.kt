@@ -10,14 +10,14 @@ import harkerrobolib.commands.*
  *
  * @author Manan
  */
-abstract class ButtonWrapper : Button() {
+abstract class HSButton : Button() {
 
     /**
      * Cancels the command when the button is released
      * @param c the command to cancel
      */
     fun cancelWhenReleased(c: Command) {
-        whenReleased(CancelCommand(c))
+        whenReleased(Cancel(c))
     }
 
     /**

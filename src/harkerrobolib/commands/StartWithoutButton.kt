@@ -1,24 +1,29 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package harkerrobolib.commands
 
 import edu.wpi.first.wpilibj.buttons.Button
 import edu.wpi.first.wpilibj.command.Command
 
 /**
- * A command to run another command when a given button is pressed. Note that
- * the StartWithButtonCommand will end after its given command has finished executing.
+ * A command to run another command when a given button is not pressed. Note that
+ * the StartWithoutButton will end after its given command has finished executing.
  * @author Manan
- * @see StartWithoutButtonCommand
+ * @see StartWithButton
  */
-class StartWithButtonCommand
+class StartWithoutButton
 /**
- * Constructs a new StartWithButtonCommand.
- * @param button the button for which the given command will start.
- * @param command the command which will begin when the given button is pressed.
+ * Constructs a new StartWithButton.
+ * @param button the button which, when not pressed, will begin the command.
+ * @param command the command which will begin when the given button is not pressed.
  */
 (val button: Button, val command: Command) : Command() {
     // Called repeatedly when this Command is scheduled to run
     override fun execute() {
-        if (button.get()) command.start()
+        if (!button.get()) command.start()
     }
 
     // Make this return true when this Command no longer needs to run execute()

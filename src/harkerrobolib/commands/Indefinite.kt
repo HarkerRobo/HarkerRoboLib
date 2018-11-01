@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command
  * @author Finn Frankis
  * @version Aug 17, 2018
  */
-open class IndefiniteCommand : Command() {
+open class Indefinite : Command() {
 
     /**
      * {@inheritDoc}

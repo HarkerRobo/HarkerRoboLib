@@ -2,11 +2,8 @@ package harkerrobolib.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.DemandType
-import com.ctre.phoenix.motorcontrol.can.TalonSRX
-import edu.wpi.first.wpilibj.Talon
 import edu.wpi.first.wpilibj.command.Subsystem
-import harkerrobolib.wrappers.TalonSRXWrapper
-import jdk.nashorn.internal.objects.Global
+import harkerrobolib.wrappers.HSTalon
 
 /**
  * Represents a general Arm subsystem with a single motor controller.
@@ -15,7 +12,7 @@ import jdk.nashorn.internal.objects.Global
  * @author Angela Jia
  * @version 10/31/18
  */
-abstract class ArmSubsystem(val talon : TalonSRXWrapper, val feedForwardGrav : Double = 0.0 ) : Subsystem(){
+abstract class HSArm(val talon : HSTalon, val feedForwardGrav : Double = 0.0 ) : Subsystem(){
 
     enum class ArmDirection {
         UP, DOWN

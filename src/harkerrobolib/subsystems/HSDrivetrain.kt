@@ -1,21 +1,15 @@
 package harkerrobolib.subsystems
 
-import java.util.function.Consumer
-
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.FeedbackDevice
 import com.ctre.phoenix.motorcontrol.IMotorController
 import com.ctre.phoenix.motorcontrol.NeutralMode
-import com.ctre.phoenix.motorcontrol.can.TalonSRX
-import com.ctre.phoenix.motorcontrol.can.VictorSPX
-import com.ctre.phoenix.sensors.PigeonIMU
 
-import edu.wpi.first.wpilibj.Talon
 import edu.wpi.first.wpilibj.command.Subsystem
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import harkerrobolib.util.Gains
-import harkerrobolib.wrappers.PigeonWrapper
-import harkerrobolib.wrappers.TalonSRXWrapper
+import harkerrobolib.wrappers.HSPigeon
+import harkerrobolib.wrappers.HSTalon
 
 /**
  * Represents a general Drivetrain subsystem with two master motor controllers and two optional follower controllers.
@@ -30,13 +24,13 @@ import harkerrobolib.wrappers.TalonSRXWrapper
  *
  * @version Aug 17, 2018
  */
-abstract class DrivetrainSubsystem
+abstract class HSDrivetrain
 (
-        val leftMaster: TalonSRXWrapper,
-        val rightMaster: TalonSRXWrapper,
+        val leftMaster: HSTalon,
+        val rightMaster: HSTalon,
         val leftFollower: IMotorController? = null,
         val rightFollower: IMotorController? = null,
-        val pigeon: PigeonWrapper? = null) : Subsystem() {
+        val pigeon: HSPigeon? = null) : Subsystem() {
 
 
     init {
@@ -50,7 +44,7 @@ abstract class DrivetrainSubsystem
      * Applies a given operation to both master Talons (see lambdas in Java for more clarification).
      * @param consumer the operation to be applied.
      */
-    fun applyToMasters(lambda : (TalonSRXWrapper) -> Unit) {
+    fun applyToMasters(lambda : (HSTalon) -> Unit) {
         lambda.invoke(leftMaster)
         lambda.invoke(rightMaster)
     }
@@ -97,7 +91,7 @@ abstract class DrivetrainSubsystem
      */
     @JvmOverloads
     fun setCurrentLimit(peakLimit: Int, peakTime: Int, continuousLimit: Int, timeout: Int = -1) {
-        val currentLimit = { talon : TalonSRXWrapper ->
+        val currentLimit = { talon : HSTalon ->
             val newTimeout = if (timeout == -1) talon.defaultTimeout else timeout
             talon.configPeakCurrentLimit(peakLimit, newTimeout)
             talon.configPeakCurrentDuration(peakTime, newTimeout)

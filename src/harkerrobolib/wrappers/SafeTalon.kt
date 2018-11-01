@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice
  * @param id id the CAN ID to which this Talon corresponds
  * @version Aug 17, 2018
  */
-class SafeTalon (id: Int) : TalonSRXWrapper(id) {
+class SafeTalon (id: Int) : HSTalon(id) {
 
     override fun config_IntegralZone(slotIndex: Int, iZone: Int, timeout: Int): ErrorCode {
         isSlotIndex(slotIndex.toDouble())
@@ -78,7 +78,7 @@ class SafeTalon (id: Int) : TalonSRXWrapper(id) {
      * @param value the value to be checked
      */
     private fun isSlotIndex(value: Double) {
-        if (!isWithin(value, TalonSRXWrapper.Default.FIRST_PID_SLOT.toDouble(), TalonSRXWrapper.Default.LAST_PID_SLOT.toDouble()))
+        if (!isWithin(value, HSTalon.Default.FIRST_PID_SLOT.toDouble(), HSTalon.Default.LAST_PID_SLOT.toDouble()))
             throw InvalidParameterException(value.toString() + " is not a valid slot index [0, 3]")
     }
 
@@ -87,7 +87,7 @@ class SafeTalon (id: Int) : TalonSRXWrapper(id) {
      * @param value the value to be checked
      */
     private fun isLoopIndex(value: Double) {
-        if (!isWithin(value, TalonSRXWrapper.Default.FIRST_PID_LOOP.toDouble(), TalonSRXWrapper.Default.LAST_PID_LOOP.toDouble()))
+        if (!isWithin(value, HSTalon.Default.FIRST_PID_LOOP.toDouble(), HSTalon.Default.LAST_PID_LOOP.toDouble()))
             throw InvalidParameterException(value.toString() + " is not a valid loop index [0, 1]")
     }
 

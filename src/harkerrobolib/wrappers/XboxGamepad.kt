@@ -1,13 +1,11 @@
 package harkerrobolib.wrappers
 
-import harkerrobolib.wrappers.GamepadWrapper
-
 /**
  * Represents a standard Xbox controller.
  * @author Finn Frankis
  * @version 10/16/18
  */
-class XboxGamepad(port: Int) : GamepadWrapper(port, A, B, X, Y, START, SELECT, STICK_LEFT, STICK_RIGHT, BUMPER_LEFT, BUMPER_RIGHT, LEFT_X, LEFT_Y, RIGHT_X, RIGHT_Y) {
+class XboxGamepad(port: Int) : HSGamepad(port, A, B, X, Y, START, SELECT, STICK_LEFT, STICK_RIGHT, BUMPER_LEFT, BUMPER_RIGHT, LEFT_X, LEFT_Y, RIGHT_X, RIGHT_Y) {
 
     override val rightTrigger: Double
         get() = getRawAxis(RIGHT_TRIGGER)

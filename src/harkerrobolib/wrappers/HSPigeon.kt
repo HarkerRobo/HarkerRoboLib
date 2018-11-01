@@ -16,7 +16,7 @@ import harkerrobolib.util.Constants
  * @author Finn Frankis
  * @version 10/21/18
  */
-class PigeonWrapper : PigeonIMU {
+class HSPigeon : PigeonIMU {
 
     private var timeout: Int = 0
 

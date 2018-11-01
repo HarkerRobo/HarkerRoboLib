@@ -35,7 +35,7 @@ import harkerrobolib.util.Constants
  * @param deviceNumber the CAN device ID of the Talon
  * @param defaultTimeout the timeout to be used if one is not specified in the method
  */
-open class TalonSRXWrapper(deviceNumber: Int, var defaultTimeout: Int = Constants.DEFAULT_TIMEOUT) : TalonSRX(deviceNumber) {
+open class HSTalon (deviceNumber: Int, var defaultTimeout: Int = Constants.DEFAULT_TIMEOUT) : TalonSRX(deviceNumber) {
 
     /**
      * Resets the Talon to its factory defaults - the software equivalent of resetting the talon,<br></br>
@@ -503,6 +503,6 @@ open class TalonSRXWrapper(deviceNumber: Int, var defaultTimeout: Int = Constant
     }
 }
 /**
- * Constructs a TalonSRXWrapper with the default timeout {[Constants.DEFAULT_TIMEOUT].
+ * Constructs a HSTalon with the default timeout {[Constants.DEFAULT_TIMEOUT].
  * @param deviceNumber The CAN device ID of the Talon.
  */

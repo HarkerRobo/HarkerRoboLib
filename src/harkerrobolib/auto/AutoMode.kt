@@ -2,15 +2,15 @@ package harkerrobolib.auto
 
 import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.CommandGroup
-import harkerrobolib.commands.ThrowExceptionCommand
+import harkerrobolib.commands.ThrowException
 
 abstract class AutoMode(loc: StartLocation,
                         val leftCommands : Command =
-                                ThrowExceptionCommand("Left autonomous mode not defined."),
+                                ThrowException("Left autonomous mode not defined."),
                         val centerCommands : Command =
-                                ThrowExceptionCommand("Center autonomous mode not defined."),
+                                ThrowException("Center autonomous mode not defined."),
                         val rightCommands : Command =
-                                ThrowExceptionCommand("Right autonomous mode not defined.")) :
+                                ThrowException("Right autonomous mode not defined.")) :
         CommandGroup() {
 
     enum class StartLocation {

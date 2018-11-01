@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.InstantCommand
  * Cancels a command.
  * @author Manan
  */
-class CancelCommand
+class Cancel
 /**
- * Initializes a new CancelCommand to notify the Scheduler to stop a given command.
+ * Initializes a new Cancel to notify the Scheduler to stop a given command.
  * @param c The command that will be canceled.
  */
 (val command: Command) : InstantCommand() {
