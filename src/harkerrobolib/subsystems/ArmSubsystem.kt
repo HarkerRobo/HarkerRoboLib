@@ -9,7 +9,10 @@ import harkerrobolib.wrappers.TalonSRXWrapper
 import jdk.nashorn.internal.objects.Global
 
 /**
+ * Represents a general Arm subsystem with a single motor controller.
  *
+ * @author Finn Frankis
+ * @author Angela Jia
  * @version 10/31/18
  */
 abstract class ArmSubsystem(val talon : TalonSRXWrapper, val feedForwardGrav : Double = 0.0 ) : Subsystem(){
