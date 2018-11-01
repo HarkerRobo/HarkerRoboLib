@@ -13,7 +13,7 @@ import jaci.pathfinder.Waypoint
  *
  * @author Finn Frankis
  */
-abstract class Path (val waypoints: Array<Waypoint>,
+abstract class Path (val waypoints: List<Waypoint>,
                      val fitMethod: jaci.pathfinder.Trajectory.FitMethod = FITMETHOD_DEFAULT,
                      val dt: Double = DT_DEFAULT,
                      val velMax: Double = V_DEFAULT,
@@ -25,7 +25,7 @@ abstract class Path (val waypoints: Array<Waypoint>,
 
     init {
         val generatedPath = PathfinderJNI.modifyTrajectoryTank(
-                Pathfinder.generate(waypoints,
+                Pathfinder.generate(waypoints.toTypedArray(),
                         Config(fitMethod, SAMPLE_GENERATION, dt, velMax, accelMax, jerkMax)),
                 wheelBase)
         leftPath = generatedPath[0]
