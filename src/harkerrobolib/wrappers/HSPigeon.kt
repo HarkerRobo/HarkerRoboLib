@@ -24,11 +24,14 @@ class HSPigeon : PigeonIMU {
      * Gets the current yaw value of the pigeon.
      * @return the yaw
      */
-    val yaw: Double
+    var yaw: Double
         get() {
             val ypr = DoubleArray(3)
             getYawPitchRoll(ypr)
             return ypr[0]
+        }
+        set(angle:Double) {
+            super.setYaw(angle * 64, timeout) // CTRE's error where added angle is off by a factor of 64
         }
 
     /**
@@ -61,17 +64,6 @@ class HSPigeon : PigeonIMU {
         this.timeout = defaultTimeout
     }
 
-
-    fun setYaw(angleDeg: Double): ErrorCode {
-        // TODO Auto-generated method stub
-        return super.setYaw(angleDeg, timeout)
-    }
-
-
-    fun addYaw(angleDeg: Double): ErrorCode {
-        // TODO Auto-generated method stub
-        return super.addYaw(angleDeg, timeout)
-    }
 
 
     fun setYawToCompass(): ErrorCode {
@@ -187,29 +179,26 @@ class HSPigeon : PigeonIMU {
         return super.clearStickyFaults(timeout)
     }
 
-    /**
-     * Sets the pigeon yaw to a given value.
-     * @param angle the angle value to which the pigeon should be set, in pigeon units
-     * where 1 rotation is 8192 units
-     */
-    fun setPigeonYaw(angle: Double) {
-        setYaw(angle * 64) // CTRE's error where replaced angle is off by a factor of 64
-    }
 
     /**
      * Adds a given value to the pigeon yaw.
      * @param angle the angle value which should be added to the pigeon yaw value, in pigeon units
      * where 1 rotation is 8192 units
      */
-    fun addPigeonYaw(angle: Double) {
-        addYaw(angle * 64) // CTRE's error where added angle is off by a factor of 64
+    fun addYaw(angle: Double) {
+        yaw += angle
     }
 
     /**
      * Zeros the pigeon.
      */
+    @Deprecated("Replaced with more intuitive zero(). Same functionality.")
     fun zeroPigeon() {
-        setYaw(0.0)
+        zero()
+    }
+
+    fun zero() {
+        yaw = 0.0
         setAccumZAngle(0.0)
     }
 
