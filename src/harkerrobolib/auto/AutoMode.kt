@@ -6,11 +6,11 @@ import harkerrobolib.commands.ThrowException
 
 abstract class AutoMode(loc: StartLocation,
                         val leftCommands : Command =
-                                ThrowException("Left autonomous mode not defined."),
+                                leftCommandDefault,
                         val centerCommands : Command =
-                                ThrowException("Center autonomous mode not defined."),
+                                centerCommandDefault,
                         val rightCommands : Command =
-                                ThrowException("Right autonomous mode not defined.")) :
+                                rightCommandDefault) :
         CommandGroup() {
 
     enum class StartLocation {
@@ -23,5 +23,11 @@ abstract class AutoMode(loc: StartLocation,
             StartLocation.CENTER -> addSequential(centerCommands)
             StartLocation.RIGHT -> addSequential(rightCommands)
         }
+    }
+
+    companion object {
+        val leftCommandDefault = ThrowException("Left autonomous mode not defined.")
+        val centerCommandDefault = ThrowException("Center autonomous mode not defined.")
+        val rightCommandDefault = ThrowException("Right autonomous mode not defined.")
     }
 }
