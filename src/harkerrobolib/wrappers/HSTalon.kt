@@ -502,7 +502,3 @@ open class HSTalon (deviceNumber: Int, var defaultTimeout: Int = Constants.DEFAU
         val CONTROL_MODE = ControlMode.Disabled
     }
 }
-/**
- * Constructs a HSTalon with the default timeout {[Constants.DEFAULT_TIMEOUT].
- * @param deviceNumber The CAN device ID of the Talon.
- */
