@@ -1,5 +1,6 @@
 package harkerrobolib.util
 
+import com.ctre.phoenix.sensors.PigeonIMU
 import jaci.pathfinder.Waypoint
 
 /**
@@ -59,5 +60,19 @@ object MathUtil {
      */
     fun reflectY(waypoints : List<Waypoint>, yVal : Double ) : List<Waypoint> {
         return waypoints.map{waypoint -> Waypoint(waypoint.x, 2 * yVal - waypoint.y, - waypoint.angle)}
+    }
+
+    /**
+     * Calculates setpoint of the robot's left and right side for turning in place
+     * based on the desired angle and width of the robot.
+     *
+     * @param   angleDegrees    desired angle in degrees to turn the robot
+     * @param   robotWidth      width of the robot in feet
+     *
+     * @return  array of the left and right setpoint in feet
+     */
+    fun turnInPlace(angleDegrees : Double, robotWidth : Double) : Array<Double> {
+        val angleRadians = angleDegrees * Math.PI/180
+        return arrayOf(angleRadians*robotWidth, -angleRadians*robotWidth)
     }
 }
