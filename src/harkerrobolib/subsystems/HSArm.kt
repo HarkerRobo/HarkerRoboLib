@@ -14,8 +14,11 @@ import harkerrobolib.wrappers.HSTalon
  */
 abstract class HSArm(val talon : HSTalon, val feedForwardGrav : Double = 0.0 ) : Subsystem(){
 
-    enum class ArmDirection {
-        UP, DOWN
+    enum class ArmDirection (val sign : Int) {
+        UP(1), DOWN(-1);
+
+        operator fun times (other : ArmDirection) =  sign * other.sign
+        operator fun times (other : Double) = sign * other
     }
 
     fun setCurrentLimits( peakTime : Int, peakCurrent : Int, contCurrent : Int, timeout : Int = talon.defaultTimeout ) {
@@ -25,15 +28,11 @@ abstract class HSArm(val talon : HSTalon, val feedForwardGrav : Double = 0.0 ) :
             configContinuousCurrentLimit(contCurrent, timeout)
             enableCurrentLimit(true)
         }
+        armMotionPercentOutput(1.0, ArmDirection.UP)
     }
 
     fun armMotionPercentOutput(output: Double, direction: ArmDirection) {
-        val modifiedOutput = output//MathUtil.constrain(output, MAX_MOTION_SPEED, MIN_MOTION_SPEED)
-        if (direction == ArmDirection.UP) {
-            armMotionPercentOutput(modifiedOutput)
-        } else {
-            armMotionPercentOutput(-modifiedOutput)
-        }
+        armMotionPercentOutput(direction * output)
     }
 
     fun armMotionPercentOutput (output: Double) {
