@@ -28,7 +28,6 @@ abstract class HSArm(val talon : HSTalon, val feedForwardGrav : Double = 0.0 ) :
             configContinuousCurrentLimit(contCurrent, timeout)
             enableCurrentLimit(true)
         }
-        armMotionPercentOutput(1.0, ArmDirection.UP)
     }
 
     fun armMotionPercentOutput(output: Double, direction: ArmDirection) {
