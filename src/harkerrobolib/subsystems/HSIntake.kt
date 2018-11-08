@@ -2,10 +2,20 @@ package harkerrobolib.subsystems
 
 import com.ctre.phoenix.motorcontrol.ControlMode
 import com.ctre.phoenix.motorcontrol.NeutralMode
-import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import edu.wpi.first.wpilibj.command.Subsystem
 import harkerrobolib.wrappers.HSTalon
 
+/**
+ * Represents a general Intake subsystem with two motor controllers.
+ *
+ * @param leftTalon the left Talon
+ * @param rightTalon the right Talon
+ *
+ * @author Angela Jia
+ * @author Finn Frankis
+ *
+ * @version 11/7/18
+ */
 abstract class HSIntake(val leftTalon : HSTalon, val rightTalon : HSTalon) : Subsystem() {
 
     /**
@@ -18,11 +28,24 @@ abstract class HSIntake(val leftTalon : HSTalon, val rightTalon : HSTalon) : Sub
         operator fun times(other : Double) = signum * other
     }
 
+    /**
+     * Sets the same neutral mode (brake or coast) for the two motor contollers.
+     *
+     * @param neutralMode the specified NeutralMode
+     */
     fun setNeutralModes(neutralMode : NeutralMode) {
         leftTalon.setNeutralMode(neutralMode)
         rightTalon.setNeutralMode(neutralMode)
     }
 
+    /**
+     * Sets the same current limits to both talons.
+     *
+     * @param peakTime the amount of time peak current is the active limit
+     * @param peakCurrent the amount of current during peak time
+     * @param contCurrent the amount of current during cont time
+     * @timeout the time after which a failed CAN command will stop being retried
+     */
     fun setCurrentLimits(peakTime : Int, peakCurrent : Int, contCurrent : Int, timeout : Int = -1) {
         val applyCurrentLimit = { talon : HSTalon, peakLimit:Int, contLimit: Int ->
             val newTimeout : Int = if (timeout == -1) talon.defaultTimeout else timeout
@@ -36,7 +59,7 @@ abstract class HSIntake(val leftTalon : HSTalon, val rightTalon : HSTalon) : Sub
     }
 
     /**
-     * Sets wheels to the same output and direction
+     * Sets wheels to the same output and direction.
      *
      * @param output value from controller that sets output for left and right wheels to same value
      * @param direction sets both wheels to either IN or OUT direction
@@ -50,6 +73,12 @@ abstract class HSIntake(val leftTalon : HSTalon, val rightTalon : HSTalon) : Sub
 
     }
 
+    /**
+     * Sets each wheel to its specified output.
+     *
+     * @param leftOutput value that sets output for the left wheel
+     * @param rightOutput value that sets output for the right wheel
+     */
     fun intakeOuttakeCube(leftOutput: Double, rightOutput: Double) {
         leftTalon.set(ControlMode.PercentOutput, leftOutput)
         rightTalon.set(ControlMode.PercentOutput, rightOutput)

@@ -4,10 +4,7 @@ import com.ctre.phoenix.ErrorCode
 import com.ctre.phoenix.ParamEnum
 import com.ctre.phoenix.motorcontrol.can.TalonSRX
 import com.ctre.phoenix.sensors.PigeonIMU
-import com.ctre.phoenix.sensors.PigeonIMU_ControlFrame
-import com.ctre.phoenix.sensors.PigeonIMU_Faults
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame
-import com.ctre.phoenix.sensors.PigeonIMU_StickyFaults
 
 import harkerrobolib.util.Constants
 

@@ -8,6 +8,8 @@ import harkerrobolib.wrappers.HSTalon
 /**
  * Represents a general Arm subsystem with a single motor controller.
  *
+ * @param  talon the arm's Talon
+ *
  * @author Finn Frankis
  * @author Angela Jia
  * @version 10/31/18

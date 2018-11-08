@@ -19,10 +19,10 @@ import harkerrobolib.wrappers.HSTalon
  * @param leftMaster the left master Talon.
  * @param rightMaster the right master Talon.
  * @param leftFollower the left follower motor controller (Talon or Victor).
- * @param rightFollower the right folllower motor controller (Talon or Victor).
+ * @param rightFollower the right follower motor controller (Talon or Victor).
  * @param pigeon the Pigeon gyroscope.
  *
- * @version Aug 17, 2018
+ * @version 8/17/18
  */
 abstract class HSDrivetrain
 (

@@ -1,6 +1,5 @@
 package harkerrobolib.util
 
-import com.ctre.phoenix.sensors.PigeonIMU
 import jaci.pathfinder.Waypoint
 
 /**

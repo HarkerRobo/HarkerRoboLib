@@ -1,9 +1,5 @@
 package harkerrobolib.commands
 
-import java.util.function.Predicate
-import java.util.function.Supplier
-
-import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.InstantCommand
 
 /**
