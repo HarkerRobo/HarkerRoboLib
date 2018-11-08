@@ -18,12 +18,12 @@ abstract class HSIntake(val leftTalon : HSTalon, val rightTalon : HSTalon) : Sub
         operator fun times(other : Double) = signum * other
     }
 
-    private fun setNeutralModes(neutralMode : NeutralMode) {
+    fun setNeutralModes(neutralMode : NeutralMode) {
         leftTalon.setNeutralMode(neutralMode)
         rightTalon.setNeutralMode(neutralMode)
     }
 
-    private fun setCurrentLimits(peakTime : Int, peakCurrent : Int, contCurrent : Int, timeout : Int = -1) {
+    fun setCurrentLimits(peakTime : Int, peakCurrent : Int, contCurrent : Int, timeout : Int = -1) {
         val applyCurrentLimit = { talon : HSTalon, peakLimit:Int, contLimit: Int ->
             val newTimeout : Int = if (timeout == -1) talon.defaultTimeout else timeout
             talon.configPeakCurrentDuration(peakTime, newTimeout)
