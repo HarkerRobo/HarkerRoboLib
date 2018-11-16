@@ -65,8 +65,8 @@ public abstract class HSDrivetrain extends Subsystem {
      */
     public HSDrivetrain (HSTalon leftMaster, HSTalon rightMaster, IMotorController leftFollower,
             IMotorController rightFollower) {
-        this(leftMaster, rightMaster, leftFollower, rightFollower, null);
-        hasPigeon = false;
+    	this(leftMaster, rightMaster, leftFollower, rightFollower, null);
+    	hasPigeon = false;
     }
 
     /**
@@ -87,8 +87,8 @@ public abstract class HSDrivetrain extends Subsystem {
      * @param pigeon the Pigeon gyroscope.
      */
     public HSDrivetrain (HSTalon leftMaster, HSTalon rightMaster, HSPigeon pigeon) {
-        this(leftMaster, rightMaster, null, null, pigeon);
-        hasFollowers = false;
+    	this(leftMaster, rightMaster, null, null, pigeon);
+    	hasFollowers = false;
     }
 
     /**
@@ -109,8 +109,8 @@ public abstract class HSDrivetrain extends Subsystem {
         consumer.accept(rightMaster);
         
         if (hasFollowers) {
-            consumer.accept(leftFollower);
-            consumer.accept(rightFollower);
+	        consumer.accept(leftFollower);
+	        consumer.accept(rightFollower);
         }
     }
 
@@ -166,14 +166,14 @@ public abstract class HSDrivetrain extends Subsystem {
      * @param outputValue the value of the output tied to the given control mode.
      */
     public void setBoth (ControlMode mode, double outputValue) {
-        applyToMasters((talon) -> {talon.set(mode, outputValue);});
+    	applyToMasters((talon) -> {talon.set(mode, outputValue);});
     }
     
     /**
      * Resets both masters.
      */
     public void resetMasters() {
-        applyToMasters ((talon) -> {talon.reset();});
+    	applyToMasters ((talon) -> {talon.reset();});
     }
     
     /**
@@ -181,7 +181,7 @@ public abstract class HSDrivetrain extends Subsystem {
      * @return the left master controller.
      */
     public HSTalon getLeftMaster() {
-        return leftMaster;
+    	return leftMaster;
     }
     
     /**
@@ -189,7 +189,7 @@ public abstract class HSDrivetrain extends Subsystem {
      * @return the right master controller.
      */
     public HSTalon getRightMaster() {
-        return rightMaster;
+    	return rightMaster;
     }
     
     /**
@@ -197,7 +197,7 @@ public abstract class HSDrivetrain extends Subsystem {
      * @return the left follower controller.
      */
     public IMotorController getLeftFollower() {
-        return leftFollower;
+    	return leftFollower;
     }
     
     /**
@@ -205,7 +205,7 @@ public abstract class HSDrivetrain extends Subsystem {
      * @return the right follower controller.
      */
     public IMotorController getRightFollower() {
-        return rightFollower;
+    	return rightFollower;
     }
     
     /**
@@ -213,7 +213,7 @@ public abstract class HSDrivetrain extends Subsystem {
      * @return the Pigen gyroscope.
      */
     public HSPigeon getPigeon() {
-        return pigeon;
+    	return pigeon;
     }
     
     
@@ -278,17 +278,17 @@ public abstract class HSDrivetrain extends Subsystem {
      * @param rightConstants the set of constants for the right Talon
      */
     public void configClosedLoopConstants(int slotIndex, Gains leftConstants, Gains rightConstants) {
-        //TODO simplify using reflections
-        getLeftMaster().config_kF(slotIndex, leftConstants.getkF());
-        getLeftMaster().config_kP(slotIndex, leftConstants.getkP());
-        getLeftMaster().config_kI(slotIndex, leftConstants.getkI());
-        getLeftMaster().config_kD(slotIndex, leftConstants.getkD());
-        getLeftMaster().config_kD(slotIndex, leftConstants.getIZone());
-        
-        getRightMaster().config_kF(slotIndex, rightConstants.getkF());
-        getRightMaster().config_kP(slotIndex, rightConstants.getkP());
-        getRightMaster().config_kI(slotIndex, rightConstants.getkI());
-        getRightMaster().config_kD(slotIndex, rightConstants.getkD());
-        getLeftMaster().config_kD(slotIndex, leftConstants.getIZone());
+    	//TODO simplify using reflections
+    	getLeftMaster().config_kF(slotIndex, leftConstants.getkF());
+    	getLeftMaster().config_kP(slotIndex, leftConstants.getkP());
+    	getLeftMaster().config_kI(slotIndex, leftConstants.getkI());
+    	getLeftMaster().config_kD(slotIndex, leftConstants.getkD());
+    	getLeftMaster().config_kD(slotIndex, leftConstants.getIZone());
+    	
+    	getRightMaster().config_kF(slotIndex, rightConstants.getkF());
+    	getRightMaster().config_kP(slotIndex, rightConstants.getkP());
+    	getRightMaster().config_kI(slotIndex, rightConstants.getkI());
+    	getRightMaster().config_kD(slotIndex, rightConstants.getkD());
+    	getLeftMaster().config_kD(slotIndex, leftConstants.getIZone());
     }
 }
