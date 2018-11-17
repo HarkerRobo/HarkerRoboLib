@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
  * @author Manan
  * @author Finn Frankis
  */
-public class HSPadButton extends HSButton{
+public class HSDPadButton extends HSButton{
     private final GenericHID m_joystick;
     private final int m_degrees;
 
@@ -17,7 +17,7 @@ public class HSPadButton extends HSButton{
      * @param joystick The joystick to which this D-Pad corresponds.
      * @param degrees the angle on the D-Pad to which this button corresponds.
      */
-    public HSPadButton(GenericHID joystick, int degrees) {
+    public HSDPadButton(GenericHID joystick, int degrees) {
         m_joystick = joystick;
         m_degrees = degrees;
     }
