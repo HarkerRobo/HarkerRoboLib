@@ -12,23 +12,23 @@ public abstract class AutoMode extends CommandGroup {
 	public final Command rightAutonNotDefined = 
 			new ThrowExceptionCommand ("Right autonomous mode not defined for " + this.getClass().getSimpleName());
 	
-	public enum StartLocation {
+	public enum Location {
 		LEFT, CENTER, RIGHT
 	}
 
-	public AutoMode(StartLocation loc) {
-		if (loc == StartLocation.LEFT) {addSequential(getLeftCommands());}
-		else if (loc == StartLocation.CENTER) {addSequential (getCenterCommands());}
-		else if (loc == StartLocation.RIGHT) {addSequential(getRightCommands());} 
+	public AutoMode(Location startLoc, Location endLoc) {
+		if (startLoc == Location.LEFT) {addSequential(getLeftCommands(endLoc));}
+		else if (startLoc ==Location.CENTER) {addSequential (getCenterCommands(endLoc));}
+		else if (startLoc == Location.RIGHT) {addSequential(getRightCommands(endLoc));} 
 	}
-	
+
 	/**
 	 * Returns the command to be run if the robot begins on the left. 
 	 * 
 	 * @throws RuntimeException if not overriden and attempted to use
 	 * @return the left set of commands
 	 */
-	public Command getLeftCommands() {
+	public Command getLeftCommands(Location endLoc) {
 		return leftAutonNotDefined;
 	}
 	
@@ -38,7 +38,7 @@ public abstract class AutoMode extends CommandGroup {
 	 * @throws RuntimeException if not overriden and attempted to use
 	 * @return the center set of commands
 	 */
-	public Command getCenterCommands() {
+	public Command getCenterCommands(Location endLoc) {
 		return centerAutonNotDefined;
 	}	
 	
@@ -48,7 +48,7 @@ public abstract class AutoMode extends CommandGroup {
 	 * @throws RuntimeException if not overriden and attempted to use
 	 * @return the right set of commands
 	 */
-	public Command getRightCommands() {
+	public Command getRightCommands(Location endLoc) {
 		return rightAutonNotDefined;
 	}
 }
