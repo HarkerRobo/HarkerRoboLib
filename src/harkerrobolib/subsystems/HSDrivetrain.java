@@ -1,5 +1,7 @@
 package harkerrobolib.subsystems;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -255,8 +257,10 @@ public abstract class HSDrivetrain extends Subsystem {
      */
     public void printSensorPositions (int pidLoop)
     {
-        SmartDashboard.putNumber("Left Talon Position " + (pidLoop == 0 ? "Primary" : "Auxiliary"), getLeftMaster().getSelectedSensorPosition(pidLoop));
-        SmartDashboard.putNumber("Right Talon Position" + (pidLoop == 0 ? "Primary" : "Auxiliary"), getRightMaster().getSelectedSensorPosition(pidLoop));
+        SmartDashboard.putNumber("Left Talon Position " + (pidLoop == 0 ? "Primary" : "Auxiliary"), 
+                getLeftMaster().getSelectedSensorPosition(pidLoop));
+        SmartDashboard.putNumber("Right Talon Position" + (pidLoop == 0 ? "Primary" : "Auxiliary"), 
+                getRightMaster().getSelectedSensorPosition(pidLoop));
     }
     
     /**
@@ -278,17 +282,17 @@ public abstract class HSDrivetrain extends Subsystem {
      * @param rightConstants the set of constants for the right Talon
      */
     public void configClosedLoopConstants(int slotIndex, Gains leftConstants, Gains rightConstants) {
-        //TODO simplify using reflections
-        getLeftMaster().config_kF(slotIndex, leftConstants.getkF());
-        getLeftMaster().config_kP(slotIndex, leftConstants.getkP());
-        getLeftMaster().config_kI(slotIndex, leftConstants.getkI());
-        getLeftMaster().config_kD(slotIndex, leftConstants.getkD());
-        getLeftMaster().config_kD(slotIndex, leftConstants.getIZone());
-        
-        getRightMaster().config_kF(slotIndex, rightConstants.getkF());
-        getRightMaster().config_kP(slotIndex, rightConstants.getkP());
-        getRightMaster().config_kI(slotIndex, rightConstants.getkI());
-        getRightMaster().config_kD(slotIndex, rightConstants.getkD());
-        getLeftMaster().config_kD(slotIndex, leftConstants.getIZone());
+        for (String s : new String[] {"kF", "kP", "kI", "kD", "iZone"}) {
+            try {
+                leftMaster.getClass()
+                .getDeclaredMethod("config_" + s, Integer.class, Double.class).invoke(leftMaster, slotIndex,
+                        Gains.class.getField(s));
+                rightMaster.getClass()
+                .getDeclaredMethod("config_" + s, Integer.class, Double.class).invoke(rightMaster, slotIndex,
+                        Gains.class.getField(s));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
