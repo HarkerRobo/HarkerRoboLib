@@ -12,22 +12,11 @@ public class Gains {
 	private double kD;
 	private double iZone;
 	
-	public Gains(double kF, double kP, double kI, double kD, double iZone) {
-		this.kF = kF;
-		this.kP = kP;
-		this.kI = kI;
-		this.kD = kD;
-		this.iZone = iZone;
-	}
-	
-	public Gains(double kF, double kP, double kI, double kD) {
-		this(kF, kP, kI, kD, 0);
-	}
-	
-	public Gains(double kP, double kI, double kD) {
-		this(0, kP, kI, kD, 0);
-	}
-	
+	public Gains kF (double kF) { this.kF = kF; return this;}
+	public Gains kP (double kP) {this.kP = kP; return this;} 
+	public Gains kI (double kI) {this.kI = kI; return this;}
+	public Gains kD (double kD) {this.kD = kD; return this;}
+	public Gains iZone (double iZone) {this.iZone = iZone; return this;}
 	
 	public double getkF() {
 		return kF;
