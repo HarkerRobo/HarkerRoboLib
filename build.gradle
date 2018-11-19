@@ -21,11 +21,6 @@ dependencies {
     compile wpilib()
     compile ctre()
     compile navx()
-    compile files('lib/WPILib.jar')
-    compile files('lib/WPILib-sources.jar')
-    compile files('lib/wpiutil.jar')
-    compile files('lib/CTRE_Phoenix.jar')
-    compile files('lib/cscore.jar')
     compile files('lib/Pathfinder-Java-1.8.jar')
 }
 
