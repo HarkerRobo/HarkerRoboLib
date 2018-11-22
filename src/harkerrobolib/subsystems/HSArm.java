@@ -16,7 +16,7 @@ import harkerrobolib.wrappers.HSTalon;
  * @author Angela Jia
  * @version 10/31/18
  */
-abstract class HSArm extends Subsystem {
+public abstract class HSArm extends Subsystem {
 
 	private HSTalon talon;
 	private final double feedForwardGrav;

@@ -18,7 +18,7 @@ import harkerrobolib.wrappers.HSTalon;
  *
  * @version 11/7/18
  */
-abstract class HSIntake extends Subsystem {
+public abstract class HSIntake extends Subsystem {
 
 	private HSTalon leftTalon;
 	private HSTalon rightTalon;
