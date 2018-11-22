@@ -118,5 +118,13 @@ public abstract class HSIntake extends Subsystem {
         }
 
     }
+    
+    public HSTalon getLeftTalon() {
+        return leftTalon;
+    }
+    
+    public HSTalon getRightTalon() {
+        return rightTalon;
+    }
 
 }

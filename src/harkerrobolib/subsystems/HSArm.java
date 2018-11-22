@@ -52,4 +52,12 @@ public abstract class HSArm extends Subsystem {
     public double getTalonCurrent() {
     	return talon.getOutputCurrent();
     }
+    
+    public HSTalon getTalon() {
+        return talon;
+    }
+    
+    public double getFeedForwardGrav() {
+        return feedForwardGrav;
+    }
 }
