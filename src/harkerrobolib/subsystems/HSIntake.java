@@ -71,6 +71,10 @@ public abstract class HSIntake extends Subsystem {
         applyCurrentLimit.accept(rightTalon);
     }
 
+    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent) {
+        setCurrentLimits (peakTime, peakCurrent, contCurrent, -1);
+    }
+
     /**
      * Sets wheels to the same output and direction.
      *
