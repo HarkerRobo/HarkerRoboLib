@@ -50,6 +50,11 @@ public abstract class HSIntake extends Subsystem {
         rightTalon.setNeutralMode(neutralMode);
     }
 
+    public void invertTalons (boolean leftInverted, boolean rightInverted) {
+        leftTalon.setInverted(leftInverted);
+        rightTalon.setInverted(rightInverted);
+    }
+
     /**
      * Sets the same current limits to both talons.
      *
