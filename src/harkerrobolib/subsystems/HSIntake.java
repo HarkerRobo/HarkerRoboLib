@@ -18,7 +18,7 @@ import harkerrobolib.wrappers.HSTalon;
  *
  * @version 11/7/18
  */
-abstract class HSIntake extends Subsystem {
+public abstract class HSIntake extends Subsystem {
 
 	private HSTalon leftTalon;
 	private HSTalon rightTalon;
@@ -50,6 +50,11 @@ abstract class HSIntake extends Subsystem {
         rightTalon.setNeutralMode(neutralMode);
     }
 
+    public void invertTalons (boolean leftInverted, boolean rightInverted) {
+        leftTalon.setInverted(leftInverted);
+        rightTalon.setInverted(rightInverted);
+    }
+
     /**
      * Sets the same current limits to both talons.
      *
@@ -69,6 +74,10 @@ abstract class HSIntake extends Subsystem {
         
         applyCurrentLimit.accept(leftTalon);
         applyCurrentLimit.accept(rightTalon);
+    }
+
+    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent) {
+        setCurrentLimits (peakTime, peakCurrent, contCurrent, -1);
     }
 
     /**
@@ -117,6 +126,14 @@ abstract class HSIntake extends Subsystem {
             rightTalon.set(ControlMode.PercentOutput, rightDirection.signum * rightOutput);
         }
 
+    }
+    
+    public HSTalon getLeftTalon() {
+        return leftTalon;
+    }
+    
+    public HSTalon getRightTalon() {
+        return rightTalon;
     }
 
 }

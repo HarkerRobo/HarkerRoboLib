@@ -16,7 +16,7 @@ import harkerrobolib.wrappers.HSTalon;
  * @author Angela Jia
  * @version 10/31/18
  */
-abstract class HSArm extends Subsystem {
+public abstract class HSArm extends Subsystem {
 
 	private HSTalon talon;
 	private final double feedForwardGrav;
@@ -34,12 +34,16 @@ abstract class HSArm extends Subsystem {
     	}
     }
 
-    public void setCurrentLimits( int peakTime, int peakCurrent, int contCurrent, int timeout ) {
-            talon.configPeakCurrentDuration(peakTime, timeout);
-            talon.configPeakCurrentLimit(peakCurrent, timeout);
-            talon.configContinuousCurrentLimit(contCurrent, timeout);
-            talon.enableCurrentLimit(true);
+    public void setCurrentLimits( int peakTime, int peakCurrent, int contCurrent, int timeout) {
+        talon.configPeakCurrentDuration(peakTime, timeout);
+        talon.configPeakCurrentLimit(peakCurrent, timeout);
+        talon.configContinuousCurrentLimit(contCurrent, timeout);
+        talon.enableCurrentLimit(true);
     }
+
+    public void setCurrentLimits( int peakTime, int peakCurrent, int contCurrent) {
+        setCurrentLimits(peakTime, peakCurrent, contCurrent, talon.getDefaultTimeout());
+}
 
     public void armMotionPercentOutput(double output, ArmDirection direction) {
         armMotionPercentOutput(direction.sign * output);
@@ -51,5 +55,13 @@ abstract class HSArm extends Subsystem {
 
     public double getTalonCurrent() {
     	return talon.getOutputCurrent();
+    }
+    
+    public HSTalon getTalon() {
+        return talon;
+    }
+    
+    public double getFeedForwardGrav() {
+        return feedForwardGrav;
     }
 }

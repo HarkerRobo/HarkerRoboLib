@@ -179,6 +179,29 @@ public abstract class HSDrivetrain extends Subsystem {
     }
     
     /**
+     * Inverts all the talons on the drivetrain (including followers).
+     * @param leftMasterInverted whether to invert the left master
+     * @param rightMasterInverted whether to invert the right master
+     * @param leftFollowerInverted whether to invert the left follower
+     * @param rightFollowerInverted whether to invert the right follower
+     */
+    public void invertTalons(boolean leftMasterInverted, boolean rightMasterInverted, 
+            boolean leftFollowerInverted, boolean rightFollowerInverted) {
+        invertTalons(leftMasterInverted, rightMasterInverted);
+        leftFollower.setInverted(leftFollowerInverted);
+        rightFollower.setInverted(rightFollowerInverted);
+    }
+    
+    /**
+     * Inverts only the master talons on the drivetrain.
+     * @param leftMasterInverted whether to invert the left master
+     * @param rightMasterInverted whether to invert the right master
+     */
+    public void invertTalons(boolean leftMasterInverted, boolean rightMasterInverted) {
+        leftMaster.setInverted(leftMasterInverted);
+        rightMaster.setInverted(rightMasterInverted);
+    }
+    /**
      * Gets the left master controller.
      * @return the left master controller.
      */
