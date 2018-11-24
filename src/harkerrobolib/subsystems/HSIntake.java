@@ -32,7 +32,7 @@ abstract class HSIntake extends Subsystem {
      *
      * @param signum sign for output of left intake with given direction (must be negated for right)
      */
-    enum IntakeDirection {
+    public enum IntakeDirection {
         IN(1), OUT(-1);
     	private int signum;
     	private IntakeDirection(int signum) {
