@@ -26,6 +26,7 @@ import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import harkerrobolib.util.Constants;
+import harkerrobolib.util.Gains;
 
 /**
  * Wraps a standard TalonSRX with functionality for resetting and a default timeout for relevant methods.
@@ -473,6 +474,20 @@ public class HSTalon extends TalonSRX {
 	public double configGetParameter(int param, int ordinal) {
 		// TODO Auto-generated method stub
 		return this.configGetParameter(param, ordinal, timeout);
+	}
+	
+	/**
+     * Configures closed loop constants for the Talon.
+	 * 
+     * @param slotIndex the PID slot index [0,3] where the constants will be stored
+     * @param constants the set of PID constants
+     */
+    public void configClosedLoopConstants (int slotIndex, Gains constants) {
+        config_kP(slotIndex, constants.getkP());
+        config_kI(slotIndex, constants.getkI());
+        config_kD(slotIndex, constants.getkD());
+        config_kF(slotIndex, constants.getkF());
+        config_IntegralZone(slotIndex, constants.getIZone());
 	}
 	
 	/**

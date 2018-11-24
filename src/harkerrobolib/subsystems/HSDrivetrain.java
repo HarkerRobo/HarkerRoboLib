@@ -305,17 +305,7 @@ public abstract class HSDrivetrain extends Subsystem {
      * @param rightConstants the set of constants for the right Talon
      */
     public void configClosedLoopConstants(int slotIndex, Gains leftConstants, Gains rightConstants) {
-        for (String s : new String[] {"kF", "kP", "kI", "kD", "iZone"}) {
-            try {
-                leftMaster.getClass()
-                .getDeclaredMethod("config_" + s, Integer.class, Double.class).invoke(leftMaster, slotIndex,
-                        Gains.class.getField(s));
-                rightMaster.getClass()
-                .getDeclaredMethod("config_" + s, Integer.class, Double.class).invoke(rightMaster, slotIndex,
-                        Gains.class.getField(s));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        leftMaster.configClosedLoopConstants(slotIndex, leftConstants);
+        rightMaster.configClosedLoopConstants(slotIndex, rightConstants);
     }
 }
