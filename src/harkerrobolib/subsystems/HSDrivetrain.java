@@ -308,4 +308,36 @@ public abstract class HSDrivetrain extends Subsystem {
         leftMaster.configClosedLoopConstants(slotIndex, leftConstants);
         rightMaster.configClosedLoopConstants(slotIndex, rightConstants);
     }
+
+    /**
+     * Drives the robot with a given percent output.
+     * 
+     * @param speed the speed at which the robot should drive
+     * @param turn the amount by which the robot should turn (negative for left, positive for right)
+     */
+    public void arcadeDrivePercentOutput (double speed, double turn) {
+        double divisor = Math.max(1, Math.max(Math.abs(speed + Math.pow(turn, 2)), Math.abs(speed - Math.pow(turn, 2))));
+        double leftOutputBase = speed + turn * Math.abs(turn);
+        leftMaster.set(ControlMode.PercentOutput, leftOutputBase / divisor);
+
+        double rightOutputBase = speed - turn * Math.abs(turn);
+        rightMaster.set(ControlMode.PercentOutput,
+                rightOutputBase/divisor);
+    }
+
+    /**
+     * Drives the robot with a given velocity.
+     * 
+     * @param speed the speed at which the robot should drive (in ticks/100ms)
+     * @param turn the amount by which the robot should turn (negative for left, positive for right) (in ticks/100ms)
+     */
+    public void arcadeDriveVelocity (double speed, double turn) {
+        double divisor = Math.max(1, Math.max(Math.abs(speed + Math.pow(turn, 2)), Math.abs(speed - Math.pow(turn, 2))));
+        double leftOutputBase = speed + turn * Math.abs(turn);
+        leftMaster.set(ControlMode.Velocity, leftOutputBase / divisor);
+
+        double rightOutputBase = speed - turn * Math.abs(turn);
+        rightMaster.set(ControlMode.Velocity,
+                rightOutputBase/divisor);
+    }
 }
