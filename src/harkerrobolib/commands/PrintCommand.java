@@ -1,9 +1,5 @@
 package harkerrobolib.commands;
 
-import java.util.function.Supplier;
-
-import edu.wpi.first.wpilibj.command.InstantCommand;
-
 /**
  * Prints a given value to the console.
  * @author Finn Frankis

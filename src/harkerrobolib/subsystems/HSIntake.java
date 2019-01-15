@@ -18,7 +18,7 @@ import harkerrobolib.wrappers.HSTalon;
  *
  * @version 11/7/18
  */
-abstract class HSIntake extends Subsystem {
+public abstract class HSIntake extends Subsystem {
 
 	private HSTalon leftTalon;
 	private HSTalon rightTalon;
@@ -32,7 +32,7 @@ abstract class HSIntake extends Subsystem {
      *
      * @param signum sign for output of left intake with given direction (must be negated for right)
      */
-    enum IntakeDirection {
+    public enum IntakeDirection {
         IN(1), OUT(-1);
     	private int signum;
     	private IntakeDirection(int signum) {
@@ -48,6 +48,11 @@ abstract class HSIntake extends Subsystem {
     public void setNeutralModes(NeutralMode neutralMode) {
         leftTalon.setNeutralMode(neutralMode);
         rightTalon.setNeutralMode(neutralMode);
+    }
+
+    public void invertTalons (boolean leftInverted, boolean rightInverted) {
+        leftTalon.setInverted(leftInverted);
+        rightTalon.setInverted(rightInverted);
     }
 
     /**
@@ -69,6 +74,10 @@ abstract class HSIntake extends Subsystem {
         
         applyCurrentLimit.accept(leftTalon);
         applyCurrentLimit.accept(rightTalon);
+    }
+
+    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent) {
+        setCurrentLimits (peakTime, peakCurrent, contCurrent, -1);
     }
 
     /**
@@ -117,6 +126,14 @@ abstract class HSIntake extends Subsystem {
             rightTalon.set(ControlMode.PercentOutput, rightDirection.signum * rightOutput);
         }
 
+    }
+    
+    public HSTalon getLeftTalon() {
+        return leftTalon;
+    }
+    
+    public HSTalon getRightTalon() {
+        return rightTalon;
     }
 
 }

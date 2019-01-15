@@ -179,6 +179,29 @@ public abstract class HSDrivetrain extends Subsystem {
     }
     
     /**
+     * Inverts all the talons on the drivetrain (including followers).
+     * @param leftMasterInverted whether to invert the left master
+     * @param rightMasterInverted whether to invert the right master
+     * @param leftFollowerInverted whether to invert the left follower
+     * @param rightFollowerInverted whether to invert the right follower
+     */
+    public void invertTalons(boolean leftMasterInverted, boolean rightMasterInverted, 
+            boolean leftFollowerInverted, boolean rightFollowerInverted) {
+        invertTalons(leftMasterInverted, rightMasterInverted);
+        leftFollower.setInverted(leftFollowerInverted);
+        rightFollower.setInverted(rightFollowerInverted);
+    }
+    
+    /**
+     * Inverts only the master talons on the drivetrain.
+     * @param leftMasterInverted whether to invert the left master
+     * @param rightMasterInverted whether to invert the right master
+     */
+    public void invertTalons(boolean leftMasterInverted, boolean rightMasterInverted) {
+        leftMaster.setInverted(leftMasterInverted);
+        rightMaster.setInverted(rightMasterInverted);
+    }
+    /**
      * Gets the left master controller.
      * @return the left master controller.
      */
@@ -282,17 +305,39 @@ public abstract class HSDrivetrain extends Subsystem {
      * @param rightConstants the set of constants for the right Talon
      */
     public void configClosedLoopConstants(int slotIndex, Gains leftConstants, Gains rightConstants) {
-        for (String s : new String[] {"kF", "kP", "kI", "kD", "iZone"}) {
-            try {
-                leftMaster.getClass()
-                .getDeclaredMethod("config_" + s, Integer.class, Double.class).invoke(leftMaster, slotIndex,
-                        Gains.class.getField(s));
-                rightMaster.getClass()
-                .getDeclaredMethod("config_" + s, Integer.class, Double.class).invoke(rightMaster, slotIndex,
-                        Gains.class.getField(s));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        leftMaster.configClosedLoopConstants(slotIndex, leftConstants);
+        rightMaster.configClosedLoopConstants(slotIndex, rightConstants);
+    }
+
+    /**
+     * Drives the robot with a given percent output.
+     * 
+     * @param speed the speed at which the robot should drive
+     * @param turn the amount by which the robot should turn (negative for left, positive for right)
+     */
+    public void arcadeDrivePercentOutput (double speed, double turn) {
+        double divisor = Math.max(1, Math.max(Math.abs(speed + Math.pow(turn, 2)), Math.abs(speed - Math.pow(turn, 2))));
+        double leftOutputBase = speed + turn * Math.abs(turn);
+        leftMaster.set(ControlMode.PercentOutput, leftOutputBase / divisor);
+
+        double rightOutputBase = speed - turn * Math.abs(turn);
+        rightMaster.set(ControlMode.PercentOutput,
+                rightOutputBase/divisor);
+    }
+
+    /**
+     * Drives the robot with a given velocity.
+     * 
+     * @param speed the speed at which the robot should drive (in ticks/100ms)
+     * @param turn the amount by which the robot should turn (negative for left, positive for right) (in ticks/100ms)
+     */
+    public void arcadeDriveVelocity (double speed, double turn) {
+        double divisor = Math.max(1, Math.max(Math.abs(speed + Math.pow(turn, 2)), Math.abs(speed - Math.pow(turn, 2))));
+        double leftOutputBase = speed + turn * Math.abs(turn);
+        leftMaster.set(ControlMode.Velocity, leftOutputBase / divisor);
+
+        double rightOutputBase = speed - turn * Math.abs(turn);
+        rightMaster.set(ControlMode.Velocity,
+                rightOutputBase/divisor);
     }
 }

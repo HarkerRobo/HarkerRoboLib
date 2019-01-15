@@ -4,10 +4,7 @@ import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
-import com.ctre.phoenix.sensors.PigeonIMU_ControlFrame;
-import com.ctre.phoenix.sensors.PigeonIMU_Faults;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
-import com.ctre.phoenix.sensors.PigeonIMU_StickyFaults;
 
 import harkerrobolib.util.Constants;
 
@@ -18,8 +15,8 @@ import harkerrobolib.util.Constants;
  */
 public class HSPigeon extends PigeonIMU {
 
-	private int timeout;
-	
+	private int timeout; 
+	 
 	public HSPigeon (int deviceNumber) {
 		this(deviceNumber, Constants.DEFAULT_TIMEOUT);
 	}
@@ -37,20 +34,69 @@ public class HSPigeon extends PigeonIMU {
 		super(talon);
 		this.timeout = defaultTimeout;
 	}
-
 	
-	public ErrorCode setYaw(double angleDeg) {
-		// TODO Auto-generated method stub
-		return super.setYaw(angleDeg, timeout);
-	}
+	/**
+     * Gets the current yaw value of the pigeon.
+     * @return the yaw
+     */
+    public double getYaw()
+    {
+        double[] ypr = new double[3];
+        getYawPitchRoll(ypr);
+        return ypr[0];
+    }
+    
+    /**
+     * Gets the current pitch value of the pigeon.
+     * @return the pitch
+     */
+    public double getPitch()
+    {
+        double[] ypr = new double[3];
+        getYawPitchRoll(ypr);
+        return ypr[1];
+    }
+    
+    /**
+     * Gets the current roll value of the pigeon.
+     * @return the roll
+     */
+    public double getRoll()
+    {
+        double[] ypr = new double[3];
+        getYawPitchRoll(ypr);
+        return ypr[2];
+    }
+    
+    /**
+     * Sets the pigeon yaw to a given value.
+     * @param angle the angle value to which the pigeon should be set, in pigeon units 
+     * where 1 rotation is 8192 units
+     */
+    public void setYaw(double angle)
+    {
+        super.setYaw(angle * 64, timeout); // CTRE's error where replaced angle is off by a factor of 64
+    }
+    
+    /**
+     * Adds a given value to the pigeon yaw.
+     * @param angle the angle value which should be added to the pigeon yaw value, in pigeon units 
+     * where 1 rotation is 8192 units
+     */
+    public void addYaw (double angle)
+    {
+        super.addYaw(angle * 64, timeout); // CTRE's error where added angle is off by a factor of 64
+    }
+ 
+    /**
+     * Zeros the pigeon.
+     */
+    public void zero()
+    {
+        setYaw(0);
+        setAccumZAngle(0);
+    }
 
-	
-	public ErrorCode addYaw(double angleDeg) {
-		// TODO Auto-generated method stub
-		return super.addYaw(angleDeg, timeout);
-	}
-
-	
 	public ErrorCode setYawToCompass() {
 		// TODO Auto-generated method stub
 		return super.setYawToCompass(timeout);
@@ -163,67 +209,8 @@ public class HSPigeon extends PigeonIMU {
 		// TODO Auto-generated method stub
 		return super.clearStickyFaults(timeout);
 	}
-	
-	/**
-     * Gets the current yaw value of the pigeon.
-     * @return the yaw
-     */
-    public double getYaw()
-    {
-        double[] ypr = new double[3];
-        getYawPitchRoll(ypr);
-        return ypr[0];
-    }
-    
-    /**
-     * Gets the current pitch value of the pigeon.
-     * @return the pitch
-     */
-    public double getPitch()
-    {
-        double[] ypr = new double[3];
-        getYawPitchRoll(ypr);
-        return ypr[1];
-    }
-    
-    /**
-     * Gets the current roll value of the pigeon.
-     * @return the roll
-     */
-    public double getPigeonRoll()
-    {
-        double[] ypr = new double[3];
-        getYawPitchRoll(ypr);
-        return ypr[2];
-    }
-    
-    /**
-     * Sets the pigeon yaw to a given value.
-     * @param angle the angle value to which the pigeon should be set, in pigeon units 
-     * where 1 rotation is 8192 units
-     */
-    public void setPigeonYaw(double angle)
-    {
-        setYaw(angle * 64); // CTRE's error where replaced angle is off by a factor of 64
-    }
-    
-    /**
-     * Adds a given value to the pigeon yaw.
-     * @param angle the angle value which should be added to the pigeon yaw value, in pigeon units 
-     * where 1 rotation is 8192 units
-     */
-    public void addPigeonYaw (double angle)
-    {
-        addYaw(angle * 64); // CTRE's error where added angle is off by a factor of 64
-    }
- 
-    /**
-     * Zeros the pigeon.
-     */
-    public void zeroPigeon()
-    {
-        setYaw(0);
-        setAccumZAngle(0);
-    }
 
+	public void setDefaultTimeout (int newTimeout) {
+		this.timeout = newTimeout;
+	}
 }

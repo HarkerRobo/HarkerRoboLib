@@ -1,7 +1,5 @@
 package harkerrobolib.wrappers;
 
-import harkerrobolib.wrappers.HSGamepad;
-
 /**
  * Represents a standard Xbox controller.
  * @author Finn Frankis
