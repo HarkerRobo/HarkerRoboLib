@@ -16,7 +16,7 @@ import harkerrobolib.wrappers.HSTalon;
  * @author Chirag Kaushik
  * @since January 17, 2019
  */
-public class HSWrist extends Subsystem {
+public abstract class HSWrist extends Subsystem {
     public enum WristDirection {
         TO_BACK(1), TO_FRONT(-1);
         private final int direction;
