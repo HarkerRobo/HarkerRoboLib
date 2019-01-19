@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import harkerrobolib.commands.ThrowExceptionCommand;
 
 public abstract class AutoMode extends CommandGroup {
-	public final Command leftAutonNotDefined = 
+	public final Command LEFT_AUTON_NOT_DEFINED = 
 			new ThrowExceptionCommand ("Left autonomous mode not defined for " + this.getClass().getSimpleName());
-	public final Command centerAutonNotDefined =
+	public final Command CENTER_AUTON_NOT_DEFINED =
 			new ThrowExceptionCommand ("Center autonomous mode not defined for " + this.getClass().getSimpleName());
-	public final Command rightAutonNotDefined = 
+	public final Command RIGHT_AUTON_NOT_DEFINED = 
 			new ThrowExceptionCommand ("Right autonomous mode not defined for " + this.getClass().getSimpleName());
 	
 	public enum Location {
@@ -18,7 +18,7 @@ public abstract class AutoMode extends CommandGroup {
 
 	public AutoMode(Location startLoc, Location endLoc) {
 		if (startLoc == Location.LEFT) {addSequential(getLeftCommands(endLoc));}
-		else if (startLoc ==Location.CENTER) {addSequential (getCenterCommands(endLoc));}
+		else if (startLoc == Location.CENTER) {addSequential (getCenterCommands(endLoc));}
 		else if (startLoc == Location.RIGHT) {addSequential(getRightCommands(endLoc));} 
 	}
 
@@ -29,7 +29,7 @@ public abstract class AutoMode extends CommandGroup {
 	 * @return the left set of commands
 	 */
 	public Command getLeftCommands(Location endLoc) {
-		return leftAutonNotDefined;
+		return LEFT_AUTON_NOT_DEFINED;
 	}
 	
 	/**
@@ -39,7 +39,7 @@ public abstract class AutoMode extends CommandGroup {
 	 * @return the center set of commands
 	 */
 	public Command getCenterCommands(Location endLoc) {
-		return centerAutonNotDefined;
+		return CENTER_AUTON_NOT_DEFINED;
 	}	
 	
 	/**
@@ -49,6 +49,6 @@ public abstract class AutoMode extends CommandGroup {
 	 * @return the right set of commands
 	 */
 	public Command getRightCommands(Location endLoc) {
-		return rightAutonNotDefined;
+		return RIGHT_AUTON_NOT_DEFINED;
 	}
 }
