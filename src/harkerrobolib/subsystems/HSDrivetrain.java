@@ -188,8 +188,10 @@ public abstract class HSDrivetrain extends Subsystem {
     public void invertTalons(boolean leftMasterInverted, boolean rightMasterInverted, 
             boolean leftFollowerInverted, boolean rightFollowerInverted) {
         invertTalons(leftMasterInverted, rightMasterInverted);
-        leftFollower.setInverted(leftFollowerInverted);
-        rightFollower.setInverted(rightFollowerInverted);
+        if(hasFollowers) {
+            leftFollower.setInverted(leftFollowerInverted);
+            rightFollower.setInverted(rightFollowerInverted);
+        }
     }
     
     /**
