@@ -52,9 +52,9 @@ public abstract class HSDrivetrain extends Subsystem {
         this.rightFollower = rightFollower;
         this.pigeon = pigeon;
         
-        followMasters();
         hasFollowers = true;
         hasPigeon = true;
+        followMasters();
     }
     
     /**
