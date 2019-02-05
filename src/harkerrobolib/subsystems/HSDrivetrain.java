@@ -148,6 +148,7 @@ public abstract class HSDrivetrain extends Subsystem {
             talon.configPeakCurrentLimit(peakLimit, newTimeout);
             talon.configPeakCurrentDuration(peakTime, newTimeout);
             talon.configContinuousCurrentLimit(continuousLimit, newTimeout);
+            talon.enableCurrentLimit(true);
         };
         applyToMasters (currentLimit);
     }
