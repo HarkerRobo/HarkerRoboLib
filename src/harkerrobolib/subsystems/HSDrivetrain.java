@@ -52,9 +52,9 @@ public abstract class HSDrivetrain extends Subsystem {
         this.rightFollower = rightFollower;
         this.pigeon = pigeon;
         
-        followMasters();
         hasFollowers = true;
         hasPigeon = true;
+        followMasters();
     }
     
     /**
@@ -148,6 +148,7 @@ public abstract class HSDrivetrain extends Subsystem {
             talon.configPeakCurrentLimit(peakLimit, newTimeout);
             talon.configPeakCurrentDuration(peakTime, newTimeout);
             talon.configContinuousCurrentLimit(continuousLimit, newTimeout);
+            talon.enableCurrentLimit(true);
         };
         applyToMasters (currentLimit);
     }
@@ -188,8 +189,10 @@ public abstract class HSDrivetrain extends Subsystem {
     public void invertTalons(boolean leftMasterInverted, boolean rightMasterInverted, 
             boolean leftFollowerInverted, boolean rightFollowerInverted) {
         invertTalons(leftMasterInverted, rightMasterInverted);
-        leftFollower.setInverted(leftFollowerInverted);
-        rightFollower.setInverted(rightFollowerInverted);
+        if(hasFollowers) {
+            leftFollower.setInverted(leftFollowerInverted);
+            rightFollower.setInverted(rightFollowerInverted);
+        }
     }
     
     /**

@@ -24,6 +24,12 @@ public abstract class HSGamepad extends Joystick {
     private final int axisRightX;
     private final int axisRightY;
 
+    //DPad angles in degrees
+    public static final int DPAD_UP_ANGLE = 0;
+    public static final int DPAD_LEFT_ANGLE = 270;
+    public static final int DPAD_RIGHT_ANGLE = 90;
+    public static final int DPAD_DOWN_ANGLE = 180;
+
     public HSGamepad(int port, 
     		int buttonAPort, int buttonBPort, int buttonXPort, int buttonYPort, 
     		int buttonStartPort, int buttonSelectPort, 
@@ -250,5 +256,21 @@ public abstract class HSGamepad extends Joystick {
      */
     public HSJoystickButton getButtonBumperRight() {
         return buttonBumperRight;
+    }
+
+    public HSDPadButton getUpDPadButton () {
+        return new HSDPadButton(this, DPAD_UP_ANGLE);
+    }
+
+    public HSDPadButton getDownDPadButton () {
+        return new HSDPadButton(this, DPAD_DOWN_ANGLE);
+    }
+
+    public HSDPadButton getLeftDPadButton () {
+        return new HSDPadButton(this, DPAD_LEFT_ANGLE);
+    }
+
+    public HSDPadButton getRightDPadButton () {
+        return new HSDPadButton(this, DPAD_RIGHT_ANGLE);
     }
 }
