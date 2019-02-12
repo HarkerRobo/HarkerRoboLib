@@ -1,16 +1,19 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2019.1.1"
+    id "edu.wpi.first.GradleRIO" version "2019.2.1"
 }
+
+version = '5.3'
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+// Set this to true to enable desktop support.
+def includeDesktopSupport = false
 
 sourceSets {
     main.java.srcDirs = ['src']
 }
-
-version = '5.2.2'
-
-// Set this to true to enable desktop support.
-def includeDesktopSupport = false
 
 // Maven central needed for JUnit
 repositories {
@@ -26,15 +29,4 @@ dependencies {
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     compile files('lib/Pathfinder-Java-1.8.jar')
     testCompile 'junit:junit:4.12'
-}
-
-// Force Java 8 Compatibility mode for deployed code, in case the develoment
-// system is using Java 10.
-compileJava {
-    sourceCompatibility = 10
-    targetCompatibility = 10
-}
-
-wrapper {
-    gradleVersion = '4.9'
 }

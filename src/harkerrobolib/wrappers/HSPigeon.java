@@ -73,9 +73,10 @@ public class HSPigeon extends PigeonIMU {
      * @param angle the angle value to which the pigeon should be set, in pigeon units 
      * where 1 rotation is 8192 units
      */
-    public void setYaw(double angle)
+	@Override
+    public ErrorCode setYaw(double angle)
     {
-        super.setYaw(angle * 64, timeout); // CTRE's error where replaced angle is off by a factor of 64
+        return super.setYaw(angle * 64, timeout); // CTRE's error where replaced angle is off by a factor of 64
     }
     
     /**
@@ -83,9 +84,9 @@ public class HSPigeon extends PigeonIMU {
      * @param angle the angle value which should be added to the pigeon yaw value, in pigeon units 
      * where 1 rotation is 8192 units
      */
-    public void addYaw (double angle)
+    public ErrorCode addYaw (double angle)
     {
-        super.addYaw(angle * 64, timeout); // CTRE's error where added angle is off by a factor of 64
+        return super.addYaw(angle * 64, timeout); // CTRE's error where replaced angle is off by a factor of 64
     }
  
     /**
