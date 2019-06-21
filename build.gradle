@@ -1,9 +1,9 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2019.4.1"
+    id "edu.awpi.first.GradleRIO" version "2019.4.1"
 }
 
-version = '5.3'
+version = '5.3.1'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
