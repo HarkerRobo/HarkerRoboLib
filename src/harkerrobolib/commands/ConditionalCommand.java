@@ -13,12 +13,12 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ConditionalCommand extends edu.wpi.first.wpilibj.command.ConditionalCommand {
     private BooleanSupplier condition;
 
-    public ConditionalCommand(Command trueCommand, BooleanSupplier condition) {
+    public ConditionalCommand(BooleanSupplier condition, Command trueCommand) {
         super(trueCommand);
         this.condition = condition;
     }
 
-    public ConditionalCommand(Command trueCommand, Command falseCommand, BooleanSupplier condition) {
+    public ConditionalCommand(BooleanSupplier condition, Command trueCommand, Command falseCommand) {
         super(trueCommand, falseCommand);
         this.condition = condition;
     }
