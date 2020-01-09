@@ -1,4 +1,5 @@
 plugins {
+    
     id "java"
     id "edu.wpi.first.GradleRIO" version "2020.1.2"
 }
@@ -40,6 +41,10 @@ deploy {
 // Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
+sourceSets {
+    main.java.srcDirs = ['src']
+}
+
 // Maven central needed for JUnit
 repositories {
     mavenCentral()
@@ -69,5 +74,4 @@ dependencies {
 // knows where to look for our Robot Class.
 jar {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
 }
