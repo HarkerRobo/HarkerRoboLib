@@ -35,8 +35,7 @@ public class Logger {
     }
 
     public void log (String val) {
-        String message = (DriverStation.getInstance().isAutonomous() ? "A" : "T") + DriverStation.getInstance().getMatchTime() + " " + 
-                DriverStation.getInstance().getBatteryVoltage() + "V " + val;
+        String message = (DriverStation.getInstance().isAutonomous() ? "A" : "T") + DriverStation.getInstance().getMatchTime() + " " + val;
         if (logger != null) {
             logger.println(message);
         } else {

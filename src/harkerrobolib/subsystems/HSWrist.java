@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.Gains;
 import harkerrobolib.wrappers.HSTalon;
 
@@ -16,7 +16,7 @@ import harkerrobolib.wrappers.HSTalon;
  * @author Chirag Kaushik
  * @since January 17, 2019
  */
-public abstract class HSWrist extends Subsystem {
+public abstract class HSWrist extends SubsystemBase {
     public enum WristDirection {
         TO_BACK(1), TO_FRONT(-1);
         private final int direction;

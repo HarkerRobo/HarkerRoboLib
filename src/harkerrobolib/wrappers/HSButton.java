@@ -1,8 +1,8 @@
 package harkerrobolib.wrappers;
 
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.command.Command;
-import harkerrobolib.commands.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import harkerrobolib.commands.CancelCommand;
 
 
 /**
@@ -17,7 +17,7 @@ abstract class HSButton extends Button {
      * @param c the command to cancel
      */
     public void cancelWhenReleased(Command c) {
-	    whenReleased(new CancelCommand(c));
+        whenReleased(new CancelCommand(c));
     }
 
     /**

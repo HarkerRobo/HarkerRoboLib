@@ -1,10 +1,10 @@
 package harkerrobolib.auto;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import harkerrobolib.commands.ThrowExceptionCommand;
 
-public abstract class AutoMode extends CommandGroup {
+public abstract class AutoMode extends CommandGroupBase {
 	public final Command LEFT_AUTON_NOT_DEFINED = 
 			new ThrowExceptionCommand ("Left autonomous mode not defined for " + this.getClass().getSimpleName());
 	public final Command CENTER_AUTON_NOT_DEFINED =
@@ -17,9 +17,12 @@ public abstract class AutoMode extends CommandGroup {
 	}
 
 	public AutoMode(Location startLoc, Location endLoc) {
-		if (startLoc == Location.LEFT) {addSequential(getLeftCommands(endLoc));}
-		else if (startLoc == Location.CENTER) {addSequential (getCenterCommands(endLoc));}
-		else if (startLoc == Location.RIGHT) {addSequential(getRightCommands(endLoc));} 
+        if (startLoc == Location.LEFT) 
+            addCommands(getLeftCommands(endLoc));
+        else if (startLoc == Location.CENTER) 
+            addCommands(getCenterCommands(endLoc));
+        else if (startLoc == Location.RIGHT) 
+            addCommands(getRightCommands(endLoc));
 	}
 
 	/**

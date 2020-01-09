@@ -4,7 +4,8 @@ import java.util.function.Consumer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import edu.wpi.first.wpilibj.command.Subsystem;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.wrappers.HSTalon;
 
 /**
@@ -18,7 +19,7 @@ import harkerrobolib.wrappers.HSTalon;
  *
  * @version 11/7/18
  */
-public abstract class HSIntake extends Subsystem {
+public abstract class HSIntake extends SubsystemBase {
 
 	private HSTalon leftTalon;
 	private HSTalon rightTalon;

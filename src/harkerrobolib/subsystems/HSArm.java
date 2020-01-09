@@ -3,28 +3,23 @@ package harkerrobolib.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.wrappers.HSTalon;
 
 /**
  * Represents a general Arm subsystem with a single motor controller.
  *
- * @param  talon the arm's Talon
+ * @param talon the arm's Talon
  *
  * @author Finn Frankis
  * @author Angela Jia
  * @version 10/31/18
  */
-public abstract class HSArm extends Subsystem {
+public abstract class HSArm extends SubsystemBase {
 
 	private HSTalon talon;
-	private final double feedForwardGrav;
-	
-	public HSArm(HSTalon talon, double feedForwardGrav)
-	{
-		this.talon = talon;
-		this.feedForwardGrav = feedForwardGrav;
-	}
+    private final double feedForwardGrav;
+    
     public enum ArmDirection{
         UP(1), DOWN(-1);
     	private int sign;
@@ -32,15 +27,21 @@ public abstract class HSArm extends Subsystem {
     		this.sign = sign;
     	}
     }
+	
+	public HSArm(HSTalon talon, double feedForwardGrav)
+	{
+		this.talon = talon;
+		this.feedForwardGrav = feedForwardGrav;
+    }
 
-    public void setCurrentLimits( int peakTime, int peakCurrent, int contCurrent, int timeout) {
+    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent, int timeout) {
         talon.configPeakCurrentDuration(peakTime, timeout);
         talon.configPeakCurrentLimit(peakCurrent, timeout);
         talon.configContinuousCurrentLimit(contCurrent, timeout);
         talon.enableCurrentLimit(true);
     }
 
-    public void setCurrentLimits( int peakTime, int peakCurrent, int contCurrent) {
+    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent) {
         setCurrentLimits(peakTime, peakCurrent, contCurrent, talon.getDefaultTimeout());
 }
 
@@ -48,7 +49,7 @@ public abstract class HSArm extends Subsystem {
         armMotionPercentOutput(direction.sign * output);
     }
 
-    public void armMotionPercentOutput (double output) {
+    public void armMotionPercentOutput(double output) {
         talon.set(ControlMode.PercentOutput, output, DemandType.ArbitraryFeedForward, feedForwardGrav);
     }
 

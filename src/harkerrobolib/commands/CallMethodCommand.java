@@ -1,6 +1,6 @@
 package harkerrobolib.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
  * Executes a given runnable once.

@@ -1,21 +1,25 @@
 package harkerrobolib.commands;
 
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.Button;
 
 /**
- * A command to run another command when a given button is not pressed. Note that 
- * the StartWithoutButtonCommand will end after its given command has finished executing.
+ * A command to run another command when a given button is not pressed. Note
+ * that the StartWithoutButtonCommand will end after its given command has
+ * finished executing.
+ * 
  * @author Manan
+ * @author Jatin Kohli
  * @see StartWithButtonCommand
  */
-public class StartWithoutButtonCommand extends Command {
+public class StartWithoutButtonCommand extends CommandBase {
     
     private final Command command;
     private final Button button;
     
     /**
-     * Constructs a new StartWithButtonCommand.
+     * Constructs a new StartWithoutButtonCommand.
      * @param button the button which, when not pressed, will begin the command.
      * @param command the command which will begin when the given button is not pressed.
      */
@@ -24,27 +28,21 @@ public class StartWithoutButtonCommand extends Command {
         this.command = command;
     }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    }
-
     // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-        if(!button.get()) command.start();
+    @Override
+    public void execute() {
+        if(!button.get()) 
+            command.schedule();
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return !command.isRunning();
+    @Override
+    public boolean isFinished() {
+        return command.isFinished();
     }
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
+    @Override
+    public void end(boolean interrupted) {
         command.cancel();
     }
 }
