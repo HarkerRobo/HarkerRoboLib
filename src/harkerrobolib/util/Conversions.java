@@ -12,6 +12,51 @@ import java.security.InvalidParameterException;
  */
 public final class Conversions
 {
+    /**
+     * The diameter of the wheel to be used.
+     */
+    public static double WHEEL_DIAMETER = -1;
+    
+    /**
+     * The number of pigeon units in a single rotation.
+     */
+    public static final double PIGEON_UNITS_PER_ROTATION = 8192;
+    
+    /**
+     * The number of degrees in a single rotation.
+     */
+    public static final double DEGREES_PER_ROTATION = 360;
+    
+    /**
+     * The number of radians in a single rotation.
+     */
+    public static final double RADIANS_PER_ROTATION = 2 * Math.PI;
+
+    /**
+     * The number of milliseconds in a second.
+     */
+    public static final double MS_PER_SEC = 1000;
+    
+    /**
+     * The number of microseconds in a second.
+     */
+    public static final double MICROSECS_PER_SEC = Math.pow(10, 6);
+    
+    /**
+     * The number of nanoseconds in a second.
+     */
+    public static final double NANOSECS_PER_SEC = Math.pow(10, 9);
+    
+    /**
+     * The number of ticks per revolution for a CTRE magnetic encoder.
+     */
+    public static final int DEFAULT_TICKS_PER_REV = 4096;
+    
+    /**
+     * The number of inches in a foot.
+     */
+    public static final int INCHES_PER_FOOT = 12;
+
 	public interface Unit {}
     /**
      * Represents the various possible units for an angle.
@@ -99,6 +144,14 @@ public final class Conversions
          */
         NANOSECONDS;
     }
+
+    /**
+     * Sets the wheel diameter for use in position and velocity computations.
+     * @param newDiameter the diameter with which the current one will be replaced
+     */
+    public static void setWheelDiameter(double newDiameter) {
+        WHEEL_DIAMETER = newDiameter;
+    }
     
     /**
      * Converts a value of one unit to a value of another unit.
@@ -109,7 +162,7 @@ public final class Conversions
      * @precondition startUnit and desiredUnit both measure the same quantity.
      * @return the converted value.
      */
-    public static double convert (Unit startUnit, double startValue, Unit desiredUnit) {
+    public static double convert(Unit startUnit, double startValue, Unit desiredUnit) {
     	if (startUnit instanceof AngleUnit && desiredUnit instanceof AngleUnit) {
     		return convertAngle ((AngleUnit)startUnit, startValue, (AngleUnit)desiredUnit);
     	}
@@ -117,7 +170,7 @@ public final class Conversions
     		return convertSpeed ((SpeedUnit) startUnit, startValue, (SpeedUnit) desiredUnit);
     	}
     	else if (startUnit instanceof PositionUnit && desiredUnit instanceof PositionUnit) {
-    		return convertPosition ((PositionUnit) startUnit, startValue, (PositionUnit) desiredUnit);
+    		return convertPosition((PositionUnit) startUnit, startValue, (PositionUnit) desiredUnit);
     	}
     	else if (startUnit instanceof TimeUnit && desiredUnit instanceof TimeUnit) {
     		return convertTime ((TimeUnit) startUnit, startValue, (TimeUnit) desiredUnit);
@@ -132,7 +185,7 @@ public final class Conversions
      * @param desiredUnit the unit desired for the conversion
      * @return the converted value
      */
-    public static double convertAngle (AngleUnit startUnit, double startValue, AngleUnit desiredUnit)
+    public static double convertAngle(AngleUnit startUnit, double startValue, AngleUnit desiredUnit)
     {
         if (desiredUnit == AngleUnit.RADIANS)
         {
@@ -162,6 +215,10 @@ public final class Conversions
                 return startValue * PIGEON_UNITS_PER_ROTATION/RADIANS_PER_ROTATION;
         }
     }
+
+    public static double convertPosition(PositionUnit startUnit, double startValue, PositionUnit desiredUnit) {
+        return convertPosition(startUnit, startValue, desiredUnit, WHEEL_DIAMETER, DEFAULT_TICKS_PER_REV);
+    }
     
     /**
      * Converts a position in one unit to another.
@@ -170,27 +227,27 @@ public final class Conversions
      * @param desiredUnit the unit desired for the conversion
      * @return the converted value
      */
-    public static double convertPosition (PositionUnit startUnit, double startValue, PositionUnit desiredUnit)
+    public static double convertPosition(PositionUnit startUnit, double startValue, PositionUnit desiredUnit, double wheelDiameter, int ticksPerRev)
     {
-        if (WHEEL_DIAMETER != -1)
+        if (wheelDiameter != -1)
         {
             if (desiredUnit == PositionUnit.FEET)
             {
                 if (startUnit == PositionUnit.FEET)
                     return startValue;
                 else
-                    return startValue / Conversions.TICKS_PER_REV // convert to revolutions
-                            * (WHEEL_DIAMETER * Math.PI) // convert to inches
-                            / Conversions.INCHES_PER_FOOT; // convert to feet
+                    return startValue / ticksPerRev // convert to revolutions
+                            * (wheelDiameter * Math.PI) // convert to inches
+                            / INCHES_PER_FOOT; // convert to feet
             }
             else
             {
                 if (startUnit == PositionUnit.ENCODER_UNITS)
                     return startValue;
                 else
-                    return startValue * Conversions.INCHES_PER_FOOT // convert to inches
-                            / (WHEEL_DIAMETER * Math.PI) // convert to revolutions
-                            * Conversions.TICKS_PER_REV;// convert to ticks 
+                    return startValue * INCHES_PER_FOOT // convert to inches
+                            / (wheelDiameter * Math.PI) // convert to revolutions
+                            * ticksPerRev; // convert to ticks 
             }
         }
         try
@@ -205,6 +262,10 @@ public final class Conversions
             
     }
 
+    public static double convertSpeed(SpeedUnit startUnit, double startValue, SpeedUnit desiredUnit) {
+        return convertSpeed(startUnit, startValue, desiredUnit, WHEEL_DIAMETER, DEFAULT_TICKS_PER_REV);
+    }
+
     /**
      * Converts a speed in one unit to another.
      * @param startUnit the unit of the given value
@@ -212,9 +273,9 @@ public final class Conversions
      * @param desiredUnit the unit desired for the conversion
      * @return the converted value
      */
-    public static double convertSpeed (SpeedUnit startUnit, double startValue, SpeedUnit desiredUnit)
+    public static double convertSpeed(SpeedUnit startUnit, double startValue, SpeedUnit desiredUnit, double wheelDiameter, int ticksPerRev)
     {
-        if (WHEEL_DIAMETER >= 0)
+        if (wheelDiameter >= 0)
         {
             if (desiredUnit == SpeedUnit.FEET_PER_SECOND)
             {
@@ -222,9 +283,9 @@ public final class Conversions
                     return startValue;
                 else
                     return startValue * 10.0 // convert to ticks per second
-                            / Conversions.TICKS_PER_REV // convert to revolutions per second
-                            * (WHEEL_DIAMETER * Math.PI) // convert to inches per second
-                            / Conversions.INCHES_PER_FOOT; // convert to feet per second
+                            / ticksPerRev // convert to revolutions per second
+                            * (wheelDiameter * Math.PI) // convert to inches per second
+                            / INCHES_PER_FOOT; // convert to feet per second
             }
             else
             {
@@ -232,11 +293,9 @@ public final class Conversions
                     return startValue;
                 else
                     return startValue / 10.0 // convert to feet per 100 ms
-                            * Conversions.INCHES_PER_FOOT // convert to inches per 100 ms
-                            / (WHEEL_DIAMETER * Math.PI) // convert to revolutions per 100ms
-                            * Conversions.TICKS_PER_REV // convert to ticks per 100ms
-                            
-                            ; 
+                            * INCHES_PER_FOOT // convert to inches per 100 ms
+                            / (wheelDiameter * Math.PI) // convert to revolutions per 100ms
+                            * ticksPerRev; // convert to ticks per 100ms
             }
         }
         try
@@ -257,7 +316,7 @@ public final class Conversions
      * @param desiredUnit the unit desired for the conversion
      * @return the converted value
      */
-    public static double convertTime (TimeUnit startUnit, double startValue, TimeUnit desiredUnit)
+    public static double convertTime(TimeUnit startUnit, double startValue, TimeUnit desiredUnit)
     {
         if (desiredUnit == TimeUnit.SECONDS)
         {
@@ -304,60 +363,4 @@ public final class Conversions
                 return startValue / Conversions.MICROSECS_PER_SEC * Conversions.NANOSECS_PER_SEC;
         }
     }
-    
-    /**
-     * The diameter of the wheel to be used.
-     */
-    public static double WHEEL_DIAMETER = -1;
-    
-    /**
-     * Sets the wheel diameter for use in position and velocity computations.
-     * @param newDiameter the diameter with which the current one will be replaced
-     */
-    public static void setWheelDiameter(double newDiameter)
-    {
-        WHEEL_DIAMETER = newDiameter;
-    }
-    
-    /**
-     * The number of pigeon units in a single rotation.
-     */
-    public static final double PIGEON_UNITS_PER_ROTATION = 8192;
-    
-    /**
-     * The number of degrees in a single rotation.
-     */
-    public static final double DEGREES_PER_ROTATION = 360;
-    
-    /**
-     * The number of radians in a single rotation.
-     */
-    public static final double RADIANS_PER_ROTATION = 2 * Math.PI;
-
-    /**
-     * The number of milliseconds in a second.
-     */
-    public static final double MS_PER_SEC = 1000;
-    
-    /**
-     * The number of microseconds in a second.
-     */
-    public static final double MICROSECS_PER_SEC = Math.pow(10, 6);
-    
-    /**
-     * The number of nanoseconds in a second.
-     */
-    public static final double NANOSECS_PER_SEC = Math.pow(10, 9);
-    
-    /**
-     * The number of ticks per revolution for a CTRE magnetic encoder.
-     */
-    public static final int TICKS_PER_REV = 4096;
-    
-    /**
-     * The number of inches in a foot.
-     */
-    public static final int INCHES_PER_FOOT = 12;
-    
-
 }
