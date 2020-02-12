@@ -23,8 +23,8 @@ import harkerrobolib.util.Gains;
  * Wraps a standard TalonSRX with functionality for resetting and a default
  * timeout for relevant methods.
  * 
- * @author Jatin
  * @author Finn Frankis
+ * @author Jatin
  */
 public class HSTalon extends TalonSRX {
 
@@ -34,8 +34,8 @@ public class HSTalon extends TalonSRX {
      * Constructs a TalonSRXWrapper with the default timeout {{@link Constants#DEFAULT_TIMEOUT}.
      * @param deviceNumber The CAN device ID of the Talon.
      */
-    public HSTalon (int deviceNumber) {
-    	this (deviceNumber, Constants.DEFAULT_TIMEOUT);
+    public HSTalon(int deviceNumber) {
+    	this(deviceNumber, Constants.DEFAULT_TIMEOUT);
     }
     
     /**
@@ -43,7 +43,7 @@ public class HSTalon extends TalonSRX {
      * @param deviceNumber the CAN device ID of the Talon.
      * @param defaultTimeout the timeout to be used if one is not specified in the method.
      */
-    public HSTalon (int deviceNumber, int defaultTimeout) {
+    public HSTalon(int deviceNumber, int defaultTimeout) {
     	super(deviceNumber);
     	timeout = defaultTimeout;
     }
