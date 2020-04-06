@@ -1,10 +1,11 @@
 package harkerrobolib.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 /**
  * Cancels a command.
+ * 
  * @author Manan
  */
 public class CancelCommand extends InstantCommand {
@@ -22,7 +23,8 @@ public class CancelCommand extends InstantCommand {
     /**
      * {@inheritDoc}
      */
-    protected void initialize() {
-      command.cancel();
+    @Override
+    public void initialize() {
+        command.cancel();
     }
 }

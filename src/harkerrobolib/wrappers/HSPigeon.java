@@ -15,7 +15,8 @@ import harkerrobolib.util.Constants;
  */
 public class HSPigeon extends PigeonIMU {
 
-	private int timeout; 
+    private int timeout;
+    private double angleOffset;
 	 
 	public HSPigeon (int deviceNumber) {
 		this(deviceNumber, Constants.DEFAULT_TIMEOUT);
@@ -23,16 +24,18 @@ public class HSPigeon extends PigeonIMU {
 	
 	public HSPigeon(int deviceNumber, int defaultTimeout) {
 		super(deviceNumber);
-		this.timeout = defaultTimeout;
+        this.timeout = defaultTimeout;
+        angleOffset = 0;
 	}
 	
 	public HSPigeon (TalonSRX talon) {
-		this(talon, Constants.DEFAULT_TIMEOUT);
+        this(talon, Constants.DEFAULT_TIMEOUT);
 	}
 	
 	public HSPigeon (TalonSRX talon, int defaultTimeout) {
 		super(talon);
-		this.timeout = defaultTimeout;
+        this.timeout = defaultTimeout;
+        angleOffset = 0;
 	}
 	
 	/**
@@ -99,19 +102,22 @@ public class HSPigeon extends PigeonIMU {
     }
 
 	public ErrorCode setYawToCompass() {
-		// TODO Auto-generated method stub
 		return super.setYawToCompass(timeout);
-	}
+    }
+    
+    @Override
+    public double getFusedHeading() {
+        return super.getFusedHeading() + angleOffset;
+    }
 
-	
+	@Override
 	public ErrorCode setFusedHeading(double angleDeg) {
-		// TODO Auto-generated method stub
-		return super.setFusedHeading(angleDeg, timeout);
+        angleOffset = angleDeg - getFusedHeading();
+        return ErrorCode.OK;
 	}
 
 	
 	public ErrorCode addFusedHeading(double angleDeg) {
-		// TODO Auto-generated method stub
 		return super.addFusedHeading(angleDeg, timeout);
 	}
 

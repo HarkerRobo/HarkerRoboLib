@@ -1,12 +1,11 @@
 package harkerrobolib.subsystems;
 
-import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.MathUtil;
 import harkerrobolib.wrappers.HSTalon;
 
@@ -17,7 +16,7 @@ import harkerrobolib.wrappers.HSTalon;
  * @author Angela Jia
  * @since 1/12/19
  */
-public abstract class HSElevator extends Subsystem {
+public abstract class HSElevator extends SubsystemBase {
 
     private HSTalon elMaster;
     private IMotorController[] victors;

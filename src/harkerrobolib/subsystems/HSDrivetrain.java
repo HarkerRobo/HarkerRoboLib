@@ -1,30 +1,24 @@
 package harkerrobolib.subsystems;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.function.Consumer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix.sensors.PigeonIMU;
-
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.Gains;
 import harkerrobolib.wrappers.HSPigeon;
 import harkerrobolib.wrappers.HSTalon;
 
 /**
  * Represents a general Drivetrain subsystem with two master motor controllers and two optional follower controllers.
+ *
  * @author Finn Frankis
  * @version Aug 17, 2018
  */
-public abstract class HSDrivetrain extends Subsystem {
+public abstract class HSDrivetrain extends SubsystemBase {
     private HSTalon leftMaster;
     private HSTalon rightMaster;
     private IMotorController leftFollower;
