@@ -31,14 +31,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
  * @since 01/13/20
  */
 public class SwerveModule {
-    public static final int ENCODER_TICKS = 4096;
-
-    //Voltage/Current Constants
-    private static final double VOLTAGE_COMP = 10;
-
+    private static final int ENCODER_TICKS = 4096;
     private static final int DRIVE_TICKS_PER_REV = 2048;
-
-    private static final double EPSILON_OUTPUT = 1e-4;
 
     // Motor inversions
     private final TalonFXInvertType DRIVE_INVERTED;
@@ -111,9 +105,24 @@ public class SwerveModule {
         falcon.overrideLimitSwitchesEnable(false);
 
         falcon.setSelectedSensorPosition(0);
+    }
 
-        falcon.configVoltageCompSaturation(VOLTAGE_COMP);
-        falcon.enableVoltageCompensation(true);
+    /**
+     * Resets the angle motor controller to its factory default and configures all relevant settings.
+     * 
+     * @param falcon The angle motor controller (TalonSRX) of this SwerveModule.
+     */
+    public void angleTalonInit(HSTalon talon) {
+        talon.configFactoryDefault();
+
+        talon.setNeutralMode(NeutralMode.Brake);
+
+        talon.setInverted(ANGLE_INVERTED);
+        talon.setSensorPhase(ANGLE_SENSOR_PHASE);
+
+        talon.configForwardSoftLimitEnable(false);
+        talon.configReverseSoftLimitEnable(false);
+        talon.overrideLimitSwitchesEnable(false);
     }
 
     /**
@@ -134,24 +143,18 @@ public class SwerveModule {
     }
 
     /**
-     * Resets the angle motor controller to its factory default and configures all relevant settings.
-     * 
-     * @param falcon The angle motor controller (TalonSRX) of this SwerveModule.
+     * @param isDrive True if the configuration is to be applied to the drive motor, false if for the angle motor
+     * @param voltageComp The voltage (in volts) to be used for voltage compensation
      */
-    public void angleTalonInit(HSTalon talon) {
-        talon.configFactoryDefault();
-
-        talon.setNeutralMode(NeutralMode.Brake);
-
-        talon.setInverted(ANGLE_INVERTED);
-        talon.setSensorPhase(ANGLE_SENSOR_PHASE);
-
-        talon.configForwardSoftLimitEnable(false);
-        talon.configReverseSoftLimitEnable(false);
-        talon.overrideLimitSwitchesEnable(false);
-        
-        talon.configVoltageCompSaturation(VOLTAGE_COMP);
-        talon.enableVoltageCompensation(true);
+    public void configVoltageComp(boolean isDrive, int voltageComp) {
+        if (isDrive) {
+            driveMotor.configVoltageCompSaturation(voltageComp);
+            driveMotor.enableVoltageCompensation(true);
+        }
+        else {
+            angleMotor.configVoltageCompSaturation(voltageComp);
+            angleMotor.enableVoltageCompensation(true);
+        }
     }
  
     /**
@@ -193,15 +196,14 @@ public class SwerveModule {
         
         int targetPos = (int)((targetAngle / 360) * 4096);
 
-        if(output > EPSILON_OUTPUT || isMotionProfile) 
-            angleMotor.set(ControlMode.Position, targetPos);
+        angleMotor.set(ControlMode.Position, targetPos);
     }
 
     /**
      * Returns the current angle in degrees
      */
     public double getAngleDegrees() {
-        return angleMotor.getSelectedSensorPosition() * 360.0 / SwerveModule.ENCODER_TICKS; //Convert encoder ticks to degrees
+        return angleMotor.getSelectedSensorPosition() * 360.0 / ENCODER_TICKS; //Convert encoder ticks to degrees
     }
 
     /**
