@@ -36,13 +36,6 @@ public class SwerveModule {
     //Voltage/Current Constants
     private static final double VOLTAGE_COMP = 10;
 
-    private static final int DRIVE_CURRENT_CONTINUOUS = 40;
-    private static final int DRIVE_CURRENT_PEAK = 60;
-    private static final int DRIVE_CURRENT_PEAK_DUR = 400;
-    private static final int ANGLE_CURRENT_CONTINUOUS = 15;
-    private static final int ANGLE_CURRENT_PEAK = 20;
-    private static final int CURRENT_PEAK_DUR = 20;
-
     private static final int DRIVE_TICKS_PER_REV = 2048;
 
     private static final double EPSILON_OUTPUT = 1e-4;
@@ -53,11 +46,14 @@ public class SwerveModule {
 
     private final boolean DRIVE_SENSOR_PHASE;
     private final boolean ANGLE_SENSOR_PHASE;
+
+    public static int TELEOP_OFFSET;
+    public static int AUTON_OFFSET;
     
     private TalonFX driveMotor;
     private HSTalon angleMotor;
 
-    private final double WHEEL_DIAMETER;
+    public final double WHEEL_DIAMETER;
     private final double GEAR_RATIO; //Gear ratio from drive wheel to drive encoder
 
     /**
@@ -69,10 +65,13 @@ public class SwerveModule {
      * @param angleId The CAN id of the angle motor controller.
      * @param invertAngle Whether or not to invert the output of the angle motor controller.
      * @param angleSensorPhase Whether or not to invert the sensor phase of the angle motor controller's encoder.
-     * @param wheelDiameter The wheel diameter (in inches) of the drive wheels
-     * @param gearRatio The gear ratio from the drive encoder to the drive wheel (6 for a 6:1, where 6 revs of the encoder mean 1 rev of the drive wheel)
+     * @param wheelDiameter The wheel diameter (in inches) of the drive wheels.
+     * @param gearRatio The gear ratio from the drive encoder to the drive wheel (6 for a 6:1, where 6 revs of the encoder mean 1 rev of the drive wheel).
+     * @param offset The offset (in absolute encoder ticks) for the angle encoder to have.
      */
-    public SwerveModule(int driveId, TalonFXInvertType invertDrive, boolean driveSensorPhase, int angleId, boolean invertAngle, boolean angleSensorPhase, double wheelDiameter, double gearRatio) {
+    public SwerveModule(int driveId, TalonFXInvertType invertDrive, boolean driveSensorPhase, int angleId, 
+        boolean invertAngle, boolean angleSensorPhase, double wheelDiameter, double gearRatio, int offset) {
+
         driveMotor = new TalonFX(driveId);
         angleMotor = new HSTalon(angleId);
 
@@ -84,6 +83,9 @@ public class SwerveModule {
         
         WHEEL_DIAMETER = wheelDiameter;
         GEAR_RATIO = gearRatio;
+
+        TELEOP_OFFSET = offset;
+        AUTON_OFFSET = (TELEOP_OFFSET + 8192) % 16384; //Flip 180
 
         driveFalconInit(driveMotor);
         angleTalonInit(angleMotor);
@@ -109,11 +111,26 @@ public class SwerveModule {
         falcon.overrideLimitSwitchesEnable(false);
 
         falcon.setSelectedSensorPosition(0);
-        
-        falcon.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, DRIVE_CURRENT_CONTINUOUS, DRIVE_CURRENT_PEAK, DRIVE_CURRENT_PEAK_DUR));
 
         falcon.configVoltageCompSaturation(VOLTAGE_COMP);
         falcon.enableVoltageCompensation(true);
+    }
+
+    /**
+     * @param isDrive True if the configuration is to be applied to the drive motor, false if for the angle motor
+     * @param continuous The Continuous Current Limit (in Amps)
+     * @param peak The Peak Current Limit (in Amps)
+     * @param duration The duration of the limit (in ms)
+     */
+    public void configCurrentLimit(boolean isDrive, int continuous, int peak, int duration) {
+        if (isDrive)
+            driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, continuous, peak, duration));
+        else {
+            angleMotor.configContinuousCurrentLimit(continuous);
+            angleMotor.configPeakCurrentLimit(peak);
+            angleMotor.configPeakCurrentDuration(duration);
+            angleMotor.enableCurrentLimit(true);
+        }
     }
 
     /**
@@ -132,11 +149,6 @@ public class SwerveModule {
         talon.configForwardSoftLimitEnable(false);
         talon.configReverseSoftLimitEnable(false);
         talon.overrideLimitSwitchesEnable(false);
-
-        talon.configContinuousCurrentLimit(ANGLE_CURRENT_CONTINUOUS);
-        talon.configPeakCurrentLimit(ANGLE_CURRENT_PEAK);
-        talon.configPeakCurrentDuration(CURRENT_PEAK_DUR);
-        talon.enableCurrentLimit(true);
         
         talon.configVoltageCompSaturation(VOLTAGE_COMP);
         talon.enableVoltageCompensation(true);
