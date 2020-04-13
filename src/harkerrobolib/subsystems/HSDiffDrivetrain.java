@@ -18,7 +18,7 @@ import harkerrobolib.wrappers.HSTalon;
  * @author Finn Frankis
  * @version Aug 17, 2018
  */
-public abstract class HSDrivetrain extends SubsystemBase {
+public abstract class HSDiffDrivetrain extends SubsystemBase {
     private HSTalon leftMaster;
     private HSTalon rightMaster;
     private IMotorController leftFollower;
@@ -38,7 +38,7 @@ public abstract class HSDrivetrain extends SubsystemBase {
      * @param rightFollower the right folllower motor controller (Talon or Victor).
      * @param pigeon the Pigeon gyroscope.
      */
-    public HSDrivetrain(HSTalon leftMaster, HSTalon rightMaster, IMotorController leftFollower,
+    public HSDiffDrivetrain(HSTalon leftMaster, HSTalon rightMaster, IMotorController leftFollower,
             IMotorController rightFollower, HSPigeon pigeon) {
         this.leftMaster = leftMaster;
         this.rightMaster = rightMaster;
@@ -59,7 +59,7 @@ public abstract class HSDrivetrain extends SubsystemBase {
      * @param leftFollower the left follower motor controller (Talon or Victor).
      * @param rightFollower the right folllower motor controller (Talon or Victor).
      */
-    public HSDrivetrain (HSTalon leftMaster, HSTalon rightMaster, IMotorController leftFollower,
+    public HSDiffDrivetrain (HSTalon leftMaster, HSTalon rightMaster, IMotorController leftFollower,
             IMotorController rightFollower) {
         this(leftMaster, rightMaster, leftFollower, rightFollower, null);
         hasPigeon = false;
@@ -71,7 +71,7 @@ public abstract class HSDrivetrain extends SubsystemBase {
      * @param leftMaster the left master Talon.
      * @param rightMaster the right master Talon.
      */
-    public HSDrivetrain (HSTalon leftMaster, HSTalon rightMaster) {
+    public HSDiffDrivetrain (HSTalon leftMaster, HSTalon rightMaster) {
         this(leftMaster, rightMaster, null, null);
         hasFollowers = false;
     }
@@ -82,7 +82,7 @@ public abstract class HSDrivetrain extends SubsystemBase {
      * @param rightMaster the right master Talon.
      * @param pigeon the Pigeon gyroscope.
      */
-    public HSDrivetrain (HSTalon leftMaster, HSTalon rightMaster, HSPigeon pigeon) {
+    public HSDiffDrivetrain (HSTalon leftMaster, HSTalon rightMaster, HSPigeon pigeon) {
         this(leftMaster, rightMaster, null, null, pigeon);
         hasFollowers = false;
     }
