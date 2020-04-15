@@ -63,7 +63,6 @@ public class LEDController {
         mLED.setData(mLEDBuffer);
     }
 
-    //todo: make this blink until interrupted by a specific command
     //creates a new thread for the execution of blinkColor
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     // Sets the led strip to blink every second for a minute and takes the RBG values of the desired color as arguments
