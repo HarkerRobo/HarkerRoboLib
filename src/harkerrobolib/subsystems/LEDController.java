@@ -18,8 +18,14 @@ public class LEDController {
 
     private final AddressableLED mLED;
     private final AddressableLEDBuffer mLEDBuffer;
+    private int mRainbowFirstPixelHue = 0;
+    private boolean mIsBlinkInActivePhase;
+    ScheduledFuture<?> runBlinker;
+    private long mLastTimeBlinkPeriodicSwitched;
 
-    public LEDController(final int portIndex, final int bufferLength) {
+    private static final int BLINK_PERIOD_MILLIS = 1 * 1000;
+
+    public LEDController(int portIndex, int bufferLength) {
         mLED = new AddressableLED(portIndex);
 
         // Reuse buffer
@@ -42,41 +48,56 @@ public class LEDController {
          mLED.setData(mLEDBuffer);
     }
     
-    private void setRainbow(final int firstPixelHue, final int saturation, final int value) {
-        int m_rainbowFirstPixelHue = firstPixelHue;
-        for (var i = 0; i < mLEDBuffer.getLength(); i++) {
+    private void setRainbow(int firstPixelHue, int saturation, int value) {
+        for (int i = 0; i < mLEDBuffer.getLength(); i++) {
             //calculate the hue
-            final var hue = (m_rainbowFirstPixelHue + (i * 180 / mLEDBuffer.getLength())) % 180;
+            final int hue = (firstPixelHue + (i * 180 / mLEDBuffer.getLength())) % 180;
             mLEDBuffer.setHSV(i, hue, saturation, value);
         }
-        // Increase by to make the rainbow "move"
-        m_rainbowFirstPixelHue += 3;
-        // Check bounds
-        m_rainbowFirstPixelHue %= 180;
-    }
-
-    // Sets the led strip to a rainbow by keeping the same saturation and value and cycling through the hue.
-    public void setRainbowPeriodic(final int firstPixelHue) {
-        // Fill the buffer with a rainbow
-        setRainbow(firstPixelHue, 0, 0);
         // Set the LEDs
         mLED.setData(mLEDBuffer);
     }
 
+    // Moves the rainbow along the led strip by increasing the hue of the first led.
+    public void moveRainbow() {
+        // Set the leds to a rainbow
+        setRainbow(mRainbowFirstPixelHue, 100, 255);
+        // Increase by to make the rainbow "move"
+        mRainbowFirstPixelHue += 3;
+        // Check bounds
+        mRainbowFirstPixelHue %= 180;
+    }
+
+
     //creates a new thread for the execution of blinkColor
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    // Sets the led strip to blink every second for a minute and takes the RBG values of the desired color as arguments
-    public void blinkColor(Color color) {
+ 
+    /**
+     * Sets the led strip to blink every second for a minute and takes the RBG values of the desired color as arguments
+     */
+    public void startBlinking(Color color) {
         final Runnable blink = new Runnable() {
             public void run() {
-                setColor(color);
+                setColor(mIsBlinkInActivePhase ? color : Color.BLACK);
+                mIsBlinkInActivePhase = !mIsBlinkInActivePhase;
             }
         };
-        
-        final ScheduledFuture<?> runBlinker = scheduler.scheduleAtFixedRate(blink, 1, 1, TimeUnit.SECONDS);
+        mIsBlinkInActivePhase = true;
+        runBlinker = scheduler.scheduleAtFixedRate(blink, 0, 1, TimeUnit.SECONDS);
+    }
 
-        scheduler.schedule(new Runnable() { 
-            public void run() { runBlinker.cancel(true); }
-        }, 60, TimeUnit.SECONDS);
+    public void stopBlinking() {
+        if (runBlinker != null) {
+            runBlinker.cancel(true);
+            runBlinker = null;
+        }
+    }
+
+    public void blinkPeriodic(Color color) {
+        if (System.currentTimeMillis() >= mLastTimeBlinkPeriodicSwitched + BLINK_PERIOD_MILLIS) {
+            setColor(mIsBlinkInActivePhase ? color : Color.BLACK);
+            mIsBlinkInActivePhase = !mIsBlinkInActivePhase;
+            mLastTimeBlinkPeriodicSwitched = System.currentTimeMillis();
+        }
     }
 }
