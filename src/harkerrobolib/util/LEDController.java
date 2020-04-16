@@ -9,7 +9,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /** 
- * Instantiates methods for basic functionalities of an led strip
+ * Utility class that contains various methods for controlling an LED strip. 
  * 
  * @author Ada Praun-Petrovic
  * @since April 12, 2020
@@ -26,21 +26,24 @@ public class LEDController {
     private boolean isBlinkInActivePhase;
 
     private long lastTimeBlinkPeriodicSwitched;
-
+    
+    /**
+     * Creates a new LEDController with a specific PWM port and length (number of individual LEDS).
+     */
     public LEDController(int portIndex, int bufferLength) {
         led = new AddressableLED(portIndex);
 
-        // Reuse buffer
         // Length is expensive to set, so only set it once, then just update data
         ledBuffer = new AddressableLEDBuffer(bufferLength);
         led.setLength(ledBuffer.getLength());
 
-        // Set the data
         led.setData(ledBuffer);
         led.start();
     }
 
-    // Sets the whole led strip to a single color.
+    /**
+     * Sets the entire LED strip to a single color.
+     */
     public void setColor(Color color) {
         for (int i = 0; i < ledBuffer.getLength(); i++) {
             // Sets the specified LED to the color
@@ -50,17 +53,21 @@ public class LEDController {
          led.setData(ledBuffer);
     }
     
-    private void setRainbow(int firstPixelHue, int saturation, int value) {
+    /**
+     * Sets the LED strip to a rainbow, starting at a specific HSV value.
+     */
+    public void setRainbow(int firstPixelHue, int saturation, int value) {
         for (int i = 0; i < ledBuffer.getLength(); i++) {
-            //calculate the hue
+            // Calculate the hue
             final int hue = (firstPixelHue + (i * 180 / ledBuffer.getLength())) % 180;
             ledBuffer.setHSV(i, hue, saturation, value);
         }
-        // Set the LEDs
         led.setData(ledBuffer);
     }
 
-    // Moves the rainbow along the led strip by increasing the hue of the first led.
+    /**
+     * Moves the rainbow along the led strip by increasing the hue of the first led.
+     */
     public void moveRainbowPeriodic() {
         // Set the leds to a rainbow
         setRainbow(rainbowFirstPixelHue, 100, 255);
@@ -70,8 +77,11 @@ public class LEDController {
         rainbowFirstPixelHue %= 180;
     }
  
-    // Sets the led strip to blink every second
-    public void startBlinking(Color color) {
+    /**
+     * Blinks the LED strip for a specified period. The LED strip will continue blinking until
+     * stopped by the stopBlinking method.
+     */ 
+    public void startBlinking(Color color, int period) {
         final Runnable blink = new Runnable() {
             public void run() {
                 setColor(isBlinkInActivePhase ? color : Color.BLACK);
@@ -79,10 +89,12 @@ public class LEDController {
             }
         };
         isBlinkInActivePhase = true;
-        runBlinker = blinkScheduler.scheduleAtFixedRate(blink, 0, 1, TimeUnit.SECONDS);
+        runBlinker = blinkScheduler.scheduleAtFixedRate(blink, 0, period, TimeUnit.MILLISECONDS);
     }
 
-    // Cancels the method startBlinking
+    /**
+     * Stops the blinking of the LEDS, if started with the startBlinking method.
+     */
     public void stopBlinking() {
         if (runBlinker != null) {
             runBlinker.cancel(true);
@@ -90,7 +102,9 @@ public class LEDController {
         }
     }
 
-    // Sets the led strip to blink if called periodically
+    /**
+     * Blinks the LEDS when called periodically.
+     */ 
     public void blinkPeriodic(Color color, int blinkPeriodMillis) {
         if (System.currentTimeMillis() - lastTimeBlinkPeriodicSwitched >= blinkPeriodMillis) {
             setColor(isBlinkInActivePhase ? color : Color.BLACK);
