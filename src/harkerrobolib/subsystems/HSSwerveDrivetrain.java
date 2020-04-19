@@ -20,14 +20,11 @@ import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
  * Simulates the drivetrain subsystem on the robot. A Swerve Drivetrain contains
  * four SwerveModules.
  * 
- * 'back' is defined as closest to the battery 'left' is defined as left when
- * standing at the back and looking forward
- * 
  * Acronyms: TL: Top Left TR: Top Right BL: Back Left BR: Back Right
  * 
+ * @author Shahzeb Lakhani
  * @author Angela Jia
  * @author Jatin Kohli
- * @author Shahzeb Lakhani
  * @author Anirudh Kotamraju
  * @author Chirag Kaushik
  * @author Arjun Dixit
