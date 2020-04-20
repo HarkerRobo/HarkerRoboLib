@@ -8,6 +8,8 @@ package harkerrobolib.util;
 public final class Constants {
 	public static final int DEFAULT_TIMEOUT = 10;
 	public static final int PID_PRIMARY = 0;
-	public static final int PID_AUXILIARY = 1;
-	
+    public static final int PID_AUXILIARY = 1;
+    
+    public static final double FEET_PER_METER = 3.28084;
+    public static final double METERS_PER_FOOT = 0.3048;
 }
