@@ -32,7 +32,7 @@ import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
  * 
  * @since 11/1/19
  */
-public class HSSwerveDrivetrain extends SubsystemBase {
+public abstract class HSSwerveDrivetrain extends SubsystemBase {
     private SwerveModule topLeft;
     private SwerveModule topRight;
     private SwerveModule backLeft;
