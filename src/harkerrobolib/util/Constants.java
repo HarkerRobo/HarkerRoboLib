@@ -12,4 +12,8 @@ public final class Constants {
     
     public static final double FEET_PER_METER = 3.28084;
     public static final double METERS_PER_FOOT = 0.3048;
+
+    public static final double JOYSTICK_DEADBAND = 0.1;
+    public static final double TRIGGER_DEADBAND = 0.1;
+    
 }
