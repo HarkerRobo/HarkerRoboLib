@@ -1,7 +1,6 @@
 package harkerrobolib.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.MedianFilter;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
@@ -29,9 +28,7 @@ public class SwerveAlignWithLimelight extends CommandBase {
 
     private PIDController txController;
     
-    private static final long spinTime = 100;
     private HSSwerveDrivetrain drivetrain;
-    private long time;
     private int driveVelocitySlot;
     private int anglePositionSlot;
     private double driveRampRate;
@@ -39,9 +36,11 @@ public class SwerveAlignWithLimelight extends CommandBase {
     private double maxDriveVelocity;
     private double maxRotationVelocity;
     private HSGamepad driverGamepad;
+    private double txSetpoint;
 
     public SwerveAlignWithLimelight(HSSwerveDrivetrain drivetrain, PIDController txController, int driveVelocitySlot, int anglePositionSlot, 
-        double driveRampRate, double angleRampRate, double maxRotationVelocity, HSGamepad driverGamepad, double maxDriveVelocity, double outputMultiplier) {
+        double driveRampRate, double angleRampRate, double maxRotationVelocity, HSGamepad driverGamepad, double maxDriveVelocity, double outputMultiplier,
+        double txSetpoint) {
         addRequirements(drivetrain);
 
         this.txController = txController;
@@ -56,6 +55,8 @@ public class SwerveAlignWithLimelight extends CommandBase {
         this.maxDriveVelocity = maxDriveVelocity;
 
         this.outputMultiplier = outputMultiplier;
+
+        this.txSetpoint = txSetpoint;
     }
     
     @Override
@@ -69,8 +70,7 @@ public class SwerveAlignWithLimelight extends CommandBase {
         Limelight.setCamModeVision();
         Limelight.setLEDS(true);
 
-        txController.setSetpoint(0);
-        time = 0;
+        txController.setSetpoint(txSetpoint);
     }
     
     @Override
@@ -93,8 +93,7 @@ public class SwerveAlignWithLimelight extends CommandBase {
 
         SwerveModuleState[] moduleStates = drivetrain.getKinematics().toSwerveModuleStates(speeds);
         
-        if (System.currentTimeMillis() - time > spinTime)
-            drivetrain.setDrivetrainVelocity(moduleStates[0], moduleStates[1], moduleStates[2], moduleStates[3], false, false);
+        drivetrain.setDrivetrainVelocity(moduleStates[0], moduleStates[1], moduleStates[2], moduleStates[3], false, false);
     }
 
     @Override
