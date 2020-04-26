@@ -10,8 +10,9 @@ import harkerrobolib.util.Constants;
 
 /**
  * Represents a basic PigeonIMU with additional useful features.
+ * 
  * @author Finn Frankis 
- * @version 10/21/18
+ * @since 10/21/18
  */
 public class HSPigeon extends PigeonIMU {
 
@@ -40,10 +41,10 @@ public class HSPigeon extends PigeonIMU {
 	
 	/**
      * Gets the current yaw value of the pigeon.
+     * 
      * @return the yaw
      */
-    public double getYaw()
-    {
+    public double getYaw() {
         double[] ypr = new double[3];
         getYawPitchRoll(ypr);
         return ypr[0];
@@ -51,10 +52,10 @@ public class HSPigeon extends PigeonIMU {
     
     /**
      * Gets the current pitch value of the pigeon.
+     * 
      * @return the pitch
      */
-    public double getPitch()
-    {
+    public double getPitch() {
         double[] ypr = new double[3];
         getYawPitchRoll(ypr);
         return ypr[1];
@@ -64,8 +65,7 @@ public class HSPigeon extends PigeonIMU {
      * Gets the current roll value of the pigeon.
      * @return the roll
      */
-    public double getRoll()
-    {
+    public double getRoll() {
         double[] ypr = new double[3];
         getYawPitchRoll(ypr);
         return ypr[2];
@@ -73,34 +73,35 @@ public class HSPigeon extends PigeonIMU {
     
     /**
      * Sets the pigeon yaw to a given value.
+     * 
      * @param angle the angle value to which the pigeon should be set, in pigeon units 
      * where 1 rotation is 8192 units
      */
 	@Override
-    public ErrorCode setYaw(double angle)
-    {
+    public ErrorCode setYaw(double angle) {
         return super.setYaw(angle * 64, timeout); // CTRE's error where replaced angle is off by a factor of 64
     }
     
     /**
      * Adds a given value to the pigeon yaw.
+     * 
      * @param angle the angle value which should be added to the pigeon yaw value, in pigeon units 
      * where 1 rotation is 8192 units
      */
-    public ErrorCode addYaw (double angle)
-    {
+    @Override
+    public ErrorCode addYaw (double angle) {
         return super.addYaw(angle * 64, timeout); // CTRE's error where replaced angle is off by a factor of 64
     }
  
     /**
      * Zeros the pigeon.
      */
-    public void zero()
-    {
+    public void zero() {
         setYaw(0);
         setAccumZAngle(0);
     }
 
+    @Override
 	public ErrorCode setYawToCompass() {
 		return super.setYawToCompass(timeout);
     }
@@ -116,104 +117,88 @@ public class HSPigeon extends PigeonIMU {
         return ErrorCode.OK;
 	}
 
-	
+    @Override
 	public ErrorCode addFusedHeading(double angleDeg) {
 		return super.addFusedHeading(angleDeg, timeout);
 	}
 
-	
+    @Override
 	public ErrorCode setFusedHeadingToCompass() {
-		// TODO Auto-generated method stub
 		return super.setFusedHeadingToCompass(timeout);
 	}
 
-	
+    @Override
 	public ErrorCode setAccumZAngle(double angleDeg) {
-		// TODO Auto-generated method stub
 		return super.setAccumZAngle(angleDeg, timeout);
 	}
 
-	
-	public ErrorCode configTemperatureCompensationEnable(boolean bTempCompEnable) {
-		// TODO Auto-generated method stub
-		return super.configTemperatureCompensationEnable(bTempCompEnable, timeout);
-	}
+	@Override
+    public ErrorCode setTemperatureCompensationDisable(boolean bTempCompDisable) {
+        return super.setTemperatureCompensationDisable(bTempCompDisable, timeout);
+    }
 
-	
+    @Override
 	public ErrorCode setCompassDeclination(double angleDegOffset) {
-		// TODO Auto-generated method stub
 		return super.setCompassDeclination(angleDegOffset, timeout);
 	}
 
-	
+    @Override
 	public ErrorCode setCompassAngle(double angleDeg) {
-		// TODO Auto-generated method stub
 		return super.setCompassAngle(angleDeg, timeout);
 	}
 
-	
+    @Override
 	public ErrorCode enterCalibrationMode(CalibrationMode calMode) {
-		// TODO Auto-generated method stub
 		return super.enterCalibrationMode(calMode, timeout);
 	}
 
-	
+    @Override
 	public ErrorCode configSetCustomParam(int newValue, int paramIndex) {
-		// TODO Auto-generated method stub
 		return super.configSetCustomParam(newValue, paramIndex, timeout);
 	}
 
-	
+    @Override
 	public int configGetCustomParam(int paramIndex, int timoutMs) {
-		// TODO Auto-generated method stub
 		return super.configGetCustomParam(paramIndex, timoutMs);
 	}
 
-	
+    @Override
 	public ErrorCode configSetParameter(ParamEnum param, double value, int subValue, int ordinal) {
-		// TODO Auto-generated method stub
 		return super.configSetParameter(param, value, subValue, ordinal, timeout);
 	}
 
-	
+    @Override
 	public ErrorCode configSetParameter(int param, double value, int subValue, int ordinal) {
-		// TODO Auto-generated method stub
 		return super.configSetParameter(param, value, subValue, ordinal, timeout);
-	}
-
-	
+    }
+    
+    @Override
 	public double configGetParameter(ParamEnum param, int ordinal) {
-		// TODO Auto-generated method stub
 		return super.configGetParameter(param, ordinal, timeout);
 	}
 
-	
+    @Override
 	public double configGetParameter(int param, int ordinal) {
-		// TODO Auto-generated method stub
 		return super.configGetParameter(param, ordinal, timeout);
 	}
-
-	
+    
+    @Override
 	public ErrorCode setStatusFramePeriod(PigeonIMU_StatusFrame statusFrame, int periodMs) {
-		// TODO Auto-generated method stub
 		return super.setStatusFramePeriod(statusFrame, periodMs, timeout);
 	}
-
-	
+    
+    @Override
 	public ErrorCode setStatusFramePeriod(int statusFrame, int periodMs) {
-		// TODO Auto-generated method stub
 		return super.setStatusFramePeriod(statusFrame, periodMs, timeout);
 	}
-
-	
+    
+    @Override
 	public int getStatusFramePeriod(PigeonIMU_StatusFrame frame) {
-		// TODO Auto-generated method stub
 		return super.getStatusFramePeriod(frame, timeout);
 	}
-
-	
+    
+    @Override
 	public ErrorCode clearStickyFaults() {
-		// TODO Auto-generated method stub
 		return super.clearStickyFaults(timeout);
 	}
 
