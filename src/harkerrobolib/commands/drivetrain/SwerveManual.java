@@ -19,23 +19,17 @@ import harkerrobolib.wrappers.HSGamepad;
  * 'back' is defined as closest to the battery
  * 'left' is defined as left when standing at the back and looking forward
  * 
+ * @author Shahzeb Lakhani
  * @author Chirag Kaushik
  * @author Angela Jia
  * @author Jatin Kohli
- * @author Shahzeb Lakhani
  * @author Anirudh Kotamraju
  * @author Arjun Dixit
  * @author Rohan Bhowmik
  * @since 11/4/19
  */
 public class SwerveManual extends IndefiniteCommand {
-    private static final boolean IS_PERCENT_OUTPUT = false;
     private double outputMultiplier;
-
-    private static double HIGH_VELOCITY_HEADING_MULTIPLIER;
-    private static double LOW_VELOCITY_HEADING_MULTIPLIER;
-    private static final double ACCELERATION_HEADING_MULTIPLIER = 0;
-    private static final double TURN_VEL_THRESHOLD = 160;
 
     private double translateX, translateY, turnMagnitude;
     
@@ -59,6 +53,12 @@ public class SwerveManual extends IndefiniteCommand {
     private double maxRotationVelocity;
     private double pigeon_kP;
 
+    private boolean isPercentOutput;
+    private double lowHeadingMultipier;
+    private double highHeadingMultipler;
+    private double turnVelThreshold;
+    private double accelMultiplier;
+
     /**
      * Constructor for SwerveManual Command
      * 
@@ -70,9 +70,38 @@ public class SwerveManual extends IndefiniteCommand {
      * @param maxRotationVelocity The max rotational velocity in omega radians per second
      * @param pigeon_kP The 'P' constant to set a pigeon to an angle.
      * @param outputMultiplier The output multiplier for the velocity of the robot.
+     * @param isPercentOutput True if the drive wheels should be driven in Percent Output mode, false for Velocity PID mode
      */
     public SwerveManual(HSSwerveDrivetrain drivetrain, int driveVelocitySlot, int anglePositionSlot, 
-        HSGamepad gamepad, double maxDriveVelocity, double maxRotationVelocity, double pigeon_kP, double outputMultiplier) {
+        HSGamepad gamepad, double maxDriveVelocity, double maxRotationVelocity, double pigeon_kP, double outputMultiplier,
+        boolean isPercentOutput) {
+        this(drivetrain, driveVelocitySlot, anglePositionSlot, gamepad, maxDriveVelocity, maxRotationVelocity,
+        pigeon_kP, outputMultiplier, isPercentOutput, 0, 0, 0, 0);
+    }
+    
+    /**
+     * Constructor for SwerveManual Command
+     * 
+     * @param drivetrain The drivetrain instance
+     * @param driveVelocitySlot The drive velocity slot
+     * @param anglePositionSlot The angle position slot
+     * @param gamepad The driver gamepad to control the robot
+     * @param maxDriveVelocity The max translational velocity of the robot
+     * @param maxRotationVelocity The max rotational velocity in omega radians per second
+     * @param pigeon_kP The 'P' constant to set a pigeon to an angle.
+     * @param outputMultiplier The output multiplier for the velocity of the robot.
+     * @param isPercentOutput True if the drive wheels should be driven in Percent Output mode, false for Velocity PID mode
+     * <h3>
+     * If the below parameters are not set, they are set to 0 automatically:
+     * </h3>
+     * @param lowHeadingMultiplier Value to multiply the pigeon velocity by (if the velocity is less than or equal to turnVelThreshold) and add to the output
+     * @param highHeadingMultiplier Value to multiply the pigeon velocity by (if the velocity is greater than turnVelThreshold) and add to the output
+     * @param turnVelThreshold The minimum velocity needed so highHeadingMultiplier is used against the current velocity
+     * @param accelMultiplier Value to multipy the pigeon acceleration by and add to the output
+     */
+    public SwerveManual(HSSwerveDrivetrain drivetrain, int driveVelocitySlot, int anglePositionSlot, 
+        HSGamepad gamepad, double maxDriveVelocity, double maxRotationVelocity, double pigeon_kP, double outputMultiplier,
+        boolean isPercentOutput, double lowHeadingMultiplier, double highHeadingMultiplier, double turnVelThreshold, double accelMultiplier) {
         addRequirements(drivetrain);
 
         this.driveVelocitySlot = driveVelocitySlot;
@@ -82,7 +111,11 @@ public class SwerveManual extends IndefiniteCommand {
         this.maxRotationVelocity = maxRotationVelocity;
         this.pigeon_kP = pigeon_kP;
         this.outputMultiplier = outputMultiplier;
-        pigeonFlag = false;
+        this.isPercentOutput = isPercentOutput;
+        this.lowHeadingMultipier = lowHeadingMultiplier;
+        this.highHeadingMultipler = highHeadingMultiplier;
+        this.turnVelThreshold = turnVelThreshold;
+        this.accelMultiplier = accelMultiplier;
 
         prevTime = Timer.getFPGATimestamp();
         lastPigeonUpdateTime = Timer.getFPGATimestamp();
@@ -124,10 +157,10 @@ public class SwerveManual extends IndefiniteCommand {
         double currentPigeonHeading = drivetrain.getPigeon().getFusedHeading();
 
         if(pigeonFlag && turnMagnitude == 0) { //If there was joystick input but now there is not
-            double velocityHeadingMultiplier = Math.abs(turnVel) > TURN_VEL_THRESHOLD ? HIGH_VELOCITY_HEADING_MULTIPLIER : LOW_VELOCITY_HEADING_MULTIPLIER;
+            double velocityHeadingMultiplier = Math.abs(turnVel) > turnVelThreshold ? highHeadingMultipler : lowHeadingMultipier;
 
             // account for momentum when turning
-            pigeonAngle = currentPigeonHeading + turnVel * velocityHeadingMultiplier + turnAccel * ACCELERATION_HEADING_MULTIPLIER;
+            pigeonAngle = currentPigeonHeading + turnVel * velocityHeadingMultiplier + turnAccel * accelMultiplier;
         }
 
         pigeonFlag = Math.abs(turnMagnitude) > 0; //Update pigeon flag
@@ -143,7 +176,7 @@ public class SwerveManual extends IndefiniteCommand {
         SwerveModuleState[] moduleStates = drivetrain.getKinematics().toSwerveModuleStates(speeds);
 
         if (joystickFlag)
-            drivetrain.setDrivetrainVelocity(moduleStates[0], moduleStates[1], moduleStates[2], moduleStates[3], IS_PERCENT_OUTPUT, false);
+            drivetrain.setDrivetrainVelocity(moduleStates[0], moduleStates[1], moduleStates[2], moduleStates[3], isPercentOutput, false);
 
         if (Timer.getFPGATimestamp() - lastPigeonUpdateTime > 0.01) {
             double currentTime = Timer.getFPGATimestamp();

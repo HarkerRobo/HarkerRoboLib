@@ -26,10 +26,13 @@ import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
  * @author Shahzeb Lakhani
  * @author Anirudh Kotamraju
  * @author Arjun Dixit
+ * 
+ * @version 5/3/20
  */
-public class SwerveDriveWithOdometry extends CommandBase {
-    private final int ALLOWABLE_ERROR = 5;
-    private final int TIMEOUT = 400;
+public class FollowTrajectoryWithOdometry extends CommandBase {
+    private double allowableError;
+    private final double timeout;
+    
     private HSSwerveDrivetrain drivetrain;
 
     private final Timer timer = new Timer();
@@ -43,8 +46,42 @@ public class SwerveDriveWithOdometry extends CommandBase {
     private final ProfiledPIDController thetaController;
     private final Consumer<SwerveModuleState[]> outputModuleStates;
 
-    public SwerveDriveWithOdometry(Trajectory trajectory, Rotation2d heading, HSSwerveDrivetrain drivetrain, 
+    /**
+     * Constructor for FollowTrajectoryWithOdometry. 
+     * <p>
+     * Defaults the wheel allowable errors and timeouts 
+     * to 400ms and 5 degrees respectively.
+     * 
+     * @param trajectory The trajectory to follow.
+     * @param heading The heading to maintain throughout the profile.
+     * @param drivetrain The drivetrain instance.
+     * @param xController The PID Controller to closed loop to an X position.
+     * @param yController The PID Controller to closed loop to a Y position.
+     * @param thetaController The PID Controller to closed loop to an angle.
+     */
+    public FollowTrajectoryWithOdometry(Trajectory trajectory, Rotation2d heading, HSSwerveDrivetrain drivetrain, 
             PIDController xController, PIDController yController, ProfiledPIDController thetaController) {
+        this(trajectory, heading, drivetrain, xController, yController, thetaController, 400, 5);
+    }
+
+    /**
+     * Standard Constructor for FollowTrajectoryWithOdometry.
+     * 
+     * @param trajectory The trajectory to follow.
+     * @param heading The heading to maintain throughout the profile.
+     * @param drivetrain The drivetrain instance.
+     * @param xController The PID Controller to closed loop to an X position.
+     * @param yController The PID Controller to closed loop to a Y position.
+     * @param thetaController The PID Controller to closed loop to an angle.
+     * <h3>
+     * The following parameters are optional:
+     * </h3>
+     * @param allowableError The allowable error the wheels must reach before they have reached their first heading
+     * @param timeout The timeout for the wheels to rotate to their proper heading
+     */
+    public FollowTrajectoryWithOdometry(Trajectory trajectory, Rotation2d heading, HSSwerveDrivetrain drivetrain, 
+            PIDController xController, PIDController yController, ProfiledPIDController thetaController, double allowableError,
+            double timeout) {
 
         this.trajectory = trajectory;
         this.heading = heading;
@@ -56,8 +93,10 @@ public class SwerveDriveWithOdometry extends CommandBase {
         this.xController = xController;
         this.yController = yController;
         this.thetaController = thetaController;
-
+        this.timeout = timeout;
+        this.allowableError = allowableError;
         this.outputModuleStates = drivetrain::setDrivetrainModuleStates;
+
         addRequirements(drivetrain);
     }
 
@@ -77,11 +116,11 @@ public class SwerveDriveWithOdometry extends CommandBase {
         Rotation2d initialRotation = trajectory.getInitialPose().getRotation().minus(Rotation2d.fromDegrees(0));
 
         //Perhaps add some functionality to rotate robot to the heading as well
-        while (System.currentTimeMillis() - initialTime < TIMEOUT && !isAtSepoint) {
-            isAtSepoint = Math.abs(drivetrain.getTopLeft().getAngleErrorDegrees(initialRotation.getDegrees())) < ALLOWABLE_ERROR
-                && Math.abs(drivetrain.getTopRight().getAngleErrorDegrees(initialRotation.getDegrees())) < ALLOWABLE_ERROR
-                && Math.abs(drivetrain.getBackLeft().getAngleErrorDegrees(initialRotation.getDegrees())) < ALLOWABLE_ERROR
-                && Math.abs(drivetrain.getBackRight().getAngleErrorDegrees(initialRotation.getDegrees())) < ALLOWABLE_ERROR;
+        while (System.currentTimeMillis() - initialTime < timeout && !isAtSepoint) {
+            isAtSepoint = Math.abs(drivetrain.getTopLeft().getAngleErrorDegrees(initialRotation.getDegrees())) < allowableError
+                && Math.abs(drivetrain.getTopRight().getAngleErrorDegrees(initialRotation.getDegrees())) < allowableError
+                && Math.abs(drivetrain.getBackLeft().getAngleErrorDegrees(initialRotation.getDegrees())) < allowableError
+                && Math.abs(drivetrain.getBackRight().getAngleErrorDegrees(initialRotation.getDegrees())) < allowableError;
 
             drivetrain.setDrivetrainVelocity(
                 new SwerveModuleState(0, initialRotation), 

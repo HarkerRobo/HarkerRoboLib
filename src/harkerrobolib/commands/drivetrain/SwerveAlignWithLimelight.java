@@ -21,7 +21,7 @@ import harkerrobolib.wrappers.HSGamepad;
  * @author Angela Jia
  * @author Jatin Kohli
  * @author Anirudh Kotamraju
- * @since April 19, 2020
+ * @version 5/3/20
  */
 public class SwerveAlignWithLimelight extends CommandBase {
     private double outputMultiplier;
@@ -37,10 +37,27 @@ public class SwerveAlignWithLimelight extends CommandBase {
     private double maxRotationVelocity;
     private HSGamepad driverGamepad;
     private double txSetpoint;
+    private double rotationMagnitude;
 
+    /**
+     * Constructor for SwerveAlignWithLimelight
+     * 
+     * @param drivetrain The drivetrain instance.
+     * @param txController The PID Controller to keep track of hte Limelight tX (horizontal offset).
+     * @param driveVelocitySlot The drive motor velocity slot.
+     * @param anglePositionSlot The angle motor position slot.
+     * @param driveRampRate The ramp rate for the drive motor.
+     * @param angleRampRate The ramp rate for the angle motor.
+     * @param maxRotationVelocity The maximum velocity to spin the drive motors at.
+     * @param driverGamepad The driver gamepad/controller.
+     * @param maxDriveVelocity The max drive velocity of the drivetrain.
+     * @param outputMultiplier The value (between 0 and 1) to multiply the joystick input by before calculating translation output.
+     * @param txSetpoint The endpoint of the tx alignment.
+     * @param rotationMagnitude The manual rotation speed of the robot when no target is in sight.
+     */
     public SwerveAlignWithLimelight(HSSwerveDrivetrain drivetrain, PIDController txController, int driveVelocitySlot, int anglePositionSlot, 
         double driveRampRate, double angleRampRate, double maxRotationVelocity, HSGamepad driverGamepad, double maxDriveVelocity, double outputMultiplier,
-        double txSetpoint) {
+        double txSetpoint, double rotationMagnitude) {
         addRequirements(drivetrain);
 
         this.txController = txController;
@@ -53,7 +70,7 @@ public class SwerveAlignWithLimelight extends CommandBase {
 
         this.driverGamepad = driverGamepad;
         this.maxDriveVelocity = maxDriveVelocity;
-
+        this.rotationMagnitude = rotationMagnitude;
         this.outputMultiplier = outputMultiplier;
 
         this.txSetpoint = txSetpoint;
@@ -82,7 +99,7 @@ public class SwerveAlignWithLimelight extends CommandBase {
         double translateX = MathUtil.mapJoystickOutput(driverGamepad.getLeftX(), Constants.JOYSTICK_DEADBAND);
         double translateY = MathUtil.mapJoystickOutput(driverGamepad.getLeftY(), Constants.JOYSTICK_DEADBAND);
         
-        double turnManual = -3 * MathUtil.mapJoystickOutput(driverGamepad.getRightX(), Constants.JOYSTICK_DEADBAND);
+        double turnManual = -1 * rotationMagnitude * MathUtil.mapJoystickOutput(driverGamepad.getRightX(), Constants.JOYSTICK_DEADBAND);
         
         translateX *= outputMultiplier * maxDriveVelocity;
         translateY *= outputMultiplier * maxDriveVelocity;

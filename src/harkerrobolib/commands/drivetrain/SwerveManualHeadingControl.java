@@ -28,13 +28,13 @@ import harkerrobolib.wrappers.HSJoystickButton;
  * @author Arjun Dixit
  * @author Rohan Bhowmik
  * 
- * @since April 19, 2020
+ * @version May 3, 2020
  */
 public class SwerveManualHeadingControl extends IndefiniteCommand {
     private double translateX, translateY, headingX, headingY, headingAngle, turnMagnitude;
     
-    public PIDController headingController;
-    public static boolean joystickFlag, headingFlag, flag, prevHeadingFlag;
+    private PIDController headingController;
+    private static boolean joystickFlag, headingFlag, hadHeading, prevHeadingFlag;
 
     private static boolean counterClockwisePressed, counterClockwiseFlag, clockwisePressed, clockwiseFlag;
     private boolean hasSlowMode;
@@ -42,7 +42,6 @@ public class SwerveManualHeadingControl extends IndefiniteCommand {
     private boolean centricity;
     private boolean prevToggleCentricity;
     private boolean currentToggleCentricity;
-    public static boolean isNotOptimized;
 
     private HSGamepad gamepad;
     private HSSwerveDrivetrain drivetrain;
@@ -59,43 +58,110 @@ public class SwerveManualHeadingControl extends IndefiniteCommand {
     
     private double slowModeMultiplier;
     private double outputMultiplier;
+    private double rotationHeading;
+    private double outputManualRotation;
 
     /**
-     * Has no optional parameters
+     * Normal constructor excluding any additional features such as slowmode or 
+     *.
+     * @param headingController The PID Controller keeping track of the pigeon's heading.
+     * @param gamepad The controller to read input from.
+     * @param turnClockwise the button used to rotate the robot quickly clockwise.
+     * @param turnCounterClockwise the button used to rotate the robot quickly counterclockwise.
+     * @param rotationHeading The amount (in degrees) to rotate while the button is pressed (Ex. 2020's value was 130).
+     * @param outputManualRotation The output in which to rotate when pressing the button.
+     * @param driveVelocitySlot The drive motor velocity slot.
+     * @param anglePositionSlot The angle motor position slot.
+     * @param maxDriveVelocity The maximum drive velocity.
+     * @param maxRotationVelocity The maximum rotation velocity.
+     * @param outputMultiplier The output multiplier.
      */
     public SwerveManualHeadingControl(HSSwerveDrivetrain drivetrain, PIDController headingController, HSGamepad gamepad,
-            HSJoystickButton turnClockwise, HSJoystickButton turnCounterClockwise, int driveVelocitySlot, int anglePositionSlot,
-            double maxDriveVelocity, double maxRotationVelocity, double outputMultiplier) {
-        this(drivetrain, headingController, gamepad, turnClockwise, turnCounterClockwise, driveVelocitySlot, 
-            anglePositionSlot, maxDriveVelocity, maxRotationVelocity, outputMultiplier, null, 1, null);
+            HSJoystickButton turnClockwise, HSJoystickButton turnCounterClockwise, double rotationHeading, double outputManualRotation, int driveVelocitySlot, 
+            int anglePositionSlot, double maxDriveVelocity, double maxRotationVelocity, double outputMultiplier) {
+        this(drivetrain, headingController, gamepad, turnClockwise, turnCounterClockwise, rotationHeading, outputManualRotation,
+        driveVelocitySlot, anglePositionSlot, maxDriveVelocity, maxRotationVelocity, outputMultiplier, null, 1, null);
     }   
     
     /**
-     * Has Slow Mode functionality 
+     * Constructor with a specified button and multiplier for slow mode but no robot-field centric toggle button
+     * 
+     * @param drivetrain The Drivetrain instance.
+     * @param headingController The PID Controller keeping track of the pigeon's heading.
+     * @param gamepad The controller to read input from.
+     * @param turnClockwise the button used to rotate the robot quickly clockwise.
+     * @param turnCounterClockwise the button used to rotate the robot quickly counterclockwise.
+     * @param rotationHeading The amount (in degrees) to rotate while the button is pressed (Ex. 2020's value was 130).
+     * @param outputManualRotation The output in which to rotate when pressing the button.
+     * @param driveVelocitySlot The drive motor velocity slot.
+     * @param anglePositionSlot The angle motor position slot.
+     * @param maxDriveVelocity The maximum drive velocity.
+     * @param maxRotationVelocity The maximum rotation velocity.
+     * @param outputMultiplier The output multiplier.
+     * <h3>
+     * The next parameters are optional, without it no button will be bound for utilizing slow mode:
+     * </h3>
+     * @param slowMode The button to activate slow mode when pressed.
+     * @param slowModeMultipier The multiplier for the slowmode.
      */
     public SwerveManualHeadingControl(HSSwerveDrivetrain drivetrain, PIDController headingController, HSGamepad gamepad,
-            HSJoystickButton turnClockwise, HSJoystickButton turnCounterClockwise, int driveVelocitySlot, int anglePositionSlot,
-            double maxDriveVelocity, double maxRotationVelocity, double outputMultiplier, HSJoystickButton slowMode, double slowModeMultipier) {
-        this(drivetrain, headingController, gamepad, turnClockwise, turnCounterClockwise, driveVelocitySlot, 
+            HSJoystickButton turnClockwise, HSJoystickButton turnCounterClockwise, double rotationHeading, double outputManualRotation, int driveVelocitySlot, 
+            int anglePositionSlot, double maxDriveVelocity, double maxRotationVelocity, double outputMultiplier, HSJoystickButton slowMode, double slowModeMultipier) {
+        this(drivetrain, headingController, gamepad, turnClockwise, turnCounterClockwise, rotationHeading, outputManualRotation, driveVelocitySlot, 
             anglePositionSlot, maxDriveVelocity, maxRotationVelocity, outputMultiplier, slowMode, slowModeMultipier, null);
     }
 
-    /** 
-      * Has Toggling centricity
+    /**
+     * Normal constructor excluding any additional features such as slowmode or 
+     *.
+     * @param headingController The PID Controller keeping track of the pigeon's heading.
+     * @param gamepad The controller to read input from.
+     * @param turnClockwise the button used to rotate the robot quickly clockwise.
+     * @param turnCounterClockwise the button used to rotate the robot quickly counterclockwise.
+     * @param rotationHeading The amount (in degrees) to rotate while the button is pressed (Ex. 2020's value was 130).
+     * @param outputManualRotation The output in which to rotate when pressing the button.
+     * @param driveVelocitySlot The drive motor velocity slot.
+     * @param anglePositionSlot The angle motor position slot.
+     * @param maxDriveVelocity The maximum drive velocity.
+     * @param maxRotationVelocity The maximum rotation velocity.
+     * @param outputMultiplier The output multiplier.
+     * <h3>
+     * The next parameter is optional, without it no button will be bound for toggling centricity.
+     * </h3>
+     * @param toggleCentricity Button to toggle between robot and field centric driving modes.
      */
     public SwerveManualHeadingControl(HSSwerveDrivetrain drivetrain, PIDController headingController, HSGamepad gamepad,
-            HSJoystickButton turnClockwise, HSJoystickButton turnCounterClockwise, int driveVelocitySlot, int anglePositionSlot,
-            double maxDriveVelocity, double maxRotationVelocity, double outputMultiplier, HSJoystickButton toggleCentricity) {
-        this(drivetrain, headingController, gamepad, turnClockwise, turnCounterClockwise, driveVelocitySlot, 
-                anglePositionSlot, maxDriveVelocity, maxRotationVelocity, outputMultiplier, null, 1, toggleCentricity);
+            HSJoystickButton turnClockwise, HSJoystickButton turnCounterClockwise, double rotationHeading, double outputManualRotation, int driveVelocitySlot, 
+            int anglePositionSlot, double maxDriveVelocity, double maxRotationVelocity, double outputMultiplier, HSJoystickButton toggleCentricity) {
+        this(drivetrain, headingController, gamepad, turnClockwise, turnCounterClockwise, rotationHeading, outputManualRotation, 
+        driveVelocitySlot, anglePositionSlot, maxDriveVelocity, maxRotationVelocity, outputMultiplier, null, 1, toggleCentricity);
     }
 
     /**
-     * Toggling field centric and slowmode
+     * Constructor with both a button and multiplier for slow mode and a button for toggling between field and robot centric mode
+     * 
+     * @param drivetrain The Drivetrain instance.
+     * @param headingController The PID Controller keeping track of the pigeon's heading.
+     * @param gamepad The controller to read input from.
+     * @param turnClockwise the button used to rotate the robot quickly clockwise.
+     * @param turnCounterClockwise the button used to rotate the robot quickly counterclockwise.
+     * @param rotationHeading The amount (in degrees) to rotate while the button is pressed (Ex. 2020's value was 130).
+     * @param outputManualRotation The output in which to rotate when pressing the button.
+     * @param driveVelocitySlot The drive motor velocity slot.
+     * @param anglePositionSlot The angle motor position slot.
+     * @param maxDriveVelocity The maximum drive velocity.
+     * @param maxRotationVelocity The maximum rotation velocity.
+     * @param outputMultiplier The output multiplier.
+     * <h3>
+     *  The following parameters are all optional. They will default to null, 0.0, and null respectively. 
+     * </h3>
+     * @param slowMode The button to activate slow mode when pressed.
+     * @param slowModeMultipier The multiplier for the slowmode.
+     * @param toggleCentricity The button to toggle the centricity of the robot(Field relative/Robot-Centric). 
      */
     public SwerveManualHeadingControl(HSSwerveDrivetrain drivetrain, PIDController headingController, HSGamepad gamepad,
-            HSJoystickButton turnClockwise, HSJoystickButton turnCounterClockwise, int driveVelocitySlot, int anglePositionSlot,
-            double maxDriveVelocity, double maxRotationVelocity, double outputMultiplier, HSJoystickButton slowMode, double slowModeMultiplier, 
+            HSJoystickButton turnClockwise, HSJoystickButton turnCounterClockwise, double rotationHeading, double outputManualRotation, int driveVelocitySlot, 
+            int anglePositionSlot, double maxDriveVelocity, double maxRotationVelocity, double outputMultiplier, HSJoystickButton slowMode, double slowModeMultiplier, 
             HSJoystickButton toggleCentricity) {
         addRequirements(drivetrain);
 
@@ -104,6 +170,7 @@ public class SwerveManualHeadingControl extends IndefiniteCommand {
         this.anglePositionSlot = anglePositionSlot;
         this.turnClockwise = turnClockwise;
         this.turnCounterClockwise = turnCounterClockwise;
+        this.rotationHeading = rotationHeading;
         this.headingController = headingController;
         this.maxDriveVelocity = maxDriveVelocity;
         this.gamepad = gamepad;
@@ -112,16 +179,11 @@ public class SwerveManualHeadingControl extends IndefiniteCommand {
         this.outputMultiplier = outputMultiplier;
         this.slowModeMultiplier = slowModeMultiplier;
         this.toggleCentricity = toggleCentricity;
-
+        this.rotationHeading = rotationHeading;
+        this.outputManualRotation = outputManualRotation;
+        
         hasSlowMode = (slowMode != null);
         hasToggleCentricity = (toggleCentricity != null); 
-        currentToggleCentricity = false;
-        prevToggleCentricity = false;
-        centricity = false;
-        counterClockwisePressed = false;
-        counterClockwiseFlag = false;
-        clockwisePressed = false;
-        clockwiseFlag = false;
     }
 
     @Override
@@ -133,11 +195,10 @@ public class SwerveManualHeadingControl extends IndefiniteCommand {
         drivetrain.applyToAllAngle(
             (angleMotor) -> angleMotor.selectProfileSlot(anglePositionSlot, Constants.PID_PRIMARY)
         );
-
+        
         joystickFlag = false;
         headingFlag = false;
-        isNotOptimized = false;
-        flag = false;
+        hadHeading = false;
         prevHeadingFlag = false;
     }
 
@@ -150,7 +211,7 @@ public class SwerveManualHeadingControl extends IndefiniteCommand {
         
         currentToggleCentricity = hasToggleCentricity && toggleCentricity.get();
         if (currentToggleCentricity && !prevToggleCentricity) {
-            centricity = !centricity;
+            centricity = !centricity; //switch modes
         }
 
         if (headingY != 0 || headingX != 0) {
@@ -171,10 +232,10 @@ public class SwerveManualHeadingControl extends IndefiniteCommand {
         }
 
         if (!headingFlag && prevHeadingFlag) {
-            flag = true;
+            hadHeading = true;
         } 
         else if (headingFlag) {
-            flag = false;
+            hadHeading = false;
         }
         
         turnMagnitude = -1 * headingController.calculate(drivetrain.getPigeon().getFusedHeading(), headingAngle);
@@ -192,34 +253,33 @@ public class SwerveManualHeadingControl extends IndefiniteCommand {
         counterClockwisePressed = turnCounterClockwise.get();
 
         if (counterClockwiseFlag) 
-            headingAngle = drivetrain.getPigeon().getFusedHeading() - 130;
+            headingAngle = drivetrain.getPigeon().getFusedHeading() - rotationHeading;
 
         clockwiseFlag = clockwisePressed && !turnClockwise.get();
         clockwisePressed = turnClockwise.get();
 
         if (clockwiseFlag)
-            headingAngle = drivetrain.getPigeon().getFusedHeading() + 130;
+            headingAngle = drivetrain.getPigeon().getFusedHeading() + rotationHeading;
 
         if (counterClockwisePressed) 
-            turnMagnitude = -0.7 * outputMultiplier * maxRotationVelocity;
+            turnMagnitude = -outputManualRotation * outputMultiplier * maxRotationVelocity;
         else if (clockwisePressed)
-            turnMagnitude = 0.7 * outputMultiplier * maxRotationVelocity;
+            turnMagnitude = outputManualRotation * outputMultiplier * maxRotationVelocity;
 
         ChassisSpeeds speeds;
 
-        if (centricity) {
+        if (centricity) { //Field Centric
             speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                translateX, translateY, (headingFlag || flag) ? turnMagnitude : 0, Rotation2d.fromDegrees(drivetrain.getPigeon().getFusedHeading())
+                translateX, translateY, (headingFlag || hadHeading) ? turnMagnitude : 0, Rotation2d.fromDegrees(drivetrain.getPigeon().getFusedHeading())
             );
-        } else {
+        } else { //Robot Centric
             speeds = new ChassisSpeeds(translateX, translateY, headingX * maxRotationVelocity);
         }
 
-        // Now use this in our kinematics
         SwerveModuleState[] moduleStates = drivetrain.getKinematics().toSwerveModuleStates(speeds);
 
         if (joystickFlag)
-            drivetrain.setDrivetrainVelocity(moduleStates[0], moduleStates[1], moduleStates[2], moduleStates[3], false, isNotOptimized);
+            drivetrain.setDrivetrainVelocity(moduleStates[0], moduleStates[1], moduleStates[2], moduleStates[3], false, false);
 
         prevHeadingFlag = headingFlag;
         prevToggleCentricity = currentToggleCentricity;
@@ -228,8 +288,5 @@ public class SwerveManualHeadingControl extends IndefiniteCommand {
     @Override
     public void end(boolean interrupted) {
         drivetrain.stopAllDrive();
-
-        headingFlag = false;
-        joystickFlag = false;
     }
 }

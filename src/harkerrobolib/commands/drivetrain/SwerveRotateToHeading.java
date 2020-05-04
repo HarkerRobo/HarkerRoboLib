@@ -7,6 +7,15 @@ import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import harkerrobolib.subsystems.HSSwerveDrivetrain;
 
+/**
+ * Rotates the robot to a given heading.
+ * 
+ * @author Shahzeb Lakhani
+ * @author Anirudh Kotamraju
+ * @author Jatin Kohli
+ * 
+ * @version 5/3/2020
+ */
 public class SwerveRotateToHeading extends CommandBase {
     private double heading;
     private double turnMagnitude;
@@ -14,6 +23,14 @@ public class SwerveRotateToHeading extends CommandBase {
     private HSSwerveDrivetrain drivetrain;
     private double allowableError;
 
+    /**
+     * Constructor for SwerveRotateToHeading
+     * 
+     * @param heading The angle in degrees to rotate to
+     * @param drivetrain The drivetrain instance
+     * @param headingController The PID controller to calculate the turn magnitude
+     * @param allowableError The error threshold (in degrees) to end the command
+     */
     public SwerveRotateToHeading(double heading, HSSwerveDrivetrain drivetrain, PIDController headingController, double allowableError) {
         this.drivetrain = drivetrain;
         this.heading = heading;
@@ -23,14 +40,10 @@ public class SwerveRotateToHeading extends CommandBase {
 
     @Override
     public void initialize() {
-        while (drivetrain.getPigeon().getFusedHeading() - heading > 180) {
+        while (drivetrain.getPigeon().getFusedHeading() - heading > 180)
             heading += 360;
-        }
-
-        while (drivetrain.getPigeon().getFusedHeading() - heading <- 180) {
+        while (drivetrain.getPigeon().getFusedHeading() - heading <- 180)
             heading -= 360;
-        }
-
         turnMagnitude = 0;
     }
 
