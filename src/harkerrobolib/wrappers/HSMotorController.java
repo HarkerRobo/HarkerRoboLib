@@ -20,16 +20,62 @@ import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteLimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.StickyFaults;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.FilterConfiguration;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
 public interface HSMotorController {
 
+    ErrorCode configSupplyCurrentLimit(SupplyCurrentLimitConfiguration currLimitConfigs, int timeoutMs);
+ 
+    ErrorCode configSupplyCurrentLimit(SupplyCurrentLimitConfiguration currLimitConfigs);
+
+    ErrorCode configPeakCurrentLimit(int amps, int timeoutMs);
+ 
+    ErrorCode configPeakCurrentLimit(int amps);
+ 
+    ErrorCode configPeakCurrentDuration(int milliseconds, int timeoutMs);
+ 
+    ErrorCode configPeakCurrentDuration(int milliseconds);
+ 
+    ErrorCode configContinuousCurrentLimit(int amps, int timeoutMs);
+ 
+    ErrorCode configContinuousCurrentLimit(int amps);
+ 
+    void enableCurrentLimit(boolean enable);
+
+    ErrorCode configStatorCurrentLimit(StatorCurrentLimitConfiguration currLimitCfg, int timeoutMs);
+ 
+    ErrorCode configStatorCurrentLimit(StatorCurrentLimitConfiguration currLimitCfg);
+ 
+    ErrorCode configGetSupplyCurrentLimit(SupplyCurrentLimitConfiguration currLimitConfigsToFill, int timeoutMs);
+ 
+    ErrorCode configGetSupplyCurrentLimit(SupplyCurrentLimitConfiguration currLimitConfigsToFill);
+ 
+    ErrorCode configGetStatorCurrentLimit(StatorCurrentLimitConfiguration currLimitConfigsToFill, int timeoutMs);
+ 
+    ErrorCode configGetStatorCurrentLimit(StatorCurrentLimitConfiguration currLimitConfigsToFill);
+
+    ErrorCode configIntegratedSensorAbsoluteRange(AbsoluteSensorRange absoluteSensorRange, int timeoutMs);
+ 
+    ErrorCode configIntegratedSensorAbsoluteRange(AbsoluteSensorRange absoluteSensorRange);
+     
+    ErrorCode configIntegratedSensorOffset(double offsetDegrees, int timeoutMs);
+     
+    ErrorCode configIntegratedSensorOffset(double offsetDegrees);
+     
+    ErrorCode configIntegratedSensorInitializationStrategy(SensorInitializationStrategy initializationStrategy, int timeoutMs);
+     
+    ErrorCode configIntegratedSensorInitializationStrategy(SensorInitializationStrategy initializationStrategy);
+    
     void BaseMotorController(int arbId, String model);
 
     ErrorCode DestroyObject();
