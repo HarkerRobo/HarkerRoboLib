@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.Gains;
+import harkerrobolib.wrappers.HSMotorController;
 import harkerrobolib.wrappers.HSPigeon;
 import harkerrobolib.wrappers.HSTalon;
 
@@ -18,9 +19,9 @@ import harkerrobolib.wrappers.HSTalon;
  * @author Finn Frankis
  * @version Aug 17, 2018
  */
-public abstract class HSDiffDrivetrain extends SubsystemBase {
-    private HSTalon leftMaster;
-    private HSTalon rightMaster;
+public abstract class HSDiffDrivetrain<Motor extends HSMotorController> extends SubsystemBase {
+    private Motor leftMaster;
+    private Motor rightMaster;
     private IMotorController leftFollower;
     private IMotorController rightFollower;
     
@@ -38,7 +39,7 @@ public abstract class HSDiffDrivetrain extends SubsystemBase {
      * @param rightFollower the right folllower motor controller (Talon or Victor).
      * @param pigeon the Pigeon gyroscope.
      */
-    public HSDiffDrivetrain(HSTalon leftMaster, HSTalon rightMaster, IMotorController leftFollower,
+    public HSDiffDrivetrain(Motor leftMaster, Motor rightMaster, IMotorController leftFollower,
             IMotorController rightFollower, HSPigeon pigeon) {
         this.leftMaster = leftMaster;
         this.rightMaster = rightMaster;
@@ -59,7 +60,7 @@ public abstract class HSDiffDrivetrain extends SubsystemBase {
      * @param leftFollower the left follower motor controller (Talon or Victor).
      * @param rightFollower the right folllower motor controller (Talon or Victor).
      */
-    public HSDiffDrivetrain (HSTalon leftMaster, HSTalon rightMaster, IMotorController leftFollower,
+    public HSDiffDrivetrain (Motor leftMaster, Motor rightMaster, IMotorController leftFollower,
             IMotorController rightFollower) {
         this(leftMaster, rightMaster, leftFollower, rightFollower, null);
         hasPigeon = false;
@@ -71,7 +72,7 @@ public abstract class HSDiffDrivetrain extends SubsystemBase {
      * @param leftMaster the left master Talon.
      * @param rightMaster the right master Talon.
      */
-    public HSDiffDrivetrain (HSTalon leftMaster, HSTalon rightMaster) {
+    public HSDiffDrivetrain (Motor leftMaster, Motor rightMaster) {
         this(leftMaster, rightMaster, null, null);
         hasFollowers = false;
     }
@@ -82,7 +83,7 @@ public abstract class HSDiffDrivetrain extends SubsystemBase {
      * @param rightMaster the right master Talon.
      * @param pigeon the Pigeon gyroscope.
      */
-    public HSDiffDrivetrain (HSTalon leftMaster, HSTalon rightMaster, HSPigeon pigeon) {
+    public HSDiffDrivetrain (Motor leftMaster, Motor rightMaster, HSPigeon pigeon) {
         this(leftMaster, rightMaster, null, null, pigeon);
         hasFollowers = false;
     }
@@ -91,7 +92,7 @@ public abstract class HSDiffDrivetrain extends SubsystemBase {
      * Applies a given operation to both master Talons (see lambdas in Java for more clarification).
      * @param consumer the operation to be applied.
      */
-    public void applyToMasters (Consumer<HSTalon> consumer) {
+    public void applyToMasters (Consumer<Motor> consumer) {
         consumer.accept(leftMaster);
         consumer.accept(rightMaster);
     }
@@ -134,27 +135,15 @@ public abstract class HSDiffDrivetrain extends SubsystemBase {
      * @param peakLimit the peak limit (temporary, to account for current spikes).
      * @param peakTime the time for which the peak limit is active
      * @param continuousLimit the continuous limit, or the one which is active after the conclusion of the peak limit.
-     * @param timeout the time after which a failed current limit command will stop being retried.
      */
-    public void setCurrentLimit (int peakLimit, int peakTime, int continuousLimit, int timeout) {
-        Consumer<HSTalon> currentLimit = (talon) -> {
-            int newTimeout = (timeout == -1) ? talon.getDefaultTimeout() : timeout;
-            talon.configPeakCurrentLimit(peakLimit, newTimeout);
-            talon.configPeakCurrentDuration(peakTime, newTimeout);
-            talon.configContinuousCurrentLimit(continuousLimit, newTimeout);
+    public void setCurrentLimit(int peakLimit, int peakTime, int continuousLimit) {
+        Consumer<Motor> currentLimit = (talon) -> {
+            talon.configPeakCurrentLimit(peakLimit);
+            talon.configPeakCurrentDuration(peakTime);
+            talon.configContinuousCurrentLimit(continuousLimit);
             talon.enableCurrentLimit(true);
         };
-        applyToMasters (currentLimit);
-    }
-    
-    /**
-     * Configures both masters for current limiting, where each one's default timeout is used.
-     * @param peakLimit the peak limit (temporary, to account for current spikes).
-     * @param peakTime the time for which the peak limit is active
-     * @param continuousLimit the continuous limit, or the one which is active after the conclusion of the peak limit.
-     */
-    public void setCurrentLimit (int peakLimit, int peakTime, int continuousLimit) {
-        setCurrentLimit(peakLimit, peakTime, continuousLimit, -1);
+        applyToMasters(currentLimit);
     }
     
     /**
@@ -170,7 +159,7 @@ public abstract class HSDiffDrivetrain extends SubsystemBase {
      * Resets both masters.
      */
     public void resetMasters() {
-        applyToMasters ((talon) -> {talon.reset();});
+        applyToMasters ((talon) -> {talon.configFactoryDefault();});
     }
     
     /**
@@ -202,7 +191,7 @@ public abstract class HSDiffDrivetrain extends SubsystemBase {
      * Gets the left master controller.
      * @return the left master controller.
      */
-    public HSTalon getLeftMaster() {
+    public Motor getLeftMaster() {
         return leftMaster;
     }
     
@@ -210,7 +199,7 @@ public abstract class HSDiffDrivetrain extends SubsystemBase {
      * Gets the right master controller.
      * @return the right master controller.
      */
-    public HSTalon getRightMaster() {
+    public Motor getRightMaster() {
         return rightMaster;
     }
     
@@ -301,10 +290,10 @@ public abstract class HSDiffDrivetrain extends SubsystemBase {
      * @param leftConstants the set of constants for the left Talon
      * @param rightConstants the set of constants for the right Talon
      */
-    public void configClosedLoopConstants(int slotIndex, Gains leftConstants, Gains rightConstants) {
-        leftMaster.configClosedLoopConstants(slotIndex, leftConstants);
-        rightMaster.configClosedLoopConstants(slotIndex, rightConstants);
-    }
+    // public void configClosedLoopConstants(int slotIndex, Gains leftConstants, Gains rightConstants) {
+    //     leftMaster.configClosedLoopConstants(slotIndex, leftConstants);
+    //     rightMaster.configClosedLoopConstants(slotIndex, rightConstants);
+    // }
 
     /**
      * Drives the robot with a given percent output.

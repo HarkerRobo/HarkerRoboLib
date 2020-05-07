@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.Gains;
+import harkerrobolib.wrappers.HSMotorController;
 import harkerrobolib.wrappers.HSTalon;
 
 /**
@@ -16,7 +17,7 @@ import harkerrobolib.wrappers.HSTalon;
  * @author Chirag Kaushik
  * @since January 17, 2019
  */
-public abstract class HSWrist extends SubsystemBase {
+public abstract class HSWrist<Motor extends HSMotorController> extends SubsystemBase {
     public enum WristDirection {
         TO_BACK(1), TO_FRONT(-1);
         private final int direction;
@@ -30,7 +31,7 @@ public abstract class HSWrist extends SubsystemBase {
         }
     }
 
-    private HSTalon master;
+    private Motor master;
     private IMotorController follower;
 
     private boolean hasFollower;
@@ -38,7 +39,7 @@ public abstract class HSWrist extends SubsystemBase {
     /**
      * Creates an HSWrist with only a master talon
      */
-    public HSWrist(HSTalon master) {
+    public HSWrist(Motor master) {
         this.master = master;
         hasFollower = false;
     }
@@ -46,7 +47,7 @@ public abstract class HSWrist extends SubsystemBase {
     /**
      * Creates an HSWrist with a master talon and a follower
      */
-    public HSWrist(HSTalon master, IMotorController follower) {
+    public HSWrist(Motor master, IMotorController follower) {
         this.master = master;
         this.follower = follower;        
         hasFollower = true;
@@ -80,10 +81,6 @@ public abstract class HSWrist extends SubsystemBase {
             follower.setInverted(followerInverted);
     }
 
-    public void setCurrentLimit(int peakLimit, int peakTime, int continuousLimit) {
-        setCurrentLimit(peakLimit, peakTime, continuousLimit, -1000);
-    }
-
     /**
      * Sets the current limits of the master motor
      * @param peakLimit the peak limit 
@@ -91,12 +88,10 @@ public abstract class HSWrist extends SubsystemBase {
      * @param continuousLimit the continuous limit, which occurs after the peak limit
      * @param timeout the 
      */
-    public void setCurrentLimit(int peakLimit, int peakTime, int continuousLimit, int timeout) {
-        if(timeout < 0)
-            timeout = master.getDefaultTimeout();
-        master.configPeakCurrentLimit(peakLimit, timeout);
-        master.configPeakCurrentDuration(peakTime, timeout);
-        master.configContinuousCurrentLimit(continuousLimit, timeout);
+    public void setCurrentLimit(int peakLimit, int peakTime, int continuousLimit) {
+        master.configPeakCurrentLimit(peakLimit);
+        master.configPeakCurrentDuration(peakTime);
+        master.configContinuousCurrentLimit(continuousLimit);
     }
 
     /**
@@ -104,9 +99,9 @@ public abstract class HSWrist extends SubsystemBase {
      * @param loopIndex the loop index where the PID constants are to be stored
      * @param constant a Gains object containing the constants
      */
-    public void configureClosedLoopConstants(int loopIndex, Gains constants) {
-        master.configClosedLoopConstants(loopIndex, constants);        
-    }
+    // public void configureClosedLoopConstants(int loopIndex, Gains constants) {
+    //     master.configClosedLoopConstants(loopIndex, constants);        
+    // }
 
     /**
      * 
@@ -129,7 +124,7 @@ public abstract class HSWrist extends SubsystemBase {
      * Returns the master talon
      * @return the master talon
      */
-    public HSTalon getMaster() {
+    public Motor getMaster() {
         return master;
     }
 

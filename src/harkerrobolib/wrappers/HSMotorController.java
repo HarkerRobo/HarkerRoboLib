@@ -32,7 +32,7 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
-public interface HSMotorController {
+public interface HSMotorController extends IMotorController {
 
     ErrorCode configSupplyCurrentLimit(SupplyCurrentLimitConfiguration currLimitConfigs, int timeoutMs);
  
@@ -159,10 +159,14 @@ public interface HSMotorController {
     double getTemperature();
  
     ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice, int pidIdx, int timeoutMs);
+
+    ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice, int pidIdx);
  
     ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice);
  
     ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx, int timeoutMs);
+    
+    ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx);
  
     ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice);
  

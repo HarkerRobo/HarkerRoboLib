@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import harkerrobolib.wrappers.HSMotorController;
 import harkerrobolib.wrappers.HSTalon;
 
 /**
@@ -15,9 +16,9 @@ import harkerrobolib.wrappers.HSTalon;
  * @author Angela Jia
  * @version 10/31/18
  */
-public abstract class HSArm extends SubsystemBase {
+public abstract class HSArm<Motor extends HSMotorController> extends SubsystemBase {
 
-	private HSTalon talon;
+	private Motor talon;
     private final double feedForwardGrav;
     
     public enum ArmDirection{
@@ -28,22 +29,18 @@ public abstract class HSArm extends SubsystemBase {
     	}
     }
 	
-	public HSArm(HSTalon talon, double feedForwardGrav)
+	public HSArm(Motor talon, double feedForwardGrav)
 	{
 		this.talon = talon;
 		this.feedForwardGrav = feedForwardGrav;
     }
 
-    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent, int timeout) {
-        talon.configPeakCurrentDuration(peakTime, timeout);
-        talon.configPeakCurrentLimit(peakCurrent, timeout);
-        talon.configContinuousCurrentLimit(contCurrent, timeout);
+    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent) {
+        talon.configPeakCurrentDuration(peakTime);
+        talon.configPeakCurrentLimit(peakCurrent);
+        talon.configContinuousCurrentLimit(contCurrent);
         talon.enableCurrentLimit(true);
     }
-
-    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent) {
-        setCurrentLimits(peakTime, peakCurrent, contCurrent, talon.getDefaultTimeout());
-}
 
     public void armMotionPercentOutput(double output, ArmDirection direction) {
         armMotionPercentOutput(direction.sign * output);
@@ -57,7 +54,7 @@ public abstract class HSArm extends SubsystemBase {
     	return talon.getOutputCurrent();
     }
     
-    public HSTalon getTalon() {
+    public Motor getTalon() {
         return talon;
     }
     

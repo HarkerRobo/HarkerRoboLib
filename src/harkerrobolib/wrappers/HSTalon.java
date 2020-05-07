@@ -1,6 +1,8 @@
 package harkerrobolib.wrappers;
 
 import com.ctre.phoenix.ErrorCode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -106,4 +108,16 @@ public class HSTalon extends TalonSRX implements HSMotorController {
         // TODO Auto-generated method stub
 
     }
+
+	@Override
+	public ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice, int pidIdx) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import harkerrobolib.wrappers.HSMotorController;
 import harkerrobolib.wrappers.HSTalon;
 
 /**
@@ -19,12 +20,12 @@ import harkerrobolib.wrappers.HSTalon;
  *
  * @version 11/7/18
  */
-public abstract class HSIntake extends SubsystemBase {
+public abstract class HSIntake<Motor extends HSMotorController> extends SubsystemBase {
 
-	private HSTalon leftTalon;
-	private HSTalon rightTalon;
+	private Motor leftTalon;
+	private Motor rightTalon;
 	
-	public HSIntake(HSTalon leftTalon, HSTalon rightTalon) {
+	public HSIntake(Motor leftTalon, Motor rightTalon) {
 		this.leftTalon = leftTalon;
 		this.rightTalon = rightTalon;
 	}
@@ -64,21 +65,16 @@ public abstract class HSIntake extends SubsystemBase {
      * @param contCurrent the amount of current during cont time
      * @timeout the time after which a failed CAN command will stop being retried
      */
-    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent, int timeout) {
-        Consumer<HSTalon> applyCurrentLimit =  (talon) -> {
-            int newTimeout = timeout == -1 ? talon.getDefaultTimeout() : timeout;
-            talon.configPeakCurrentDuration(peakTime, newTimeout);
-            talon.configPeakCurrentLimit(peakCurrent, newTimeout);
-            talon.configContinuousCurrentLimit(contCurrent, newTimeout);
+    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent) {
+        Consumer<Motor> applyCurrentLimit =  (talon) -> {
+            talon.configPeakCurrentDuration(peakTime);
+            talon.configPeakCurrentLimit(peakCurrent);
+            talon.configContinuousCurrentLimit(contCurrent);
             talon.enableCurrentLimit(true);
             };
         
         applyCurrentLimit.accept(leftTalon);
         applyCurrentLimit.accept(rightTalon);
-    }
-
-    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent) {
-        setCurrentLimits (peakTime, peakCurrent, contCurrent, -1);
     }
 
     /**
@@ -129,11 +125,11 @@ public abstract class HSIntake extends SubsystemBase {
 
     }
     
-    public HSTalon getLeftTalon() {
+    public Motor getLeftTalon() {
         return leftTalon;
     }
     
-    public HSTalon getRightTalon() {
+    public Motor getRightTalon() {
         return rightTalon;
     }
 

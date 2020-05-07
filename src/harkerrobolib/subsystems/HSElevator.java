@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.MathUtil;
+import harkerrobolib.wrappers.HSMotorController;
 import harkerrobolib.wrappers.HSTalon;
 
 /**
@@ -16,9 +17,9 @@ import harkerrobolib.wrappers.HSTalon;
  * @author Angela Jia
  * @since 1/12/19
  */
-public abstract class HSElevator extends SubsystemBase {
+public abstract class HSElevator<Motor extends HSMotorController> extends SubsystemBase {
 
-    private HSTalon elMaster;
+    private Motor elMaster;
     private IMotorController[] victors;
     private double feedForwardGrav;
     private int LOOP_INDEX = -1;
@@ -30,7 +31,7 @@ public abstract class HSElevator extends SubsystemBase {
     private double MIN_MORE_OUTPUT_FACTOR = -1;
     private double MAX_SPEED = -1;
 
-    public HSElevator(HSTalon talon, double feedForwardGrav, IMotorController... victors) {
+    public HSElevator(Motor talon, double feedForwardGrav, IMotorController... victors) {
         elMaster = talon;
         for (int i = 0; i < victors.length; i++) {
             this.victors[i] = victors[i];
@@ -52,7 +53,7 @@ public abstract class HSElevator extends SubsystemBase {
      * @param maxMoreOutputFactor upper bound of output factor when speed percent is more than slow down percent
      * @param minMoreOutputFactor upper bound of output factor when speed percent is more than slow down percent
      */
-    public HSElevator(HSTalon talon, double feedForwardGrav, int maxSpeed, double slowDownPercent, int loopIndex,
+    public HSElevator(Motor talon, double feedForwardGrav, int maxSpeed, double slowDownPercent, int loopIndex,
             int softLimitPosition, int maxLessOutputFactor, int minLessOutputFactor, int maxMoreOutputFactor,
             int minMoreOutputFactor, IMotorController... victors) {
         this(talon, feedForwardGrav, victors);
@@ -74,14 +75,10 @@ public abstract class HSElevator extends SubsystemBase {
         return victors;
     }
 
-    public void setCurrentLimit(int peakTime, int peakLimit, int contLimit, int timeout) {
-        elMaster.configPeakCurrentLimit(peakLimit, timeout);
-        elMaster.configPeakCurrentDuration(peakTime, timeout);
-        elMaster.configContinuousCurrentLimit(contLimit, timeout);
-    }
-
     public void setCurrentLimit(int peakTime, int peakLimit, int contLimit) {
-        setCurrentLimit(peakTime, peakLimit, contLimit, elMaster.getDefaultTimeout());
+        elMaster.configPeakCurrentLimit(peakLimit);
+        elMaster.configPeakCurrentDuration(peakTime);
+        elMaster.configContinuousCurrentLimit(contLimit);
     }
 
     public void applyToAll(Consumer<IMotorController> consumer) {
