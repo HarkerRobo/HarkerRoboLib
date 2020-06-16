@@ -12,7 +12,7 @@ import harkerrobolib.wrappers.HSGamepad;
 import harkerrobolib.wrappers.HSJoystickButton;
 
 /**
- * Controls the Swerve Modules using PercentOutput or Velociy for the drive motors and 
+ * Controls the Swerve Modules using PercentOutput or Velocity for the drive motors and 
  * Position PID for the angle motors.
  * The left joystick controls translation (velocity direction and magnitude)
  * The right joystick's X axis controls rotation (angular velocity magnitude)
