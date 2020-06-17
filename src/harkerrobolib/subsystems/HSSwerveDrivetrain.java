@@ -51,14 +51,12 @@ public abstract class HSSwerveDrivetrain extends SubsystemBase {
      * 90 degrees, zeroes the pigeon to 90 degrees, and initializes 
      * SwerveDriveKinematics and Odometry.
      */
-    private HSSwerveDrivetrain(SwerveModule topLeft, SwerveModule topRight, SwerveModule backLeft, 
-        SwerveModule backRight, HSPigeon pigeon, SwerveDriveKinematics kinematics) {
-        this.topLeft = topLeft;
-        this.topRight = topRight;
-        this.backLeft = backLeft;
-        this.backRight = backRight;
+    public HSSwerveDrivetrain(SwerveModule[] modules, HSPigeon pigeon, double chassisWidth, double chassisLength) {
+        this.topLeft = modules[0];
+        this.topRight = modules[1];
+        this.backLeft = modules[2];
+        this.backRight = modules[3];
         this.pigeon = pigeon;
-        this.kinematics = kinematics;
 
         applyToAllDrive((motor) -> motor.setSelectedSensorPosition(0));
 
@@ -66,7 +64,14 @@ public abstract class HSSwerveDrivetrain extends SubsystemBase {
         pigeon.zero();
         pigeon.setFusedHeading(0);
         pigeon.setStatusFramePeriod(PigeonIMU_StatusFrame.BiasedStatus_2_Gyro, 5);
-        
+
+        kinematics = new SwerveDriveKinematics(
+                                    new Translation2d(-chassisWidth / 2, chassisLength / 2),
+                                    new Translation2d(chassisWidth / 2, chassisLength / 2),
+                                    new Translation2d(-chassisWidth / 2, -chassisLength / 2),
+                                    new Translation2d(chassisWidth / 2, -chassisLength / 2)
+                                    );
+
         odometry = new SwerveDriveOdometry(kinematics, new Rotation2d(pigeon.getFusedHeading()), new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
         
         Pose2d initialPose = new Pose2d(new Translation2d(), 
