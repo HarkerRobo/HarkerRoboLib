@@ -75,6 +75,7 @@ public class SwerveModule {
         ANGLE_SENSOR_PHASE = angleSensorPhase;
         
         WHEEL_DIAMETER = wheelDiameter;
+        Conversions.setWheelDiameter(WHEEL_DIAMETER);
         GEAR_RATIO = gearRatio;
 
         TELEOP_OFFSET = offset;
