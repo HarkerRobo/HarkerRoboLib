@@ -83,6 +83,8 @@ public class SwerveModule {
 
         driveFalconInit(driveMotor);
         angleTalonInit(angleMotor);
+
+        angleMotor.setSelectedSensorPosition((angleMotor.getSensorCollection().getPulseWidthRiseToFallUs() - TELEOP_OFFSET) / 4);
     }
     
     /**
