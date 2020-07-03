@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import harkerrobolib.util.Conversions;
 import harkerrobolib.util.Gains;
 import harkerrobolib.wrappers.HSMotorController;
 import harkerrobolib.wrappers.HSPigeon;
@@ -30,6 +31,8 @@ public abstract class HSDiffDrivetrain<Motor extends HSMotorController> extends 
     private boolean hasFollowers;
     private boolean hasPigeon;
 
+    public static double WHEEL_DIAMETER;
+
     /**
      * Constructs a new Drivetrain subsystem with two master controllers, two follower controllers, and a Pigeon.
      * 
@@ -40,7 +43,7 @@ public abstract class HSDiffDrivetrain<Motor extends HSMotorController> extends 
      * @param pigeon the Pigeon gyroscope.
      */
     public HSDiffDrivetrain(Motor leftMaster, Motor rightMaster, IMotorController leftFollower,
-            IMotorController rightFollower, HSPigeon pigeon) {
+            IMotorController rightFollower, HSPigeon pigeon, double wheelDiameter) {
         this.leftMaster = leftMaster;
         this.rightMaster = rightMaster;
         this.leftFollower = leftFollower;
@@ -49,6 +52,10 @@ public abstract class HSDiffDrivetrain<Motor extends HSMotorController> extends 
         
         hasFollowers = true;
         hasPigeon = true;
+
+        WHEEL_DIAMETER = wheelDiameter;
+        Conversions.setWheelDiameter(WHEEL_DIAMETER);
+
         followMasters();
     }
     
@@ -61,8 +68,8 @@ public abstract class HSDiffDrivetrain<Motor extends HSMotorController> extends 
      * @param rightFollower the right folllower motor controller (Talon or Victor).
      */
     public HSDiffDrivetrain (Motor leftMaster, Motor rightMaster, IMotorController leftFollower,
-            IMotorController rightFollower) {
-        this(leftMaster, rightMaster, leftFollower, rightFollower, null);
+            IMotorController rightFollower, double wheelDiameter) {
+        this(leftMaster, rightMaster, leftFollower, rightFollower, null, wheelDiameter);
         hasPigeon = false;
     }
 
@@ -72,8 +79,8 @@ public abstract class HSDiffDrivetrain<Motor extends HSMotorController> extends 
      * @param leftMaster the left master Talon.
      * @param rightMaster the right master Talon.
      */
-    public HSDiffDrivetrain (Motor leftMaster, Motor rightMaster) {
-        this(leftMaster, rightMaster, null, null);
+    public HSDiffDrivetrain (Motor leftMaster, Motor rightMaster, double wheelDiameter) {
+        this(leftMaster, rightMaster, null, null, wheelDiameter);
         hasFollowers = false;
     }
     
@@ -83,8 +90,8 @@ public abstract class HSDiffDrivetrain<Motor extends HSMotorController> extends 
      * @param rightMaster the right master Talon.
      * @param pigeon the Pigeon gyroscope.
      */
-    public HSDiffDrivetrain (Motor leftMaster, Motor rightMaster, HSPigeon pigeon) {
-        this(leftMaster, rightMaster, null, null, pigeon);
+    public HSDiffDrivetrain (Motor leftMaster, Motor rightMaster, HSPigeon pigeon, double wheelDiameter) {
+        this(leftMaster, rightMaster, null, null, pigeon, wheelDiameter);
         hasFollowers = false;
     }
 

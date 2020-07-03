@@ -75,6 +75,7 @@ public class SwerveManual extends IndefiniteCommand {
         HSGamepad gamepad, double maxDriveVelocity, double maxRotationVelocity, double pigeon_kP, double outputMultiplier) {
         addRequirements(drivetrain);
 
+        this.drivetrain = drivetrain;
         this.driveVelocitySlot = driveVelocitySlot;
         this.anglePositionSlot = anglePositionSlot;
         this.gamepad = gamepad;

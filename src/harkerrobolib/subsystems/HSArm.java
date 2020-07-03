@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.wrappers.HSMotorController;
-import harkerrobolib.wrappers.HSTalon;
 
 /**
  * Represents a general Arm subsystem with a single motor controller.

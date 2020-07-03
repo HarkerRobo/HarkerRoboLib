@@ -13,6 +13,7 @@ import harkerrobolib.wrappers.HSTalon;
 
 import java.util.function.Consumer;
 
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 
@@ -51,14 +52,12 @@ public abstract class HSSwerveDrivetrain extends SubsystemBase {
      * 90 degrees, zeroes the pigeon to 90 degrees, and initializes 
      * SwerveDriveKinematics and Odometry.
      */
-    private HSSwerveDrivetrain(SwerveModule topLeft, SwerveModule topRight, SwerveModule backLeft, 
-        SwerveModule backRight, HSPigeon pigeon, SwerveDriveKinematics kinematics) {
-        this.topLeft = topLeft;
-        this.topRight = topRight;
-        this.backLeft = backLeft;
-        this.backRight = backRight;
+    public HSSwerveDrivetrain(SwerveModule[] modules, HSPigeon pigeon, double chassisWidth, double chassisLength) {
+        topLeft = modules[0];
+        topRight = modules[1];
+        backLeft = modules[2];
+        backRight = modules[3];
         this.pigeon = pigeon;
-        this.kinematics = kinematics;
 
         applyToAllDrive((motor) -> motor.setSelectedSensorPosition(0));
 
@@ -66,7 +65,14 @@ public abstract class HSSwerveDrivetrain extends SubsystemBase {
         pigeon.zero();
         pigeon.setFusedHeading(0);
         pigeon.setStatusFramePeriod(PigeonIMU_StatusFrame.BiasedStatus_2_Gyro, 5);
-        
+
+        kinematics = new SwerveDriveKinematics(
+                                    new Translation2d(-chassisWidth / 2, chassisLength / 2),
+                                    new Translation2d(chassisWidth / 2, chassisLength / 2),
+                                    new Translation2d(-chassisWidth / 2, -chassisLength / 2),
+                                    new Translation2d(chassisWidth / 2, -chassisLength / 2)
+                                    );
+
         odometry = new SwerveDriveOdometry(kinematics, new Rotation2d(pigeon.getFusedHeading()), new Pose2d(new Translation2d(), Rotation2d.fromDegrees(90)));
         
         Pose2d initialPose = new Pose2d(new Translation2d(), 
@@ -75,6 +81,20 @@ public abstract class HSSwerveDrivetrain extends SubsystemBase {
         Rotation2d currentRot = Rotation2d.fromDegrees(pigeon.getFusedHeading());
 
         odometry.resetPosition(initialPose, currentRot);
+    }
+
+    public static SwerveModule[] initSwerveModules(int[] driveIds, int[] angleIds, int[] offsets, 
+        TalonFXInvertType[] driveInverts, boolean[] driveSensorPhases, boolean[] angleInverts, 
+        boolean[] angleSensorPhases, double wheelDiameter, double gearRatio) {
+        SwerveModule[] modules = new SwerveModule[offsets.length];
+
+        for(int i = 0; i < offsets.length; i++) {
+            modules[i] = new SwerveModule(
+                                driveIds[i], driveInverts[i], driveSensorPhases[i], 
+                                angleIds[i], angleInverts[i], angleSensorPhases[i], 
+                                wheelDiameter, gearRatio, offsets[i]);
+        }
+        return modules;
     }
 
     /**
