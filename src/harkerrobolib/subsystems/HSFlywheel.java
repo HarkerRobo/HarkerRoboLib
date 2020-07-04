@@ -8,6 +8,7 @@ import harkerrobolib.wrappers.HSMotorController;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 
@@ -24,10 +25,10 @@ public abstract class HSFlywheel<Motor extends HSMotorController> extends Subsys
 
     private Motor master;
     private Motor follower;
-    private final boolean MASTER_INVERT;
-    private final boolean FOLLOWER_INVERT;
+    private final InvertType MASTER_INVERT;
+    private final InvertType FOLLOWER_INVERT;
 
-    public static final int VELOCITY_SLOT = 0;
+    public static int VELOCITY_SLOT;
 
     private static boolean SENSOR_PHASE;
 
@@ -35,20 +36,20 @@ public abstract class HSFlywheel<Motor extends HSMotorController> extends Subsys
     private static int TICKS_PER_REVOLUTION;
     private static double GEAR_RATIO;
     
-    public static double MIN_CURRENT = 10;
     public static double VOLTAGE_COMP;
     
-    public static final double MIN_VELOCITY = 100;
+    public static double STALL_MIN_VELOCITY;
+    public static double STALL_CURRENT;
 
     private double[] velocityPIDConstants;
 
     /**
-     * Constructs an instance of HSFlywheel
+     * Constructs an instance of HSFlywheel. No current limit setup
      * 
      * @param shooterMasterID CAN ID of the master talon
      * @param shooterFollowerID CAN ID of the follower talon
      */
-    public HSFlywheel(Motor shooterMaster, Motor shooterFollower, double wheelDiameter, int ticksPerRevolution, double gearRatio, boolean sensorPhase, boolean masterInvert, boolean followerInvert, double[] velocityPIDConstants, double voltageComp) {
+    public HSFlywheel(Motor shooterMaster, Motor shooterFollower, double wheelDiameter, int ticksPerRevolution, double gearRatio, boolean sensorPhase, InvertType masterInvert, InvertType followerInvert, int velocitySlot, double[] velocityPIDConstants, double minVelocity, double voltageComp, double stallCurrent) {
 
         master = shooterMaster;
         follower = shooterFollower;
@@ -60,13 +61,15 @@ public abstract class HSFlywheel<Motor extends HSMotorController> extends Subsys
         MASTER_INVERT = masterInvert;
         FOLLOWER_INVERT = followerInvert;
         VOLTAGE_COMP = voltageComp;
-        
+        VELOCITY_SLOT = velocitySlot;
+        STALL_MIN_VELOCITY = minVelocity;
+        STALL_CURRENT = stallCurrent;
 
         setupFlywheel();
     }
 
     /**
-     * sets up the master and follower talons
+     * Sets up the master and follower talons.
      */
     public void setupFlywheel() {
 
@@ -80,11 +83,12 @@ public abstract class HSFlywheel<Motor extends HSMotorController> extends Subsys
 
         master.setSensorPhase(SENSOR_PHASE);
         master.setNeutralMode(NeutralMode.Coast);
+        follower.setNeutralMode(NeutralMode.Coast);
+
+        master.configVoltageCompSaturation(VOLTAGE_COMP);
+        master.enableVoltageCompensation(true);
         
         setUpVelocityPID();
-        
-        master.configStatorCurrentLimit(new StatorCurrentLimitConfiguration());
-        master.configVoltageCompSaturation(VOLTAGE_COMP);
 
     }
 
@@ -115,7 +119,7 @@ public abstract class HSFlywheel<Motor extends HSMotorController> extends Subsys
     }
 
     public boolean checkStalling(){
-        return (master.getStatorCurrent() > MIN_CURRENT && master.getSelectedSensorVelocity() < MIN_VELOCITY);
+        return (master.getStatorCurrent() > STALL_CURRENT && master.getSelectedSensorVelocity() < STALL_MIN_VELOCITY);
     }
 
     public Motor getMaster() {
