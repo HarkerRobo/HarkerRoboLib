@@ -3,40 +3,44 @@ package harkerrobolib.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.Conversions;
 import harkerrobolib.util.Conversions.SpeedUnit;
+import harkerrobolib.wrappers.HSMotorController;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 
 /**
  * Represents a general Flywheel shooter with a master talon and a follower talon.
  * 
  * @author Aimee Wang
+ * @author Kunal Jain
+ * @author Ada Praun-Petrovic
+ * @author Angela Jia
  * @since 7/2/20
  */
-public class HSFlywheel extends SubsystemBase {
+public abstract class HSFlywheel<Motor extends HSMotorController> extends SubsystemBase {
 
-    private static TalonFX master;
-    private static TalonFX follower;
-    private static TalonFXInvertType masterInvert;
-    private static TalonFXInvertType followerInvert;
-
-    public static double FLYWHEEL_KF = 0;
-    public static double FLYWHEEL_KP = 0;
-    public static double FLYWHEEL_KI = 0;
-    public static double FLYWHEEL_KD = 0;
+    private Motor master;
+    private Motor follower;
+    private final boolean MASTER_INVERT;
+    private final boolean FOLLOWER_INVERT;
 
     public static final int VELOCITY_SLOT = 0;
 
-    private static boolean SENSOR_PHASE = false;
+    private static boolean SENSOR_PHASE;
 
     private static double WHEEL_DIAMETER;
     private static int TICKS_PER_REVOLUTION;
     private static double GEAR_RATIO;
+    
+    public static double MIN_CURRENT = 10;
+    public static double VOLTAGE_COMP;
+    
+    public static final double MIN_VELOCITY = 100;
 
+    private double[] velocityPIDConstants;
 
     /**
      * Constructs an instance of HSFlywheel
@@ -44,14 +48,19 @@ public class HSFlywheel extends SubsystemBase {
      * @param shooterMasterID CAN ID of the master talon
      * @param shooterFollowerID CAN ID of the follower talon
      */
-    public HSFlywheel(int shooterMasterID, int shooterFollowerID, double wheelDiameter, int ticksPerRevolution, double gearRatio) {
+    public HSFlywheel(Motor shooterMaster, Motor shooterFollower, double wheelDiameter, int ticksPerRevolution, double gearRatio, boolean sensorPhase, boolean masterInvert, boolean followerInvert, double[] velocityPIDConstants, double voltageComp) {
 
-        master = new TalonFX(shooterMasterID);
-        follower = new TalonFX(shooterFollowerID);
+        master = shooterMaster;
+        follower = shooterFollower;
 
         TICKS_PER_REVOLUTION = ticksPerRevolution;
         WHEEL_DIAMETER = wheelDiameter;
         GEAR_RATIO = gearRatio;
+        SENSOR_PHASE = sensorPhase;
+        MASTER_INVERT = masterInvert;
+        FOLLOWER_INVERT = followerInvert;
+        VOLTAGE_COMP = voltageComp;
+        
 
         setupFlywheel();
     }
@@ -66,13 +75,17 @@ public class HSFlywheel extends SubsystemBase {
 
         follower.follow(master);
 
-        master.setInverted(masterInvert);
-        follower.setInverted(followerInvert);  
+        master.setInverted(MASTER_INVERT);
+        follower.setInverted(FOLLOWER_INVERT);  
 
         master.setSensorPhase(SENSOR_PHASE);
         master.setNeutralMode(NeutralMode.Coast);
         
         setUpVelocityPID();
+        
+        master.configStatorCurrentLimit(new StatorCurrentLimitConfiguration());
+        master.configVoltageCompSaturation(VOLTAGE_COMP);
+
     }
 
     public void spinShooterPercentOutput(double percentOutput) {
@@ -92,18 +105,25 @@ public class HSFlywheel extends SubsystemBase {
     }
 
     public void setUpVelocityPID() {
-        master.config_kF(VELOCITY_SLOT, FLYWHEEL_KF);
-        master.config_kP(VELOCITY_SLOT, FLYWHEEL_KP);
-        master.config_kI(VELOCITY_SLOT, FLYWHEEL_KI);
-        master.config_kD(VELOCITY_SLOT, FLYWHEEL_KD);
+        master.config_kF(VELOCITY_SLOT, velocityPIDConstants[0]);
+        master.config_kP(VELOCITY_SLOT, velocityPIDConstants[1]);
+        master.config_kI(VELOCITY_SLOT, velocityPIDConstants[2]);
+        master.config_kD(VELOCITY_SLOT, velocityPIDConstants[3]);
+
+        if (velocityPIDConstants.length > 4)
+            master.config_IntegralZone(VELOCITY_SLOT, (int) velocityPIDConstants[4]);
     }
 
-    public TalonFX getMaster() {
+    public boolean checkStalling(){
+        return (master.getStatorCurrent() > MIN_CURRENT && master.getSelectedSensorVelocity() < MIN_VELOCITY);
+    }
+
+    public Motor getMaster() {
 
         return master;
     }
 
-    public TalonFX getFollower() {
+    public Motor getFollower() {
 
         return follower;
     }
@@ -111,8 +131,6 @@ public class HSFlywheel extends SubsystemBase {
     @Override
     public void periodic() {
  
-
     }
     
 }
-
