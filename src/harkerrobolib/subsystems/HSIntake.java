@@ -12,7 +12,7 @@ import harkerrobolib.wrappers.HSTalon;
 /**
  * Represents a general Intake subsystem with two motor controllers.
  *
- * @param leftTalon the left Talon
+ * @param leftMotor the left Talon
  * @param rightTalon the right Talon
  *
  * @author Angela Jia
@@ -22,13 +22,14 @@ import harkerrobolib.wrappers.HSTalon;
  */
 public abstract class HSIntake<Motor extends HSMotorController> extends SubsystemBase {
 
-	private Motor leftTalon;
+	private Motor leftMotor;
 	private Motor rightTalon;
 	
-	public HSIntake(Motor leftTalon, Motor rightTalon) {
-		this.leftTalon = leftTalon;
+	public HSIntake(Motor leftMotor, Motor rightTalon) {
+		this.leftMotor = leftMotor;
 		this.rightTalon = rightTalon;
-	}
+    }
+    
     /**
      * Represents direction of intake.
      *
@@ -48,12 +49,12 @@ public abstract class HSIntake<Motor extends HSMotorController> extends Subsyste
      * @param neutralMode the specified NeutralMode
      */
     public void setNeutralModes(NeutralMode neutralMode) {
-        leftTalon.setNeutralMode(neutralMode);
+        leftMotor.setNeutralMode(neutralMode);
         rightTalon.setNeutralMode(neutralMode);
     }
 
-    public void invertTalons (boolean leftInverted, boolean rightInverted) {
-        leftTalon.setInverted(leftInverted);
+    public void invertTalons(boolean leftInverted, boolean rightInverted) {
+        leftMotor.setInverted(leftInverted);
         rightTalon.setInverted(rightInverted);
     }
 
@@ -73,7 +74,7 @@ public abstract class HSIntake<Motor extends HSMotorController> extends Subsyste
             talon.enableCurrentLimit(true);
             };
         
-        applyCurrentLimit.accept(leftTalon);
+        applyCurrentLimit.accept(leftMotor);
         applyCurrentLimit.accept(rightTalon);
     }
 
@@ -83,11 +84,11 @@ public abstract class HSIntake<Motor extends HSMotorController> extends Subsyste
      * @param output value from controller that sets output for left and right wheels to same value
      * @param direction sets both wheels to either IN or OUT direction
      */
-    public void intakeOuttakeCube(double output, IntakeDirection direction) {
+    public void setOutput(double output, IntakeDirection direction) {
         if (direction == IntakeDirection.IN) {
-            intakeOuttakeCube(output, output, IntakeDirection.IN, IntakeDirection.IN);
+            setOutput(output, output, IntakeDirection.IN, IntakeDirection.IN);
         } else {
-            intakeOuttakeCube(output, output, IntakeDirection.OUT, IntakeDirection.OUT);
+            setOutput(output, output, IntakeDirection.OUT, IntakeDirection.OUT);
         }
 
     }
@@ -98,8 +99,8 @@ public abstract class HSIntake<Motor extends HSMotorController> extends Subsyste
      * @param leftOutput value that sets output for the left wheel
      * @param rightOutput value that sets output for the right wheel
      */
-    public void intakeOuttakeCube(double leftOutput, double rightOutput) {
-        leftTalon.set(ControlMode.PercentOutput, leftOutput);
+    public void setOutput(double leftOutput, double rightOutput) {
+        leftMotor.set(ControlMode.PercentOutput, leftOutput);
         rightTalon.set(ControlMode.PercentOutput, rightOutput);
     }
 
@@ -111,11 +112,11 @@ public abstract class HSIntake<Motor extends HSMotorController> extends Subsyste
      * @param leftDirection enum representing left wheel's direction
      * @param rightDirection enum representing right wheel's direction
      */
-    public void intakeOuttakeCube(double leftOutput, double rightOutput, IntakeDirection leftDirection, IntakeDirection rightDirection) {
+    public void setOutput(double leftOutput, double rightOutput, IntakeDirection leftDirection, IntakeDirection rightDirection) {
         if (leftDirection == IntakeDirection.IN) {
-            leftTalon.set(ControlMode.PercentOutput, leftDirection.signum * leftOutput);
+            leftMotor.set(ControlMode.PercentOutput, leftDirection.signum * leftOutput);
         } else {
-            leftTalon.set(ControlMode.PercentOutput, leftDirection.signum * -leftOutput);
+            leftMotor.set(ControlMode.PercentOutput, leftDirection.signum * -leftOutput);
         }
         if (rightDirection == IntakeDirection.IN) {
             rightTalon.set(ControlMode.PercentOutput, rightDirection.signum * -rightOutput);
@@ -125,8 +126,8 @@ public abstract class HSIntake<Motor extends HSMotorController> extends Subsyste
 
     }
     
-    public Motor getLeftTalon() {
-        return leftTalon;
+    public Motor getleftMotor() {
+        return leftMotor;
     }
     
     public Motor getRightTalon() {
