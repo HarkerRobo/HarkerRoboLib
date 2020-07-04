@@ -3,6 +3,7 @@ package harkerrobolib.wrappers;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -27,7 +28,6 @@ public class HSFalcon extends TalonFX implements HSMotorController {
 
     @Override
     public ErrorCode configPeakCurrentLimit(int amps, int timeoutMs) {
-        // TODO Auto-generated method stub
         return null;
     }
 
