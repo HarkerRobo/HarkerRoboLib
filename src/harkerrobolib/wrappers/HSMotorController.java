@@ -32,25 +32,10 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
+import harkerrobolib.util.Gains;
+
 public interface HSMotorController extends IMotorController {
-
-    ErrorCode configSupplyCurrentLimit(SupplyCurrentLimitConfiguration currLimitConfigs, int timeoutMs);
- 
-    ErrorCode configSupplyCurrentLimit(SupplyCurrentLimitConfiguration currLimitConfigs);
-
-    ErrorCode configPeakCurrentLimit(int amps, int timeoutMs);
- 
-    ErrorCode configPeakCurrentLimit(int amps);
- 
-    ErrorCode configPeakCurrentDuration(int milliseconds, int timeoutMs);
- 
-    ErrorCode configPeakCurrentDuration(int milliseconds);
- 
-    ErrorCode configContinuousCurrentLimit(int amps, int timeoutMs);
- 
-    ErrorCode configContinuousCurrentLimit(int amps);
- 
-    void enableCurrentLimit(boolean enable);
+    // void enableCurrentLimit(boolean enable);
 
     ErrorCode configStatorCurrentLimit(StatorCurrentLimitConfiguration currLimitCfg, int timeoutMs);
  
@@ -76,8 +61,6 @@ public interface HSMotorController extends IMotorController {
      
     ErrorCode configIntegratedSensorInitializationStrategy(SensorInitializationStrategy initializationStrategy);
     
-    void BaseMotorController(int arbId, String model);
-
     ErrorCode DestroyObject();
  
     long getHandle();
@@ -158,14 +141,10 @@ public interface HSMotorController extends IMotorController {
  
     double getTemperature();
  
-    ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice, int pidIdx, int timeoutMs);
-
     ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice, int pidIdx);
  
     ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice);
- 
-    ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx, int timeoutMs);
-    
+     
     ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx);
  
     ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice);
@@ -485,5 +464,13 @@ public interface HSMotorController extends IMotorController {
     int isFwdLimitSwitchClosed();
 
     int isRevLimitSwitchClosed();
+
+    public default void configClosedLoopConstants(int slotIndex, Gains constants) {
+        config_kP(slotIndex, constants.getkP());
+        config_kI(slotIndex, constants.getkI());
+        config_kD(slotIndex, constants.getkD());
+        config_kF(slotIndex, constants.getkF());
+        config_IntegralZone(slotIndex, constants.getIZone());
+    }
 
 }

@@ -30,94 +30,80 @@ public class HSTalon extends TalonSRX implements HSMotorController {
 
     @Override
     public ErrorCode configStatorCurrentLimit(StatorCurrentLimitConfiguration currLimitCfg, int timeoutMs) {
-        // TODO Auto-generated method stub
+        configStatorCurrentLimit(currLimitCfg);
         return null;
     }
 
     @Override
     public ErrorCode configStatorCurrentLimit(StatorCurrentLimitConfiguration currLimitCfg) {
-        // TODO Auto-generated method stub
+        enableCurrentLimit(currLimitCfg.enable);
+        configPeakCurrentLimit((int)currLimitCfg.triggerThresholdCurrent);
+        configPeakCurrentDuration((int)(currLimitCfg.triggerThresholdTime * 1000));
+        configContinuousCurrentLimit((int)currLimitCfg.currentLimit);
         return null;
     }
 
     @Override
     public ErrorCode configGetSupplyCurrentLimit(SupplyCurrentLimitConfiguration currLimitConfigsToFill,
             int timeoutMs) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public ErrorCode configGetSupplyCurrentLimit(SupplyCurrentLimitConfiguration currLimitConfigsToFill) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public ErrorCode configGetStatorCurrentLimit(StatorCurrentLimitConfiguration currLimitConfigsToFill,
             int timeoutMs) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public ErrorCode configGetStatorCurrentLimit(StatorCurrentLimitConfiguration currLimitConfigsToFill) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public ErrorCode configIntegratedSensorAbsoluteRange(AbsoluteSensorRange absoluteSensorRange, int timeoutMs) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public ErrorCode configIntegratedSensorAbsoluteRange(AbsoluteSensorRange absoluteSensorRange) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public ErrorCode configIntegratedSensorOffset(double offsetDegrees, int timeoutMs) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public ErrorCode configIntegratedSensorOffset(double offsetDegrees) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public ErrorCode configIntegratedSensorInitializationStrategy(SensorInitializationStrategy initializationStrategy,
             int timeoutMs) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public ErrorCode configIntegratedSensorInitializationStrategy(SensorInitializationStrategy initializationStrategy) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void BaseMotorController(int arbId, String model) {
-        // TODO Auto-generated method stub
-
+    public ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice, int pidIdx) {
+        return super.configSelectedFeedbackSensor(feedbackDevice, pidIdx, Constants.DEFAULT_TIMEOUT);
     }
 
-	@Override
-	public ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice, int pidIdx) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx) {
+        return super.configSelectedFeedbackSensor(feedbackDevice, pidIdx, Constants.DEFAULT_TIMEOUT);
+    }
 
-	@Override
-	public ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

@@ -5,11 +5,10 @@ import java.util.function.Consumer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.Gains;
 import harkerrobolib.wrappers.HSMotorController;
-import harkerrobolib.wrappers.HSTalon;
 
 /**
  * TODO: good description
@@ -88,10 +87,8 @@ public abstract class HSWrist<Motor extends HSMotorController> extends Subsystem
      * @param continuousLimit the continuous limit, which occurs after the peak limit
      * @param timeout the 
      */
-    public void setCurrentLimit(int peakLimit, int peakTime, int continuousLimit) {
-        master.configPeakCurrentLimit(peakLimit);
-        master.configPeakCurrentDuration(peakTime);
-        master.configContinuousCurrentLimit(continuousLimit);
+    public void setCurrentLimit(double peakLimit, double peakTime, double continuousLimit) {
+        master.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, continuousLimit, peakLimit, peakTime));
     }
 
     /**
@@ -99,9 +96,10 @@ public abstract class HSWrist<Motor extends HSMotorController> extends Subsystem
      * @param loopIndex the loop index where the PID constants are to be stored
      * @param constant a Gains object containing the constants
      */
-    // public void configureClosedLoopConstants(int loopIndex, Gains constants) {
-    //     master.configClosedLoopConstants(loopIndex, constants);        
-    // }
+    public void configureClosedLoopConstants(int loopIndex, Gains constants) {
+        master.configClosedLoopConstants(loopIndex, constants);        
+    }
+
 
     /**
      * 

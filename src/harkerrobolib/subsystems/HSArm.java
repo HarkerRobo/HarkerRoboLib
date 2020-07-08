@@ -2,6 +2,7 @@ package harkerrobolib.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.wrappers.HSMotorController;
@@ -34,11 +35,8 @@ public abstract class HSArm<Motor extends HSMotorController> extends SubsystemBa
 		this.feedForwardGrav = feedForwardGrav;
     }
 
-    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent) {
-        talon.configPeakCurrentDuration(peakTime);
-        talon.configPeakCurrentLimit(peakCurrent);
-        talon.configContinuousCurrentLimit(contCurrent);
-        talon.enableCurrentLimit(true);
+    public void setCurrentLimits(double peakTime, double peakCurrent, double contCurrent) {
+        talon.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, contCurrent, peakCurrent, peakTime));
     }
 
     public void armMotionPercentOutput(double output, ArmDirection direction) {

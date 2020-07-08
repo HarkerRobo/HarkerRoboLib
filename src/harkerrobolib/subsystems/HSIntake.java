@@ -4,16 +4,18 @@ import java.util.function.Consumer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import harkerrobolib.wrappers.HSMotorController;
-import harkerrobolib.wrappers.HSTalon;
 
 /**
  * Represents a general Intake subsystem with two motor controllers.
  *
- * @param leftMotor the left Talon
- * @param rightTalon the right Talon
+ * @param masterMotor the master Talon
+ * @param followerMotor the follower Talon
  *
  * @author Angela Jia
  * @author Finn Frankis
@@ -22,18 +24,43 @@ import harkerrobolib.wrappers.HSTalon;
  */
 public abstract class HSIntake<Motor extends HSMotorController> extends SubsystemBase {
 
-	private Motor leftMotor;
-	private Motor rightTalon;
-	
-	public HSIntake(Motor leftMotor, Motor rightTalon) {
-		this.leftMotor = leftMotor;
-		this.rightTalon = rightTalon;
+	private Motor masterMotor;
+	private Motor followerMotor;
+    private DoubleSolenoid solenoid;
+
+    public HSIntake(Motor masterMotor, Motor followerMotor) {
+        this.masterMotor = masterMotor;
+		this.followerMotor = followerMotor;
+        this.solenoid = null;
+    }
+
+    public HSIntake(Motor motor) {
+        this.masterMotor = motor;
+        this.followerMotor = null;
+        this.solenoid = null;
+    }
+    
+
+	public HSIntake(Motor masterMotor, Motor followerMotor, 
+                    DoubleSolenoid solenoid) {
+		this.masterMotor = masterMotor;
+		this.followerMotor = followerMotor;
+        this.solenoid = solenoid;
+
+        followerMotor.follow(masterMotor);
+    }
+
+
+    public HSIntake(Motor motor, DoubleSolenoid solenoid) {
+        this.masterMotor = motor;
+        this.followerMotor = null;
+        this.solenoid = solenoid;
     }
     
     /**
      * Represents direction of intake.
      *
-     * @param signum sign for output of left intake with given direction (must be negated for right)
+     * @param signum sign for output of master intake with given direction (must be negated for follower)
      */
     public enum IntakeDirection {
         IN(1), OUT(-1);
@@ -48,14 +75,29 @@ public abstract class HSIntake<Motor extends HSMotorController> extends Subsyste
      *
      * @param neutralMode the specified NeutralMode
      */
-    public void setNeutralModes(NeutralMode neutralMode) {
-        leftMotor.setNeutralMode(neutralMode);
-        rightTalon.setNeutralMode(neutralMode);
+    public void setNeutralMode(NeutralMode neutralMode) {
+        masterMotor.setNeutralMode(neutralMode);
     }
 
-    public void invertTalons(boolean leftInverted, boolean rightInverted) {
-        leftMotor.setInverted(leftInverted);
-        rightTalon.setInverted(rightInverted);
+    public void setSensorPhase(boolean sensorPhase) {
+        masterMotor.setSensorPhase(sensorPhase);
+    }
+
+    public void setSensorPhases(boolean masterSensorPhase, boolean followerSensorPhase)
+    {
+        masterMotor.setSensorPhase(masterSensorPhase);
+        if(followerMotor != null)
+            followerMotor.setSensorPhase(followerSensorPhase);
+    }
+
+    public void invertTalon(boolean inverted) {
+        masterMotor.setInverted(inverted);
+    }
+
+    public void invertTalons(boolean masterInverted, boolean followerInverted) {
+        masterMotor.setInverted(masterInverted);
+        if(followerMotor != null)
+            followerMotor.setInverted(followerInverted);
     }
 
     /**
@@ -66,72 +108,41 @@ public abstract class HSIntake<Motor extends HSMotorController> extends Subsyste
      * @param contCurrent the amount of current during cont time
      * @timeout the time after which a failed CAN command will stop being retried
      */
-    public void setCurrentLimits(int peakTime, int peakCurrent, int contCurrent) {
-        Consumer<Motor> applyCurrentLimit =  (talon) -> {
-            talon.configPeakCurrentDuration(peakTime);
-            talon.configPeakCurrentLimit(peakCurrent);
-            talon.configContinuousCurrentLimit(contCurrent);
-            talon.enableCurrentLimit(true);
-            };
-        
-        applyCurrentLimit.accept(leftMotor);
-        applyCurrentLimit.accept(rightTalon);
+    public void setCurrentLimits(double peakTimeSeconds, double peakCurrent, double contCurrent) {
+        masterMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, contCurrent, peakCurrent, peakTime));
     }
 
     /**
      * Sets wheels to the same output and direction.
      *
-     * @param output value from controller that sets output for left and right wheels to same value
+     * @param output value from controller that sets output for master and follower wheels to same value
      * @param direction sets both wheels to either IN or OUT direction
      */
-    public void setOutput(double output, IntakeDirection direction) {
-        if (direction == IntakeDirection.IN) {
-            setOutput(output, output, IntakeDirection.IN, IntakeDirection.IN);
-        } else {
-            setOutput(output, output, IntakeDirection.OUT, IntakeDirection.OUT);
-        }
-
+    public void setOutput(double output, IntakeDirection direction, boolean isPercentOutput) {
+        ControlMode mode = isPercentOutput ? ControlMode.PercentOutput : ControlMode.Velocity;
+        masterMotor.set(mode, direction.signum * output);
     }
 
-    /**
-     * Sets each wheel to its specified output.
-     *
-     * @param leftOutput value that sets output for the left wheel
-     * @param rightOutput value that sets output for the right wheel
-     */
-    public void setOutput(double leftOutput, double rightOutput) {
-        leftMotor.set(ControlMode.PercentOutput, leftOutput);
-        rightTalon.set(ControlMode.PercentOutput, rightOutput);
+    public boolean isStalling(double minCurrentDraw, double jammedVelocity) {
+            return (masterMotor.getOutputCurrent() > minCurrentDraw && 
+                   masterMotor.getSelectedSensorVelocity() < jammedVelocity) || (followerMotor != null &&
+                   (followerMotor.getOutputCurrent() > minCurrentDraw && 
+                   followerMotor.getSelectedSensorVelocity() < jammedVelocity));
     }
 
-    /**
-     * Sets wheels to their respective outputs and directions.
-     *
-     * @param leftOutput value from controller that sets left wheel output
-     * @param rightOutput value from controller that sets right wheel output
-     * @param leftDirection enum representing left wheel's direction
-     * @param rightDirection enum representing right wheel's direction
-     */
-    public void setOutput(double leftOutput, double rightOutput, IntakeDirection leftDirection, IntakeDirection rightDirection) {
-        if (leftDirection == IntakeDirection.IN) {
-            leftMotor.set(ControlMode.PercentOutput, leftDirection.signum * leftOutput);
-        } else {
-            leftMotor.set(ControlMode.PercentOutput, leftDirection.signum * -leftOutput);
-        }
-        if (rightDirection == IntakeDirection.IN) {
-            rightTalon.set(ControlMode.PercentOutput, rightDirection.signum * -rightOutput);
-        } else {
-            rightTalon.set(ControlMode.PercentOutput, rightDirection.signum * rightOutput);
-        }
-
+    public void toggleSolenoid() {
+        solenoid.set(solenoid.get() == Value.kReverse ? Value.kForward : Value.kReverse);
     }
     
-    public Motor getleftMotor() {
-        return leftMotor;
+    public Motor getMasterMotor() {
+        return masterMotor;
     }
     
-    public Motor getRightTalon() {
-        return rightTalon;
+    public Motor getFollowerMotor() {
+        return followerMotor;
     }
 
+    public DoubleSolenoid getSolenoid() {
+        return solenoid;
+    }
 }

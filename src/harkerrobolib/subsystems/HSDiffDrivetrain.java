@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.Conversions;
@@ -143,12 +144,9 @@ public abstract class HSDiffDrivetrain<Motor extends HSMotorController> extends 
      * @param peakTime the time for which the peak limit is active
      * @param continuousLimit the continuous limit, or the one which is active after the conclusion of the peak limit.
      */
-    public void setCurrentLimit(int peakLimit, int peakTime, int continuousLimit) {
+    public void setCurrentLimit(double peakCurrent, double peakTime, double continuousLimit) {
         Consumer<Motor> currentLimit = (talon) -> {
-            talon.configPeakCurrentLimit(peakLimit);
-            talon.configPeakCurrentDuration(peakTime);
-            talon.configContinuousCurrentLimit(continuousLimit);
-            talon.enableCurrentLimit(true);
+            talon.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, continuousLimit, peakCurrent, peakTime));
         };
         applyToMasters(currentLimit);
     }
@@ -297,10 +295,10 @@ public abstract class HSDiffDrivetrain<Motor extends HSMotorController> extends 
      * @param leftConstants the set of constants for the left Talon
      * @param rightConstants the set of constants for the right Talon
      */
-    // public void configClosedLoopConstants(int slotIndex, Gains leftConstants, Gains rightConstants) {
-    //     leftMaster.configClosedLoopConstants(slotIndex, leftConstants);
-    //     rightMaster.configClosedLoopConstants(slotIndex, rightConstants);
-    // }
+    public void configClosedLoopConstants(int slotIndex, Gains leftConstants, Gains rightConstants) {
+        leftMaster.configClosedLoopConstants(slotIndex, leftConstants);
+        rightMaster.configClosedLoopConstants(slotIndex, rightConstants);
+    }
 
     /**
      * Drives the robot with a given percent output.

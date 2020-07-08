@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.MathUtil;
@@ -75,10 +76,8 @@ public abstract class HSElevator<Motor extends HSMotorController> extends Subsys
         return victors;
     }
 
-    public void setCurrentLimit(int peakTime, int peakLimit, int contLimit) {
-        elMaster.configPeakCurrentLimit(peakLimit);
-        elMaster.configPeakCurrentDuration(peakTime);
-        elMaster.configContinuousCurrentLimit(contLimit);
+    public void setCurrentLimit(double peakTime, double peakLimit, double contLimit) {
+        elMaster.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, contLimit, peakLimit, peakTime));
     }
 
     public void applyToAll(Consumer<IMotorController> consumer) {
