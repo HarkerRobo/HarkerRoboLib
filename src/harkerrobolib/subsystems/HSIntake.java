@@ -103,13 +103,13 @@ public abstract class HSIntake<Motor extends HSMotorController> extends Subsyste
     /**
      * Sets the same current limits to both talons.
      *
-     * @param peakTime the amount of time peak current is the active limit
+     * @param peakTime the amount of time peak current is the active limit (seconds)
      * @param peakCurrent the amount of current during peak time
      * @param contCurrent the amount of current during cont time
      * @timeout the time after which a failed CAN command will stop being retried
      */
     public void setCurrentLimits(double peakTimeSeconds, double peakCurrent, double contCurrent) {
-        masterMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, contCurrent, peakCurrent, peakTime));
+        masterMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, contCurrent, peakCurrent, peakTimeSeconds));
     }
 
     /**
