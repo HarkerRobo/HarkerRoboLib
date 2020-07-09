@@ -118,9 +118,43 @@ public abstract class HSFlywheel<Motor extends HSMotorController> extends Subsys
 
         setupVoltageComp(voltageComp);
         
-        setUpVelocityPID(velocitySlot, velocityPIDConstants);
-
         setupCurrentLimiting(peakCurrent, sustainedCurrent, peakTime);
+
+        setUpVelocityPID(velocitySlot, velocityPIDConstants);
+    }
+
+    /**
+     * Sets up the master and follower falcons by resetting defaults, setting master's sensor phase, setting inverts,
+     * setting up velocity PID, set voltage compensation.
+     * 
+     * @param sensorPhase
+     * @param masterInvert Clockwise or counterclockwise
+     * @param followerInvert Clockwise or counterclockwise
+     * @param velocitySlot
+     * @param velocityPIDConstants
+     * @param voltageComp
+     * @param peakCurrent peak current for the current limiting
+     * @param sustainedCurrent sustained threshold current for current limiting
+     * @param peakTime maximum time for peak current to be in effect (seconds)
+     */
+    public void setupFlywheel(boolean sensorPhase, TalonFXInvertType masterInvert, TalonFXInvertType followerInvert, int velocitySlot, double[] velocityPIDConstants, double voltageComp, double peakCurrent, double sustainedCurrent, double peakTime) {
+
+        master.configFactoryDefault();
+        follower.configFactoryDefault();
+
+        follower.follow(master);
+
+        setupInverts(masterInvert, followerInvert); 
+
+        master.setSensorPhase(sensorPhase);
+
+        setupNeutralMode(NeutralMode.Coast);
+
+        setupVoltageComp(voltageComp);
+        
+        setupCurrentLimiting(peakCurrent, sustainedCurrent, peakTime);
+        
+        setUpVelocityPID(velocitySlot, velocityPIDConstants);
     }
 
     public void setupVoltageComp(double voltageComp){
