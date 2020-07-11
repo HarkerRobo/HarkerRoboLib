@@ -31,7 +31,7 @@ public class HSTalon extends TalonSRX implements HSMotorController {
     @Override
     public ErrorCode configStatorCurrentLimit(StatorCurrentLimitConfiguration currLimitCfg, int timeoutMs) {
         configStatorCurrentLimit(currLimitCfg);
-        return null;
+        return ErrorCode.OK;
     }
 
     @Override
@@ -40,60 +40,60 @@ public class HSTalon extends TalonSRX implements HSMotorController {
         configPeakCurrentLimit((int)currLimitCfg.triggerThresholdCurrent);
         configPeakCurrentDuration((int)(currLimitCfg.triggerThresholdTime * 1000));
         configContinuousCurrentLimit((int)currLimitCfg.currentLimit);
-        return null;
+        return ErrorCode.OK;
     }
 
     @Override
     public ErrorCode configGetSupplyCurrentLimit(SupplyCurrentLimitConfiguration currLimitConfigsToFill,
             int timeoutMs) {
-        return null;
+        return ErrorCode.OK;
     }
 
     @Override
     public ErrorCode configGetSupplyCurrentLimit(SupplyCurrentLimitConfiguration currLimitConfigsToFill) {
-        return null;
+        return ErrorCode.OK;
     }
 
     @Override
     public ErrorCode configGetStatorCurrentLimit(StatorCurrentLimitConfiguration currLimitConfigsToFill,
             int timeoutMs) {
-        return null;
+        return ErrorCode.OK;
     }
 
     @Override
     public ErrorCode configGetStatorCurrentLimit(StatorCurrentLimitConfiguration currLimitConfigsToFill) {
-        return null;
+        return ErrorCode.OK;
     }
 
     @Override
     public ErrorCode configIntegratedSensorAbsoluteRange(AbsoluteSensorRange absoluteSensorRange, int timeoutMs) {
-        return null;
+        return ErrorCode.OK;
     }
 
     @Override
     public ErrorCode configIntegratedSensorAbsoluteRange(AbsoluteSensorRange absoluteSensorRange) {
-        return null;
+        return ErrorCode.OK;
     }
 
     @Override
     public ErrorCode configIntegratedSensorOffset(double offsetDegrees, int timeoutMs) {
-        return null;
+        return ErrorCode.OK;
     }
 
     @Override
     public ErrorCode configIntegratedSensorOffset(double offsetDegrees) {
-        return null;
+        return ErrorCode.OK;
     }
 
     @Override
     public ErrorCode configIntegratedSensorInitializationStrategy(SensorInitializationStrategy initializationStrategy,
             int timeoutMs) {
-        return null;
+        return ErrorCode.OK;
     }
 
     @Override
     public ErrorCode configIntegratedSensorInitializationStrategy(SensorInitializationStrategy initializationStrategy) {
-        return null;
+        return ErrorCode.OK;
     }
 
     @Override
