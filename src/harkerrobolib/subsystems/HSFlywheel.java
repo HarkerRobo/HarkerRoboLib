@@ -79,9 +79,7 @@ public abstract class HSFlywheel<Motor extends HSMotorController> extends Subsys
      * @param velocitySlot
      * @param constants
      * @param voltageComp
-     * @param peakCurrent peak current for the current limiting
-     * @param sustainedCurrent sustained threshold current for current limiting
-     * @param peakTime maximum time for peak current to be in effect (seconds)
+     * @param currentConfig
      */
     public void setupFlywheel(boolean sensorPhase, boolean masterInvert, 
                             boolean followerInvert, int velocitySlot, Gains constants, 
@@ -124,9 +122,7 @@ public abstract class HSFlywheel<Motor extends HSMotorController> extends Subsys
     /**
      * Sets up current limiting for the motors.
      * 
-     * @param peakCurrent peak current for the current limiting
-     * @param sustainedCurrent sustained threshold current for current limiting
-     * @param peakTime maximum time for peak current to be in effect (seconds)
+     * @param currentConfig stator current limit configuration 
      */
     public void setupCurrentLimiting(StatorCurrentLimitConfiguration currentConfig) {
         master.configGetStatorCurrentLimit(currentConfig);
@@ -175,8 +171,7 @@ public abstract class HSFlywheel<Motor extends HSMotorController> extends Subsys
      * Sets up velocity PID constants with a given slot.
      * 
      * @param velocitySlot slot for the velocity PID
-     * @param veloccityPIDConstants the constants for the PID in the order
-     *                              0: kF, 1: kP, 2: kI, 3: kD, and optionally, 4: Izone
+     * @param constants Gains containing velocity PID constants
      */
     public void setUpVelocityPID(int velocitySlot, Gains constants) {
         master.configClosedLoopConstants(velocitySlot, constants);

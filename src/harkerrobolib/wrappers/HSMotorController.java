@@ -473,7 +473,7 @@ public interface HSMotorController extends IMotorController {
         config_IntegralZone(slotIndex, constants.getIZone());
     }
 
-        /**
+    /**
      * Checks if the motor is stalling. 
      * 
      * @param stallCurrent minimum current indicating stall
