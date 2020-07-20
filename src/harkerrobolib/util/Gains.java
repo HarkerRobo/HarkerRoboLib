@@ -12,7 +12,16 @@ public class Gains {
 	private double kD;
 	private int iZone;
 	
-	public Gains kF (double kF) { this.kF = kF; return this;}
+	public Gains(double kF, double kP, double kI, double kD, int iZone)
+	{
+		this.kF = kF;
+		this.kP = kP;
+		this.kI = kI;
+		this.kD = kD;
+		this.iZone = iZone;
+	}
+
+	public Gains kF (double kF) {this.kF = kF; return this;}
 	public Gains kP (double kP) {this.kP = kP; return this;} 
 	public Gains kI (double kI) {this.kI = kI; return this;}
 	public Gains kD (double kD) {this.kD = kD; return this;}
