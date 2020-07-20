@@ -2,15 +2,12 @@ package harkerrobolib.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.Gains;
 import harkerrobolib.wrappers.HSMotorController;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import harkerrobolib.wrappers.HSTalon;
-
 /**
  * Represents an indexer subsystem on the robot.
  * 
@@ -82,6 +79,17 @@ public abstract class HSIndexer<Motor extends HSMotorController> extends Subsyst
     public void setupSensorPhase(boolean sensorPhase){
         spine.setSensorPhase(sensorPhase);
         spine.setSelectedSensorPosition(0);
+    }
+    
+    public void setUpMotorControllers(StatorCurrentLimitConfiguration currentConfig, 
+                                    double maxVoltage, boolean agitatorInvert, 
+                                    boolean spineInvert, boolean sensorPhase) { 
+        resetMotors();
+        setupNeutralMode(NeutralMode.Brake);
+        setupCurrentLimiting(currentConfig);
+        setupVoltageComp(maxVoltage);
+        setupInverts(agitatorInvert, spineInvert);
+        setupSensorPhase(sensorPhase);
     }
     
     public void setUpMotorControllers(int velocityPIDSlot, Gains constants, 
