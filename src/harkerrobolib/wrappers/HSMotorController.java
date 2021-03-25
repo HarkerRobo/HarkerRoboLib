@@ -69,18 +69,12 @@ public interface HSMotorController extends IMotorController {
 
     void set (ControlMode mode, double outputValue);
  
-    void set(ControlMode mode, double demand0, double demand1);
- 
     void set(ControlMode mode, double demand0, DemandType demand1Type, double demand1);
  
     void neutralOutput();
  
     void setNeutralMode(NeutralMode neutralMode);
- 
-    void enableHeadingHold(boolean enable);
- 
-    void selectDemandType(boolean value);
- 
+  
     void setSensorPhase(boolean PhaseSensor);
  
     void setInverted(boolean invert);
@@ -169,17 +163,17 @@ public interface HSMotorController extends IMotorController {
  
     ErrorCode configSensorTerm(SensorTerm sensorTerm, RemoteFeedbackDevice feedbackDevice);
  
-    int getSelectedSensorPosition(int pidIdx);
+    double getSelectedSensorPosition(int pidIdx);
  
-    int getSelectedSensorPosition();
+    double getSelectedSensorPosition();
  
-    int getSelectedSensorVelocity(int pidIdx);
+    double getSelectedSensorVelocity(int pidIdx);
 
-    int	getSelectedSensorVelocity();
+    double getSelectedSensorVelocity();
 
-    ErrorCode setSelectedSensorPosition(int sensorPos, int pidIdx, int timeoutMs);
+    ErrorCode setSelectedSensorPosition(double sensorPos, int pidIdx, int timeoutMs);
  
-    ErrorCode setSelectedSensorPosition(int sensorPos);
+    ErrorCode setSelectedSensorPosition(double sensorPos);
      
     ErrorCode setControlFramePeriod(ControlFrame frame, int periodMs);
      
@@ -211,13 +205,13 @@ public interface HSMotorController extends IMotorController {
      
     void overrideLimitSwitchesEnable (boolean enable);
      
-    ErrorCode configForwardSoftLimitThreshold (int forwardSensorLimit, int timeoutMs);
+    ErrorCode configForwardSoftLimitThreshold (double forwardSensorLimit, int timeoutMs);
      
-    ErrorCode configForwardSoftLimitThreshold (int forwardSensorLimit);
+    ErrorCode configForwardSoftLimitThreshold (double forwardSensorLimit);
      
-    ErrorCode configReverseSoftLimitThreshold (int reverseSensorLimit, int timeoutMs);
+    ErrorCode configReverseSoftLimitThreshold (double reverseSensorLimit, int timeoutMs);
      
-    ErrorCode configReverseSoftLimitThreshold (int reverseSensorLimit);
+    ErrorCode configReverseSoftLimitThreshold (double reverseSensorLimit);
      
     ErrorCode configForwardSoftLimitEnable (boolean enable, int timeoutMs);
      
@@ -245,13 +239,13 @@ public interface HSMotorController extends IMotorController {
      
     ErrorCode config_kF(int slotIdx, double value);
      
-    ErrorCode config_IntegralZone(int slotIdx, int izone, int timeoutMs);
+    ErrorCode config_IntegralZone(int slotIdx, double izone, int timeoutMs);
      
-    ErrorCode config_IntegralZone(int slotIdx, int izone);
+    ErrorCode config_IntegralZone(int slotIdx, double izone);
      
-    ErrorCode configAllowableClosedloopError(int slotIdx, int allowableClosedLoopError, int timeoutMs);
+    ErrorCode configAllowableClosedloopError(int slotIdx, double allowableClosedLoopError, int timeoutMs);
      
-    ErrorCode configAllowableClosedloopError(int slotIdx, int allowableClosedLoopError);
+    ErrorCode configAllowableClosedloopError(int slotIdx, double allowableClosedLoopError);
      
     ErrorCode configMaxIntegralAccumulator(int slotIdx, double iaccum, int timeoutMs);
      
@@ -273,9 +267,9 @@ public interface HSMotorController extends IMotorController {
      
     ErrorCode setIntegralAccumulator(double iaccum);
      
-    int getClosedLoopError(int pidIdx);
+    double getClosedLoopError(int pidIdx);
      
-    int getClosedLoopError();
+    double getClosedLoopError();
      
     double getIntegralAccumulator(int pidIdx);
      
@@ -291,27 +285,25 @@ public interface HSMotorController extends IMotorController {
      
     double getClosedLoopTarget();
      
-    int getActiveTrajectoryPosition();
+    double getActiveTrajectoryPosition();
      
-    int getActiveTrajectoryPosition(int pidIdx);
+    double getActiveTrajectoryPosition(int pidIdx);
      
-    int getActiveTrajectoryVelocity();
+    double getActiveTrajectoryVelocity();
      
-    int getActiveTrajectoryVelocity(int pidIdx);
-     
-    double getActiveTrajectoryHeading();
+    double getActiveTrajectoryVelocity(int pidIdx);
      
     double getActiveTrajectoryArbFeedFwd();
      
     double getActiveTrajectoryArbFeedFwd(int pidIdx);
      
-    ErrorCode configMotionCruiseVelocity(int sensorUnitsPer100ms, int timeoutMs);
+    ErrorCode configMotionCruiseVelocity(double sensorUnitsPer100ms, int timeoutMs);
      
-    ErrorCode configMotionCruiseVelocity(int sensorUnitsPer100ms);
+    ErrorCode configMotionCruiseVelocity(double sensorUnitsPer100ms);
      
-    ErrorCode configMotionAcceleration(int sensorUnitsPer100msPerSec, int timeoutMs);
+    ErrorCode configMotionAcceleration(double sensorUnitsPer100msPerSec, int timeoutMs);
      
-    ErrorCode configMotionAcceleration(int sensorUnitsPer100msPerSec);
+    ErrorCode configMotionAcceleration(double sensorUnitsPer100msPerSec);
      
     ErrorCode configMotionSCurveStrength(int curveStrength, int timeoutMs);
      
