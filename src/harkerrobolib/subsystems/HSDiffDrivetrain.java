@@ -13,7 +13,6 @@ import harkerrobolib.util.Conversions;
 import harkerrobolib.util.Gains;
 import harkerrobolib.wrappers.HSMotorController;
 import harkerrobolib.wrappers.HSPigeon;
-import harkerrobolib.wrappers.HSTalon;
 
 /**
  * Represents a general Drivetrain subsystem with two master motor controllers and two optional follower controllers.

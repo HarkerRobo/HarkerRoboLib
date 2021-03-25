@@ -4,18 +4,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.Conversions;
 import harkerrobolib.util.Gains;
 import harkerrobolib.util.Conversions.SpeedUnit;
-import harkerrobolib.wrappers.HSFalcon;
 import harkerrobolib.wrappers.HSMotorController;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 /**
  * Represents a general Flywheel shooter with a master talon and a follower talon, and optional solenoid.

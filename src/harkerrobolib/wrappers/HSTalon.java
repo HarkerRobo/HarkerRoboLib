@@ -105,5 +105,4 @@ public class HSTalon extends TalonSRX implements HSMotorController {
     public ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx) {
         return super.configSelectedFeedbackSensor(feedbackDevice, pidIdx, Constants.DEFAULT_TIMEOUT);
     }
-
 }

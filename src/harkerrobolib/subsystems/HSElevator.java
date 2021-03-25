@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import harkerrobolib.util.MathUtil;
 import harkerrobolib.wrappers.HSMotorController;
-import harkerrobolib.wrappers.HSTalon;
 
 /**
  * Represents a general Elevator subsystem with a master talon and variable
@@ -110,7 +109,7 @@ public abstract class HSElevator<Motor extends HSMotorController> extends Subsys
         if (LOOP_INDEX != -1) {
             if (Math.abs(desiredSpeed) > 0) {
                 boolean rampDown = desiredSpeed < 0;
-                int position = elMaster.getSelectedSensorPosition(LOOP_INDEX);
+                int position = (int)elMaster.getSelectedSensorPosition(LOOP_INDEX);
                 boolean reversePastLimit = position <= SOFT_LIMIT_POSITION;
                 double currVelocity = elMaster.getSelectedSensorVelocity(LOOP_INDEX);
                 double distFromSoft = position - SOFT_LIMIT_POSITION;
