@@ -1,11 +1,11 @@
 package harkerrobolib.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.math.controller.PIDController;
 
-import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import harkerrobolib.subsystems.HSSwerveDrivetrain;
 import harkerrobolib.util.Constants;
@@ -77,7 +77,7 @@ public class SwerveAlignWithLimelight extends CommandBase {
     public void execute() {
         Limelight.setLEDS(true);
 
-        double turn = txController.calculate(Limelight.getTx(), txController.getSetpoint()) * maxRotationVelocity * (DriverStation.getInstance().isAutonomous() ? -1 : 1);
+        double turn = txController.calculate(Limelight.getTx(), txController.getSetpoint()) * maxRotationVelocity * (DriverStation.isAutonomous() ? -1 : 1);
 
         double translateX = MathUtil.mapJoystickOutput(driverGamepad.getLeftX(), Constants.JOYSTICK_DEADBAND);
         double translateY = MathUtil.mapJoystickOutput(driverGamepad.getLeftY(), Constants.JOYSTICK_DEADBAND);

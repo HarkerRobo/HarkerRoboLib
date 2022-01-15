@@ -24,9 +24,9 @@ public class Logger {
     }
 
     public void start () {
-        String fileName = DriverStation.getInstance().getEventName() + DriverStation.getInstance().getMatchType() + "-" 
-                + DriverStation.getInstance().getAlliance() + DriverStation.getInstance().getLocation() + "-"
-                + DriverStation.getInstance().getMatchNumber() + ".txt";
+        String fileName = DriverStation.getEventName() + DriverStation.getMatchType() + "-" 
+                + DriverStation.getAlliance() + DriverStation.getLocation() + "-"
+                + DriverStation.getMatchNumber() + ".txt";
         try {
             logger = new PrintWriter(fileLoc + fileName);
         } catch (FileNotFoundException e) {
@@ -35,7 +35,7 @@ public class Logger {
     }
 
     public void log (String val) {
-        String message = (DriverStation.getInstance().isAutonomous() ? "A" : "T") + DriverStation.getInstance().getMatchTime() + " " + val;
+        String message = (DriverStation.isAutonomous() ? "A" : "T") + DriverStation.getMatchTime() + " " + val;
         if (logger != null) {
             logger.println(message);
         } else {
