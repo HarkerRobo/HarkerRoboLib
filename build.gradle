@@ -88,6 +88,18 @@ jar {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'org.gradle.sample'
+            artifactId = 'library'
+            version = '2020.0.0'
+
+            from components.java
+        }
+    }
+}
+
 // Configure jar and deploy tasks
 deployArtifact.jarTask = jar
 wpi.java.configureExecutableTasks(jar)
