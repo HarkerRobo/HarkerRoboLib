@@ -70,6 +70,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
+sourceSets {
+    main.java.srcDirs = ['src']
+}
+
 // Simulation configuration (e.g. environment variables).
 wpi.sim.addGui().defaultEnabled = true
 wpi.sim.addDriverstation()
