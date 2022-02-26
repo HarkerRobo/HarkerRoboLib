@@ -23,6 +23,16 @@ public class HSFalcon extends TalonFX implements HSMotorController {
         super(deviceNumber);
     }
 
+     /**
+     * Constructs a TalonSRXWrapper with the default timeout
+     * {{@link Constants#DEFAULT_TIMEOUT}.
+     * 
+     * @param deviceNumber The CAN device ID of the Talon.
+     */
+    public HSFalcon(final int deviceNumber, String busId) {
+        super(deviceNumber, busId);
+    }
+
     @Override
     public ErrorCode configSelectedFeedbackSensor(RemoteFeedbackDevice feedbackDevice, int pidIdx) {
         return super.configSelectedFeedbackSensor(feedbackDevice, pidIdx, Constants.DEFAULT_TIMEOUT);
