@@ -1,6 +1,8 @@
 package harkerrobolib.wrappers;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -31,5 +33,10 @@ public class HSTriggerButton extends JoystickButton {
     @Override
     public boolean get() {
         return getAnalog() > TRIGGER_DEADBAND;
+    }
+
+    public void whilePressed(Command c){
+        whenPressed(c);
+        whenReleased(new InstantCommand(() -> c.cancel()));
     }
 }
