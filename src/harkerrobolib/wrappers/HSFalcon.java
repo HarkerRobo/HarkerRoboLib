@@ -3,7 +3,8 @@ package harkerrobolib.wrappers;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 import harkerrobolib.util.Constants;
 
 /**
@@ -12,7 +13,7 @@ import harkerrobolib.util.Constants;
  * @author Chirag Kaushik
  * @author Ada Praun-Petrovic
  */
-public class HSFalcon extends TalonFX implements HSMotorController {
+public class HSFalcon extends WPI_TalonFX implements HSMotorController {
     /**
      * Constructs a TalonSRXWrapper with the default timeout
      * {{@link Constants#DEFAULT_TIMEOUT}.
