@@ -3,8 +3,11 @@ package harkerrobolib.wrappers;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.FilterConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.math.MathUtil;
 import harkerrobolib.util.Constants;
 
 /**
@@ -32,6 +35,11 @@ public class HSFalcon extends WPI_TalonFX implements HSMotorController {
      */
     public HSFalcon(final int deviceNumber, String busId) {
         super(deviceNumber, busId);
+    }
+
+    @Override
+    public void setVoltage(double voltage) {
+        super.setVoltage(MathUtil.clamp(voltage, -12.0, 12.0));
     }
 
     @Override
