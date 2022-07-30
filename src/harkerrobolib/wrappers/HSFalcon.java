@@ -3,11 +3,10 @@ package harkerrobolib.wrappers;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.FilterConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import harkerrobolib.util.Constants;
 
 /**
@@ -17,14 +16,17 @@ import harkerrobolib.util.Constants;
  * @author Ada Praun-Petrovic
  */
 public class HSFalcon extends WPI_TalonFX implements HSMotorController {
+
+    String name;
+
     /**
      * Constructs a TalonSRXWrapper with the default timeout
      * {{@link Constants#DEFAULT_TIMEOUT}.
      * 
      * @param deviceNumber The CAN device ID of the Talon.
      */
-    public HSFalcon(final int deviceNumber) {
-        super(deviceNumber);
+    public HSFalcon(final int deviceNumber, String name) {
+        this(deviceNumber, "rio", name);
     }
 
      /**
@@ -33,8 +35,9 @@ public class HSFalcon extends WPI_TalonFX implements HSMotorController {
      * 
      * @param deviceNumber The CAN device ID of the Talon.
      */
-    public HSFalcon(final int deviceNumber, String busId) {
+    public HSFalcon(final int deviceNumber, String busId, String name) {
         super(deviceNumber, busId);
+        this.name = name;
     }
 
     @Override
@@ -50,5 +53,15 @@ public class HSFalcon extends WPI_TalonFX implements HSMotorController {
     @Override
     public ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx) {
         return super.configSelectedFeedbackSensor(feedbackDevice, pidIdx, Constants.DEFAULT_TIMEOUT);
+    }
+
+    public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType(name);
+        builder.addDoubleProperty("Output Voltage", () -> getBusVoltage() * getMotorOutputPercent(),null);
+        builder.addDoubleProperty("Supply Current", () -> getSupplyCurrent(), null);
+        builder.addDoubleProperty("Stator Current", () -> getStatorCurrent(), null);
+        builder.addDoubleProperty("Encoder Velocity", () -> getSelectedSensorVelocity(), null);
+        builder.addDoubleProperty("Encoder Position", () -> getSelectedSensorPosition(), null);
+        builder.addDoubleProperty("Temperature", () -> getTemperature(), null);
     }
 }
