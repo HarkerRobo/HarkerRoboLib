@@ -1,16 +1,15 @@
 package harkerrobolib.subsystems;
 
+import static harkerrobolib.util.Conversions.AngleUnit.*;
+import static harkerrobolib.util.Conversions.LinearUnit.*;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import harkerrobolib.util.Conversions;
-import harkerrobolib.util.Conversions.AngleUnit;
-import harkerrobolib.util.Conversions.LinearUnit;
-import harkerrobolib.util.Conversions.TimeUnit;
-import harkerrobolib.util.Conversions.VelocityUnit;
+import harkerrobolib.util.Conversions.VelUnit;
 import harkerrobolib.util.Gains;
 import harkerrobolib.wrappers.HSMotorController;
 
@@ -174,11 +173,7 @@ public abstract class HSFlywheel<Motor extends HSMotorController> extends Subsys
   public void spinShooterVelocity(double velocity) {
 
     double velocityTicks =
-        Conversions.convert(
-            new VelocityUnit(LinearUnit.FOOT, TimeUnit.SECOND),
-            velocity,
-            WHEEL_DIAMETER,
-            new VelocityUnit(AngleUnit.TALONFX, TimeUnit.CTRE_VEL));
+        new VelUnit(FOOT).to(new VelUnit(TALONFX), velocity, INCH, WHEEL_DIAMETER);
     master.set(ControlMode.Velocity, velocityTicks);
   }
 

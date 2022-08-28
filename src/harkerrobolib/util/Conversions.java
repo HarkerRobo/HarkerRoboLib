@@ -1,7 +1,5 @@
 package harkerrobolib.util;
 
-import java.security.InvalidParameterException;
-
 /**
  * Wrapper class for a series of methods allowing for easy unit conversions.
  *
@@ -9,11 +7,7 @@ import java.security.InvalidParameterException;
  * @version 8/27/22
  */
 public final class Conversions {
-  public interface Unit {
-    double convert(Unit unit, double amt);
-  }
-
-  public static enum LinearUnit implements Unit {
+  public static enum LinearUnit {
     INCH(39.37007874),
     FOOT(3.280839895),
     MILLIMETER(1000.0),
@@ -33,16 +27,21 @@ public final class Conversions {
       return amt * fromMeters;
     }
 
-    public double convert(Unit unit, double amt) {
-      return ((LinearUnit) unit).fromMeters(toMeters(amt));
+    public double to(LinearUnit unit, double amt) {
+      return unit.fromMeters(toMeters(amt));
     }
 
-    public double convertToAngular(double amt, double diameter, AngleUnit unit) {
+    public double to(AngleUnit unit, double amt, double diameter) {
       return unit.fromRotations(amt / AngleUnit.RADIAN.fromRotations(diameter));
+    }
+
+    public double to(AngleUnit unit, double amt, LinearUnit diameterUnit, double diameter) {
+      return unit.fromRotations(
+          amt / AngleUnit.RADIAN.fromRotations(diameterUnit.to(this, diameter)));
     }
   }
 
-  public static enum TimeUnit implements Unit {
+  public static enum TimeUnit {
     NANOSECOND(Math.pow(10, -9)),
     MICROSECOND(Math.pow(10, -6)),
     MILLISECOND(0.001),
@@ -63,12 +62,12 @@ public final class Conversions {
       return amt / toSeconds;
     }
 
-    public double convert(Unit unit, double amt) {
-      return ((TimeUnit) unit).fromSeconds(toSeconds(amt));
+    public double to(TimeUnit unit, double amt) {
+      return unit.fromSeconds(toSeconds(amt));
     }
   }
 
-  public static enum AngleUnit implements Unit {
+  public static enum AngleUnit {
     QUADRATURE(4096.0),
     TALONFX(2048.0),
     DEGREE(360),
@@ -88,68 +87,55 @@ public final class Conversions {
       return amt * fromRotations;
     }
 
-    public double convert(Unit unit, double amt) {
-      return ((AngleUnit) unit).fromRotations(toRotations(amt));
+    public double to(AngleUnit unit, double amt) {
+      return unit.fromRotations(toRotations(amt));
     }
 
-    public double convertToLinear(double amt, double diameter) {
+    public double to(LinearUnit unit, double amt, double diameter) {
       return RADIAN.fromRotations(toRotations(amt)) * diameter;
     }
+
+    public double to(LinearUnit unit, double amt, LinearUnit diameterUnit, double diameter) {
+      return RADIAN.fromRotations(toRotations(amt)) * diameterUnit.to(unit, diameter);
+    }
   }
 
-  public static class VelocityUnit implements Unit {
-    Unit displacement;
+  public static class VelUnit {
+    LinearUnit displacementLinear;
+    AngleUnit displacementAngle;
     TimeUnit time;
 
-    public VelocityUnit(Unit displacement, TimeUnit time) {
-      this.displacement = displacement;
-      this.time = time;
+    public VelUnit(AngleUnit displacement) {
+      displacementAngle = displacement;
+      if (displacement.equals(AngleUnit.TALONFX)) time = TimeUnit.CTRE_VEL;
     }
 
-    public double convert(Unit unit, double amt) {
-      VelocityUnit vel = (VelocityUnit) unit;
-      amt = displacement.convert(vel.displacement, amt);
-      amt = vel.time.convert(time, amt);
+    public VelUnit(LinearUnit displacement) {
+      displacementLinear = displacement;
+      time = TimeUnit.SECOND;
+    }
+
+    public double to(VelUnit unit, double amt) {
+      if (displacementLinear == null) amt = displacementAngle.to(unit.displacementAngle, amt);
+      else amt = displacementLinear.to(unit.displacementLinear, amt);
+      amt = unit.time.to(time, amt);
       return amt;
     }
 
-    public double convert(Unit unit, double amt, double diameter) {
-      VelocityUnit vel = (VelocityUnit) unit;
-      if (displacement instanceof LinearUnit) {
-        amt =
-            ((LinearUnit) displacement)
-                .convertToAngular(amt, diameter, (AngleUnit) vel.displacement);
-      }
-      amt = vel.time.convert(time, amt);
+    public double to(VelUnit unit, double amt, double diameter) {
+      if (displacementLinear == null)
+        amt = displacementAngle.to(unit.displacementLinear, amt, diameter);
+      else amt = displacementLinear.to(unit.displacementAngle, amt, diameter);
+      amt = unit.time.to(time, amt);
       return amt;
     }
-  }
 
-  /**
-   * Converts a value of one unit to a value of another unit.
-   *
-   * @param startUnit the unit of the passed-in value (either AngleUnit, SpeedUnit, PositionUnit,
-   *     TimeUnit).
-   * @param startValue the value to convert.
-   * @param desiredUnit the desired unit of the passed-in value.
-   * @precondition startUnit and desiredUnit both measure the same quantity.
-   * @return the converted value.
-   */
-  public static double convert(Unit startUnit, double startValue, Unit desiredUnit) {
-    if (startUnit.getClass().equals(desiredUnit.getClass())) {
-      return startUnit.convert(desiredUnit, startValue);
+    public double to(VelUnit unit, double amt, LinearUnit diameterUnit, double diameter) {
+      if (displacementLinear == null)
+        amt = displacementAngle.to(unit.displacementLinear, amt, diameterUnit, diameter);
+      else amt = displacementLinear.to(unit.displacementAngle, amt, diameterUnit, diameter);
+      amt = unit.time.to(time, amt);
+      return amt;
     }
-    throw new InvalidParameterException("Unit classes are non-equivalent");
-  }
-
-  public static double convert(
-      Unit startUnit, double startValue, double diameter, Unit desiredUnit) {
-    if (startUnit instanceof LinearUnit) {
-      return ((LinearUnit) startUnit)
-          .convertToAngular(startValue, diameter, (AngleUnit) desiredUnit);
-    } else if (startUnit instanceof AngleUnit) {
-      return ((LinearUnit) startUnit)
-          .convertToAngular(startValue, diameter, (AngleUnit) desiredUnit);
-    } else return ((VelocityUnit) startUnit).convert(desiredUnit, startValue, diameter);
   }
 }

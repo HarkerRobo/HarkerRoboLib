@@ -1,5 +1,8 @@
 package harkerrobolib.util;
 
+import static harkerrobolib.util.Conversions.AngleUnit.*;
+import static harkerrobolib.util.Conversions.LinearUnit.*;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
@@ -9,10 +12,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import harkerrobolib.util.Conversions.AngleUnit;
-import harkerrobolib.util.Conversions.LinearUnit;
-import harkerrobolib.util.Conversions.TimeUnit;
-import harkerrobolib.util.Conversions.VelocityUnit;
+import harkerrobolib.util.Conversions.VelUnit;
 import harkerrobolib.wrappers.HSTalon;
 
 /**
@@ -186,12 +186,7 @@ public class SwerveModule {
     } else {
       driveMotor.set(
           TalonFXControlMode.Velocity,
-          Conversions.convert(
-                  new VelocityUnit(LinearUnit.FOOT, TimeUnit.SECOND),
-                  output,
-                  WHEEL_DIAMETER,
-                  new VelocityUnit(AngleUnit.TALONFX, TimeUnit.CTRE_VEL))
-              * GEAR_RATIO);
+          new VelUnit(FOOT).to(new VelUnit(TALONFX), GEAR_RATIO * output, INCH, WHEEL_DIAMETER));
     }
   }
 
@@ -251,12 +246,12 @@ public class SwerveModule {
    */
   public SwerveModuleState getState() {
     return new SwerveModuleState(
-        Conversions.convert(
-                new VelocityUnit(AngleUnit.TALONFX, TimeUnit.CTRE_VEL),
-                driveMotor.getSelectedSensorVelocity(),
-                WHEEL_DIAMETER,
-                new VelocityUnit(LinearUnit.METER, TimeUnit.SECOND))
-            / GEAR_RATIO,
+        new VelUnit(TALONFX)
+            .to(
+                new VelUnit(METER),
+                driveMotor.getSelectedSensorVelocity() / GEAR_RATIO,
+                INCH,
+                WHEEL_DIAMETER),
         Rotation2d.fromDegrees(getAngleDegrees()));
   }
 
