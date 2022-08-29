@@ -25,13 +25,12 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.FilterConfiguration;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import harkerrobolib.util.Gains;
+import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 
 public interface HSMotorController extends IMotorController {
   // void enableCurrentLimit(boolean enable);
@@ -461,9 +460,9 @@ public interface HSMotorController extends IMotorController {
 
   double getSupplyCurrent();
 
-  ErrorCode configVelocityMeasurementPeriod(VelocityMeasPeriod period, int timeoutMs);
+  ErrorCode configVelocityMeasurementPeriod(SensorVelocityMeasPeriod period, int timeoutMs);
 
-  ErrorCode configVelocityMeasurementPeriod(VelocityMeasPeriod period);
+  ErrorCode configVelocityMeasurementPeriod(SensorVelocityMeasPeriod period);
 
   ErrorCode configVelocityMeasurementWindow(int windowSize, int timeoutMs);
 
@@ -484,14 +483,6 @@ public interface HSMotorController extends IMotorController {
   int isFwdLimitSwitchClosed();
 
   int isRevLimitSwitchClosed();
-
-  public default void configClosedLoopConstants(int slotIndex, Gains constants) {
-    config_kP(slotIndex, constants.getkP());
-    config_kI(slotIndex, constants.getkI());
-    config_kD(slotIndex, constants.getkD());
-    config_kF(slotIndex, constants.getkF());
-    config_IntegralZone(slotIndex, constants.getIZone());
-  }
 
   /**
    * Checks if the motor is stalling.

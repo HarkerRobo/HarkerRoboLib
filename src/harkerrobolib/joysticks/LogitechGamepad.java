@@ -1,4 +1,4 @@
-package harkerrobolib.wrappers;
+package harkerrobolib.joysticks;
 
 /**
  * Represents a standard Logitech controller.

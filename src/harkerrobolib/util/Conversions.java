@@ -7,6 +7,7 @@ package harkerrobolib.util;
  * @version 8/27/22
  */
 public final class Conversions {
+
   public static enum LinearUnit {
     INCH(39.37007874),
     FOOT(3.280839895),

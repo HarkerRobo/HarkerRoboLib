@@ -1,12 +1,13 @@
-package harkerrobolib.wrappers;
+package harkerrobolib.joysticks;
 
 /**
- * Represents a standard Xbox controller.
+ * Represents the updated Logitech F310 controller with analog triggers.
  *
  * @author Finn Frankis
- * @version 10/16/18
+ * @version 10/27/18
  */
-public class XboxGamepad extends HSGamepad {
+public class LogitechAnalogGamepad extends HSGamepad {
+
   public static final int A = 1;
   public static final int B = 2;
   public static final int X = 3;
@@ -24,13 +25,10 @@ public class XboxGamepad extends HSGamepad {
   public static final int LEFT_Y = 1;
   public static final int RIGHT_X = 4;
   public static final int RIGHT_Y = 5;
-  public static final int LEFT_TRIGGER = 2;
-  public static final int RIGHT_TRIGGER = 3;
+  public static final int TRIGGER_LEFT = 2;
+  public static final int TRIGGER_RIGHT = 3;
 
-  private HSTriggerButton leftTrigger;
-  private HSTriggerButton rightTrigger;
-
-  public XboxGamepad(int port) {
+  public LogitechAnalogGamepad(int port) {
     super(
         port,
         A,
@@ -47,24 +45,13 @@ public class XboxGamepad extends HSGamepad {
         LEFT_Y,
         RIGHT_X,
         RIGHT_Y);
-
-    leftTrigger = new HSTriggerButton(this, LEFT_TRIGGER);
-    rightTrigger = new HSTriggerButton(this, RIGHT_TRIGGER);
-  }
-
-  public HSTriggerButton getButtonTriggerLeft() {
-    return leftTrigger;
-  }
-
-  public HSTriggerButton getButtonTriggerRight() {
-    return rightTrigger;
   }
 
   public double getRightTrigger() {
-    return getRawAxis(RIGHT_TRIGGER);
+    return getRawAxis(TRIGGER_RIGHT);
   }
 
   public double getLeftTrigger() {
-    return getRawAxis(LEFT_TRIGGER);
+    return getRawAxis(TRIGGER_LEFT);
   }
 }

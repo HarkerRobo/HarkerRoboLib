@@ -1,4 +1,4 @@
-package harkerrobolib.wrappers;
+package harkerrobolib.joysticks;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
