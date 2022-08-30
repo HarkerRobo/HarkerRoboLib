@@ -32,6 +32,10 @@ public final class Conversions {
       return unit.fromMeters(toMeters(amt));
     }
 
+    public double to(LinearUnit unit) {
+      return to(unit, 1.0);
+    }
+
     public double to(AngleUnit unit, double amt, double diameter) {
       return unit.fromRotations(amt / AngleUnit.RADIAN.fromRotations(diameter));
     }
@@ -66,6 +70,10 @@ public final class Conversions {
     public double to(TimeUnit unit, double amt) {
       return unit.fromSeconds(toSeconds(amt));
     }
+
+    public double to(TimeUnit unit) {
+      return to(unit, 1.0);
+    }
   }
 
   public static enum AngleUnit {
@@ -86,6 +94,10 @@ public final class Conversions {
 
     private double fromRotations(double amt) {
       return amt * fromRotations;
+    }
+
+    public double to(AngleUnit unit) {
+      return to(unit, 1.0);
     }
 
     public double to(AngleUnit unit, double amt) {
@@ -114,6 +126,30 @@ public final class Conversions {
     public VelUnit(LinearUnit displacement) {
       displacementLinear = displacement;
       time = TimeUnit.SECOND;
+    }
+
+    public double to(LinearUnit unit, double amt) {
+      return to(new VelUnit(unit), amt);
+    }
+
+    public double to(LinearUnit unit, double amt, double diameter) {
+      return to(new VelUnit(unit), amt, diameter);
+    }
+
+    public double to(LinearUnit unit, double amt, LinearUnit diameterUnit, double diameter) {
+      return to(new VelUnit(unit), amt, diameterUnit, diameter);
+    }
+
+    public double to(AngleUnit unit, double amt) {
+      return to(new VelUnit(unit), amt);
+    }
+
+    public double to(AngleUnit unit, double amt, double diameter) {
+      return to(new VelUnit(unit), amt, diameter);
+    }
+
+    public double to(AngleUnit unit, double amt, LinearUnit diameterUnit, double diameter) {
+      return to(new VelUnit(unit), amt, diameterUnit, diameter);
     }
 
     public double to(VelUnit unit, double amt) {
