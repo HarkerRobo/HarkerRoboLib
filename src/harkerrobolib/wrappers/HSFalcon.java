@@ -46,7 +46,7 @@ public class HSFalcon extends WPI_TalonFX implements HSMotorController {
   public void initSendable(SendableBuilder builder) {
     builder.setSmartDashboardType("HSFalcon");
     builder.addDoubleProperty(
-        "Output Voltage", () -> getBusVoltage() * getMotorOutputPercent(), null);
+        "Output Voltage", () -> getMotorOutputVoltage(), null);
     builder.addDoubleProperty("Supply Current", () -> getSupplyCurrent(), null);
     builder.addDoubleProperty("Stator Current", () -> getStatorCurrent(), null);
     builder.addDoubleProperty("Encoder Velocity", () -> getSelectedSensorVelocity(), null);
