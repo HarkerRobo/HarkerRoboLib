@@ -13,8 +13,8 @@ public class HSFalconBuilder {
 
   private NeutralMode neutralMode = NeutralMode.Brake;
   private boolean invert = false;
-  private SensorVelocityMeasPeriod velocityMeasPeriod = SensorVelocityMeasPeriod.Period_1Ms;
-  private int velocityWindow = 1;
+  private SensorVelocityMeasPeriod velocityMeasPeriod = SensorVelocityMeasPeriod.Period_100Ms;
+  private int velocityWindow = 16;
   private int voltageFilter = 16;
   private int fastCANFrame = (int) (1000 * Constants.ROBOT_LOOP);
   private int slowCANFrame = 2 * fastCANFrame;
