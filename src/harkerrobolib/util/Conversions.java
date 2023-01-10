@@ -17,7 +17,7 @@ public class Conversions {
     /*
      * TalonFX motor to subsystem
      */
-    public static double conversionConstant(System type, double gearRatio, double diameterInInches) throws Exception {
+    public static double conversionConstant(System type, double gearRatio, double diameterInInches) {
       double convConstant = 0;
       
       switch (type) {
@@ -31,7 +31,6 @@ public class Conversions {
           convConstant = Math.PI * INCH_TO_METER * diameterInInches / FXTICK_TO_ROT * SEC_TO_100MS;
           break;
       }
-      if (convConstant == 0) throw new Exception("Choose an angular, positional, or velocity system.");
 
       convConstant /= gearRatio;
 
