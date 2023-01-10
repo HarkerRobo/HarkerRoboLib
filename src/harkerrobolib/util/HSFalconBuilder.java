@@ -20,7 +20,8 @@ public class HSFalconBuilder {
   private int slowCANFrame = 2 * fastCANFrame;
   private StatorCurrentLimitConfiguration stator;
   private SupplyCurrentLimitConfiguration supply;
-
+  private double voltageComp = Constants.MAX_VOLTAGE;
+  
   public HSFalconBuilder neutralMode(NeutralMode neutralMode) {
     this.neutralMode = neutralMode;
     return this;
@@ -73,12 +74,16 @@ public class HSFalconBuilder {
     falcon.configVelocityMeasurementPeriod(velocityMeasPeriod);
     falcon.configVelocityMeasurementWindow(velocityWindow);
     falcon.configVoltageMeasurementFilter(voltageFilter);
+    falcon.configVoltageCompSaturation(voltageComp);
+    falcon.enableVoltageCompensation(true);
     if (stator != null) falcon.configStatorCurrentLimit(stator);
     if (supply != null) falcon.configSupplyCurrentLimit(supply);
     for (StatusFrame frame : StatusFrame.values())
       falcon.setStatusFramePeriod(frame, Constants.MAX_CAN_FRAME_PERIOD);
     falcon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, fastCANFrame);
-    falcon.setStatusFramePeriod(StatusFrameEnhanced.Status_Brushless_Current, slowCANFrame);
+    falcon.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, slowCANFrame);
+    falcon.selectProfileSlot(Constants.SLOT_INDEX, Constants.PID_PRIMARY);
+    falcon.configClosedLoopPeriod(Constants.SLOT_INDEX, 1);
     return falcon;
   }
 }
