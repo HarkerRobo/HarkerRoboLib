@@ -2,7 +2,7 @@ package harkerrobolib.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * A command to run another command when a given button is not pressed. Note that the
@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 public class StartWithoutButtonCommand extends CommandBase {
 
   private final Command command;
-  private final Button button;
+  private final Trigger button;
 
   /**
    * Constructs a new StartWithoutButtonCommand.
@@ -23,7 +23,7 @@ public class StartWithoutButtonCommand extends CommandBase {
    * @param button the button which, when not pressed, will begin the command.
    * @param command the command which will begin when the given button is not pressed.
    */
-  public StartWithoutButtonCommand(Button button, Command command) {
+  public StartWithoutButtonCommand(Trigger button, Command command) {
     this.button = button;
     this.command = command;
   }
@@ -31,7 +31,7 @@ public class StartWithoutButtonCommand extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    if (!button.get()) command.schedule();
+    if (!button.getAsBoolean()) command.schedule();
   }
 
   // Make this return true when this Command no longer needs to run execute()

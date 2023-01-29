@@ -31,12 +31,12 @@ public class HSTriggerButton extends JoystickButton {
   }
 
   @Override
-  public boolean get() {
+  public boolean getAsBoolean() {
     return getAnalog() > TRIGGER_DEADBAND;
   }
 
   public void whilePressed(Command c) {
-    whenPressed(c);
-    whenReleased(new InstantCommand(() -> c.cancel()));
+    onTrue(c);
+    onFalse(new InstantCommand(() -> c.cancel()));
   }
 }
