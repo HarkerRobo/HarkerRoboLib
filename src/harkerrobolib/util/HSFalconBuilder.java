@@ -9,6 +9,12 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 import harkerrobolib.wrappers.HSFalcon;
 
+/*
+ * Helps build Talon FX motors with default configs
+ * 
+ * @author Chiling Han
+ * @version 01/30/2023
+ */
 public class HSFalconBuilder {
 
   private NeutralMode neutralMode = NeutralMode.Brake;

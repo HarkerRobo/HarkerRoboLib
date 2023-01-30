@@ -1,4 +1,11 @@
 package harkerrobolib.util;
+
+/**
+ * Converts from native units of motor to metric units
+ *
+ * @author Chiling Han
+ * @version 01/30/2023
+ */
 public class Conversions {
     public static enum System {
       ANGLE,

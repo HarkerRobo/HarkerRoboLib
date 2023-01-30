@@ -3,8 +3,8 @@ package harkerrobolib.util;
 /**
  * Holds universal constants for use throughout the library.
  *
- * @author Finn Frankis
- * @version 10/21/18
+ * @author Chiling Han
+ * @version 01/30/2023
  */
 public final class Constants {
   public static final int DEFAULT_TIMEOUT = 10;
