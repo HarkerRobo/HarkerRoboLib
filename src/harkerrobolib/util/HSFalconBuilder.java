@@ -11,7 +11,7 @@ import harkerrobolib.wrappers.HSFalcon;
 
 /*
  * Helps build Talon FX motors with default configs
- * 
+ *
  * @author Chiling Han
  * @version 01/30/2023
  */
@@ -27,7 +27,7 @@ public class HSFalconBuilder {
   private StatorCurrentLimitConfiguration stator;
   private SupplyCurrentLimitConfiguration supply;
   private double voltageComp = Constants.MAX_VOLTAGE;
-  
+
   public HSFalconBuilder neutralMode(NeutralMode neutralMode) {
     this.neutralMode = neutralMode;
     return this;

@@ -3,10 +3,10 @@ package harkerrobolib.joysticks;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 
-public class HSGenericHID extends GenericHID{
+public class HSGenericHID extends GenericHID {
 
   private final int port;
-  
+
   public HSGenericHID(int port) {
     super(port);
     this.port = port;
@@ -67,5 +67,4 @@ public class HSGenericHID extends GenericHID{
   public int getPort() {
     return port;
   }
-
 }

@@ -131,5 +131,4 @@ public class XboxGamepad extends CommandXboxController {
   public boolean getRightDPadButtonState() {
     return super.getHID().getPOV() == DPAD_RIGHT_ANGLE;
   }
-
 }
