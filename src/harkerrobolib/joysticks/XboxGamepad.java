@@ -11,6 +11,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class XboxGamepad extends CommandXboxController {
 
+  private static final int DPAD_UP_ANGLE = 0;
+  private static final int DPAD_LEFT_ANGLE = 270;
+  private static final int DPAD_RIGHT_ANGLE = 90;
+  private static final int DPAD_DOWN_ANGLE = 180;
+
   public XboxGamepad(int port) {
     super(port);
   }
@@ -63,6 +68,22 @@ public class XboxGamepad extends CommandXboxController {
     return -super.getLeftY();
   }
 
+  public Trigger getUpDPadButton() {
+    return super.povUp();
+  }
+
+  public Trigger getDownDPadButton() {
+    return super.povDown();
+  }
+
+  public Trigger getLeftDPadButton() {
+    return super.povLeft();
+  }
+
+  public Trigger getRightDPadButton() {
+    return super.povRight();
+  }
+
   public boolean getButtonAState() {
     return getButtonA().getAsBoolean();
   }
@@ -95,20 +116,19 @@ public class XboxGamepad extends CommandXboxController {
     return getRightBumper().getAsBoolean();
   }
 
-  public Trigger getUpDPadButton() {
-    return super.povUp();
+  public boolean getUpDPadButtonState() {
+    return super.getHID().getPOV() == DPAD_UP_ANGLE;
   }
 
-  public Trigger getDownDPadButton() {
-    return super.povDown();
+  public boolean getDownDPadButtonState() {
+    return super.getHID().getPOV() == DPAD_DOWN_ANGLE;
   }
 
-  public Trigger getLeftDPadButton() {
-    return super.povLeft();
+  public boolean getLeftDPadButtonState() {
+    return super.getHID().getPOV() == DPAD_LEFT_ANGLE;
   }
 
-  public Trigger getRightDPadButton() {
-    return super.povRight();
+  public boolean getRightDPadButtonState() {
+    return super.getHID().getPOV() == DPAD_RIGHT_ANGLE;
   }
-
 }

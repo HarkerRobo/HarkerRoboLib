@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj.GenericHID;
  *
  * @author Manan
  * @author Finn Frankis
+ * @author Chiling
  */
-public class HSDPadButton extends HSButton {
+public class HSDPadButton {
   private final GenericHID m_joystick;
   private final int m_degrees;
 
