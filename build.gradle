@@ -3,11 +3,13 @@ plugins {
     id "edu.wpi.first.GradleRIO" version "2024.1.1"
 }
 
-repositories { maven { url 'https://jitpack.io' } }
+repositories {
+    maven { url 'https://jitpack.io' }
+}
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 def ROBOT_MAIN_CLASS = ""
@@ -70,7 +72,7 @@ dependencies {
     simulationRelease wpi.sim.enableRelease()
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
-    // testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 test {
