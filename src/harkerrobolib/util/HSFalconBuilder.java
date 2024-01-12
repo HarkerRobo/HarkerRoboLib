@@ -1,12 +1,12 @@
 package harkerrobolib.util;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
+import com.ctre.phoenix6.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix6.motorcontrol.NeutralMode;
+import com.ctre.phoenix6.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix6.motorcontrol.StatusFrame;
+import com.ctre.phoenix6.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix6.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix6.sensors.SensorVelocityMeasPeriod;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
