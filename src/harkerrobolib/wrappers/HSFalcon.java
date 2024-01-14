@@ -1,9 +1,9 @@
 package harkerrobolib.wrappers;
 
-import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix6.ErrorCode;
+import com.ctre.phoenix6.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix6.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix6.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import harkerrobolib.util.Constants;
 
