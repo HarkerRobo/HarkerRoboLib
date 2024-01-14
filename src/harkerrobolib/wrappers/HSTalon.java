@@ -1,13 +1,13 @@
 package harkerrobolib.wrappers;
 
-import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+import com.ctre.phoenix6.ErrorCode;
+import com.ctre.phoenix6.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix6.motorcontrol.RemoteFeedbackDevice;
+import com.ctre.phoenix6.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix6.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix6.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix6.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix6.sensors.SensorInitializationStrategy;
 import harkerrobolib.util.Constants;
 
 /**
